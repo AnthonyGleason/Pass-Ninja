@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec ts-node ./app.js"
+    "start": "nodemon --exec ts-node ./app.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
