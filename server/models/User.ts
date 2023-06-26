@@ -17,12 +17,6 @@ const UserSchema = new mongoose.Schema({
       return emailRegex.test(value);
     },
   },
-  masterPassword:{ //store hashed master password
-    type: String,
-    required: true,
-    min: 16,
-    max: 50,
-  },
   dateCreated:{
     type: Date,
     required: true,

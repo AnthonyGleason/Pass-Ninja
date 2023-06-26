@@ -8,7 +8,7 @@ const SubscriptionSchema = new mongoose.Schema({
       //last cancel date
       //last subscribe date
       //date of expiry
-  //user docID required
+  //vault docID required
   //date of document creation
 });
 
