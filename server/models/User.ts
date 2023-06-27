@@ -1,3 +1,5 @@
+import {mongoose} from '../app';
+import {TimestampModel} from './Timestamp';
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -17,15 +19,10 @@ const UserSchema = new mongoose.Schema({
       return emailRegex.test(value);
     },
   },
-  dateCreated:{
-    type: Date,
+  timestamp:{
+    type: TimestampModel,
     required: true,
-    default: Date.now(),
-  },
-  frozen:{
-    type: Boolean,
-    default: false,
-  },
+  }
 })
 
 module.exports = mongoose.model('User',UserSchema);

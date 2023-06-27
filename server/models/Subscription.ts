@@ -1,15 +1,27 @@
+import {mongoose} from '../app';
+import { TimestampModel } from './Timestamp';
 const SubscriptionSchema = new mongoose.Schema({
-  //status obj required
-    //isSubscribed required
-    //price at time of subscription optional
-    //cycle (1,3,6,12) months optional
-    //cancel reason optional
-    //timestamps ** the below can be used to send offers to users
-      //last cancel date
-      //last subscribe date
-      //date of expiry
-  //vault docID required
-  //date of document creation
+  vault:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  isSubscribed:{
+    type: Boolean,
+    default: false,
+  },
+  renewalCycle:{
+    type: Number,
+    validate:{
+      validator: function(val: Number){
+        const validNumbers:Number[] = [1,3,6,12];
+        return validNumbers.includes(val);
+      }
+    }
+  },
+  timestamp:{
+    type: TimestampModel,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model('Subscription',SubscriptionSchema);

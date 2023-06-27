@@ -17,7 +17,7 @@ app.listen(PORT,()=>{
   console.log(`Server is listening on port ${PORT}`);
 });
 //setup mongoose, connecting to the database url in .env
-const mongoose = require('mongoose');
+export const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL).then(()=>{
   console.log('Successfully connected to the mongodb database.')
 });
@@ -49,5 +49,3 @@ app.use(function(err:any ,req:Request, res: Response, next:NextFunction) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-module.exports = app;
