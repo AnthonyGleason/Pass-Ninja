@@ -2,16 +2,15 @@
 require('dotenv').config();
 //import type defintions
 import { NextFunction,Request, Response } from "express";
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-const apiRouter = require('./routes/api');
-
-var app = express();
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+//import routers
+import {indexRouter} from './routes/index';
+import {apiRouter} from  './routes/api';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+const app = express();
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
   console.log(`Server is listening on port ${PORT}`);

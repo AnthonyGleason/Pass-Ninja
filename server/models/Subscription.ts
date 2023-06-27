@@ -22,5 +22,4 @@ const SubscriptionSchema = new Schema({
     required: true,
   }
 });
-
-module.exports = model('Subscription',SubscriptionSchema);
+export const SubscriptionModel = model('Subscription',SubscriptionSchema);

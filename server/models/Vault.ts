@@ -13,6 +13,5 @@ const VaultSchema = new Schema({
     type: Types.ObjectId,
     required: true
   }
-})
-
-module.exports = model('Vault',VaultSchema);
+});
+export const VaultModel =  model('Vault',VaultSchema);

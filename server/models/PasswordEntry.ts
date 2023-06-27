@@ -1,5 +1,5 @@
 import {Schema,Types,model} from 'mongoose';
-const passwordEntrySchema = new Schema({
+const PasswordEntrySchema = new Schema({
   siteURL:{
     type: String,
     required: true,
@@ -26,5 +26,4 @@ const passwordEntrySchema = new Schema({
     required: true
   }
 });
-
-module.exports = model('PasswordEntry',passwordEntrySchema);
+export const PasswordEntryModel = model('PasswordEntry',PasswordEntrySchema);

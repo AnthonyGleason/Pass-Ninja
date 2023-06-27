@@ -17,5 +17,4 @@ const TimestampSchema = new Schema({
     type:Date,
   }
 });
-//exporting the instance to be used in other models where required
 export const TimestampModel = model('TimeStamp',TimestampSchema);

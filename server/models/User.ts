@@ -22,6 +22,5 @@ const UserSchema = new Schema({
     type: Types.ObjectId,
     required: true,
   }
-})
-
-module.exports = model('User',UserSchema);
+});
+export const UserModel = model('User',UserSchema);
