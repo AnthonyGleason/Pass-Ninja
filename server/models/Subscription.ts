@@ -1,8 +1,7 @@
-import {mongoose} from '../app';
-import { TimestampModel } from './Timestamp';
-const SubscriptionSchema = new mongoose.Schema({
+import {Schema,Types,model} from 'mongoose';
+const SubscriptionSchema = new Schema({
   vault:{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
   },
   isSubscribed:{
@@ -19,9 +18,9 @@ const SubscriptionSchema = new mongoose.Schema({
     }
   },
   timestamp:{
-    type: TimestampModel,
+    type: Types.ObjectId,
     required: true,
   }
 });
 
-module.exports = mongoose.model('Subscription',SubscriptionSchema);
+module.exports = model('Subscription',SubscriptionSchema);

@@ -17,7 +17,7 @@ app.listen(PORT,()=>{
   console.log(`Server is listening on port ${PORT}`);
 });
 //setup mongoose, connecting to the database url in .env
-export const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL).then(()=>{
   console.log('Successfully connected to the mongodb database.')
 });

@@ -1,6 +1,5 @@
-import {mongoose} from '../app';
-import { TimestampModel } from './Timestamp';
-const passwordEntrySchema = new mongoose.Schema({
+import {Schema,Types,model} from 'mongoose';
+const passwordEntrySchema = new Schema({
   siteURL:{
     type: String,
     required: true,
@@ -19,13 +18,13 @@ const passwordEntrySchema = new mongoose.Schema({
     type: String,
   },
   vault:{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     required: true,
   },
   timestamp:{
-    type: TimestampModel,
+    type: Types.ObjectId,
     required: true
   }
 });
 
-module.exports = mongoose.model('PasswordEntry',passwordEntrySchema);
+module.exports = model('PasswordEntry',passwordEntrySchema);

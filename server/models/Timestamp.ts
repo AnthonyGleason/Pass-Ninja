@@ -1,5 +1,5 @@
-import {mongoose} from '../app';
-const TimestampSchema = new mongoose.Schema({
+import {Schema,model} from 'mongoose';
+const TimestampSchema = new Schema({
   dateModified:{
     type: Date,
     required: true,
@@ -18,4 +18,4 @@ const TimestampSchema = new mongoose.Schema({
   }
 });
 //exporting the instance to be used in other models where required
-export const TimestampModel = mongoose.model('TimeStamp',TimestampSchema);
+export const TimestampModel = model('TimeStamp',TimestampSchema);

@@ -1,6 +1,5 @@
-import {mongoose} from '../app';
-import {TimestampModel} from './Timestamp';
-const UserSchema = new mongoose.Schema({
+import {Schema,Types,model} from 'mongoose';
+const UserSchema = new Schema({
   firstName: {
     type: String,
     min: 1,
@@ -20,9 +19,9 @@ const UserSchema = new mongoose.Schema({
     },
   },
   timestamp:{
-    type: TimestampModel,
+    type: Types.ObjectId,
     required: true,
   }
 })
 
-module.exports = mongoose.model('User',UserSchema);
+module.exports = model('User',UserSchema);

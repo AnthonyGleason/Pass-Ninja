@@ -1,8 +1,7 @@
-import {mongoose} from '../app';
-import {TimestampModel} from './Timestamp';
-const VaultSchema = new mongoose.Schema({
+import {Schema,Types,model} from 'mongoose';
+const VaultSchema = new Schema({
   user:{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     required: true,
   },
   //master password is a stored as hashed version of the users plain text master password
@@ -11,9 +10,9 @@ const VaultSchema = new mongoose.Schema({
     required: true,
   },
   timestamp:{
-    type: TimestampModel,
+    type: Types.ObjectId,
     required: true
   }
 })
 
-module.exports = mongoose.model('Vault',VaultSchema);
+module.exports = model('Vault',VaultSchema);
