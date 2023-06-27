@@ -16,15 +16,23 @@ export const createPasswordEntry = async function(
     timestamp: timestamp,
     nickname: nickname
   });
-}
+};
 //update a password entry
 export const updatePasswordEntry = async function(
   docID:Types.ObjectId,
   updatedPasswordEntry: PasswordEntry
   ){
   return await PasswordEntryModel.findByIdAndUpdate(docID,updatedPasswordEntry);
-}
+};
 //get a password entry by docID
+export const getPasswordEntryByDocID = async function(docID:Types.ObjectId){
+  return await PasswordEntryModel.findById(docID);
+};
 //get all password entries
-//get a password entry by nickname (search);
+export const getAllPasswordEntries = async function(){
+  return await PasswordEntryModel.find({});
+};
 //delete a password entry by docID
+export const removePasswordEntry = async function(docID: Types.ObjectId){
+  return await PasswordEntryModel.findByIdAndDelete(docID);
+};

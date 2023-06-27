@@ -4,15 +4,15 @@ const PasswordEntrySchema = new Schema({
     type: String,
     required: true,
   },
-  /*
-  Some quick notes about the password stored here
-  1) it is hashed with the users vault master password
-  2) users need to enter their master password again to create new password entries in a vault
-  3) the password entries will be decrypted using bcrypt when the user intially unlocks their vault
-  */
   password:{
     type: String,
     required: true,
+    /*
+      Some quick notes about the password stored here
+      1) it is hashed with the users vault master password
+      2) users need to enter their master password again to create new password entries in a vault
+      3) the password entries will be decrypted using bcrypt when the user intially unlocks their vault
+    */
   },
   nickname:{
     type: String,

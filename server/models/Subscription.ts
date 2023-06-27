@@ -1,7 +1,7 @@
 import {Schema,Types,model} from 'mongoose';
 const SubscriptionSchema = new Schema({
   vault:{
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     required: true,
   },
   isSubscribed:{
