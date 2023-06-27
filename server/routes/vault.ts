@@ -1,6 +1,5 @@
-//create a new vault
-//create a new password entry
-//update an existing password entry
-//delete a password entry
-//generate a secure password the user can use server side within user constraints
-//update master password
+//create a new vault for user
+//get a vault for the signed in user
+//update vault master password
+
+//use password route
