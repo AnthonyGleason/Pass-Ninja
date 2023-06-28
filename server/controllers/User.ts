@@ -19,6 +19,10 @@ export const createUser = async function(
 export const getUserByDocID = async function(docID: Types.ObjectId){
   return await UserModel.findById(docID);
 };
+//get a user by email
+export const getUserByEmail = async function(email: String){
+  return await UserModel.findOne({'email': email});
+}
 //get all users
 export const getAllUsers = async function(){
   return await UserModel.find({});

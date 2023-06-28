@@ -1,4 +1,6 @@
-import {Types} from 'mongoose';
+import { Types } from 'mongoose';
+import { Request } from 'express';
+import jwt from 'jsonwebtoken';
 
 export interface PasswordEntry {
   siteURL: string;
@@ -30,3 +32,6 @@ export interface Vault {
   masterPassword: String;
   timestamp: Types.ObjectId;
 };
+export interface CustomRequest extends Request{
+  payload?: String | jwt.JwtPayload,
+}
