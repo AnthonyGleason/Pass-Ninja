@@ -3,52 +3,41 @@ import {Response,NextFunction} from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { CustomRequest } from '../../interfaces/interfaces';
+import { authenticateToken } from '../../auth';
 export const userRouter = express.Router();
-
-//authenticates jwt tokens
-const authenticateToken = function(req:CustomRequest, res:Response, next:NextFunction) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  };
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret, (err, payload) => {
-    if (err) {
-      return res.status(403).json({ error: 'Forbidden' });
-    }
-    req.payload = payload;
-    next();
-  });
-};
 //validate token
-userRouter.get('/verify',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+userRouter.get('/verify',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  res.status(200).json({'isValid': true});
 });
 //login
 userRouter.post('/login',(req:CustomRequest,res:Response,next:NextFunction)=>{
-
+  //get user for email provided in req
+  //compared hashed master password in the users vault to plaintext password provided by user
 });
 //logout
-userRouter.post('/logout',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+userRouter.post('/logout',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  //invalidate authentication token
 });
 //register
 userRouter.post('/register',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+  //create a new vault for the signed in user storing hashed password
 });
 //subscribe
-userRouter.post('/subscribe',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+userRouter.put('/subscribe',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  //subscribe by updating the subscription status for the currently signed in user
+  //update the timestamp
 });
 //unsubscribe
-userRouter.post('/unsubscribe',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+userRouter.put('/unsubscribe',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  //unsubscribe by update the subscription status for the currently signed in user
+  //update the timestamp
 });
-//get current user account settings
-userRouter.get('/settings',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+//get current user account info
+userRouter.get('/info',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  //return the current user's user document
 });
-//update user account settings
-userRouter.put('/settings',(req:CustomRequest, res: Response, next:NextFunction)=>{
-
+//update user account info
+userRouter.put('/info',authenticateToken,(req:CustomRequest, res: Response, next:NextFunction)=>{
+  //update the email, name and lastname associated with the user account
+  //update the timestamp
 });
