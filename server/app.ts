@@ -6,8 +6,7 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 //import routers
-import {indexRouter} from './routes/index';
-import {apiRouter} from  './routes/api';
+import {apiRouter} from  './routes/v1/api';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 const app = express();
@@ -30,8 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
+app.use('/v1/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req:Request, res:Response, next:NextFunction) {
