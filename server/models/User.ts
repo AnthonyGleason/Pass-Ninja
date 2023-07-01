@@ -1,5 +1,6 @@
 import {Schema,Types,model} from 'mongoose';
-const UserSchema = new Schema({
+//across all of these
+const UserSchema:any = new Schema({
   firstName: {
     type: String,
     min: 1,

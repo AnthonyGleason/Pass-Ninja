@@ -2,13 +2,13 @@ import { VaultModel } from "../models/Vault";
 import { Types } from "mongoose";
 import { Vault } from "../interfaces/interfaces";
 //create a vault for user
-export const createVaultByUserID = async function(
-  docID: Types.ObjectId,
+export const createVaultForUserID = async function(
+  userDocID: Types.ObjectId,
   masterPassword: String,
   timestamp: Types.ObjectId
 ){
   return await VaultModel.create({
-    user: docID,
+    user: userDocID,
     masterPassword: masterPassword,
     timestamp: timestamp,
   })

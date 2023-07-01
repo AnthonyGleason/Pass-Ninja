@@ -1,5 +1,5 @@
 import {Schema,Types,model} from 'mongoose';
-const PasswordEntrySchema = new Schema({
+const PasswordEntrySchema:any = new Schema({
   siteURL:{
     type: String,
     required: true,

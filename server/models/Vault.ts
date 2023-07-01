@@ -1,5 +1,5 @@
 import {Schema,Types,model} from 'mongoose';
-const VaultSchema = new Schema({
+const VaultSchema:any = new Schema({
   user:{
     type: Types.ObjectId,
     required: true,

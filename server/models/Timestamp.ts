@@ -1,5 +1,5 @@
 import {Schema,model} from 'mongoose';
-const TimestampSchema = new Schema({
+const TimestampSchema:any = new Schema({
   dateModified:{
     type: Date,
     required: true,

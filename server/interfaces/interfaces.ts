@@ -3,11 +3,11 @@ import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 
 export interface PasswordEntry {
-  siteURL: string;
-  password: string;
+  siteURL: String;
+  password: String;
   vault: Types.ObjectId;
   timestamp: Types.ObjectId;
-  nickname?: string;
+  nickname?: String
 };
 export interface Subscription {
   vault: Types.ObjectId;
@@ -33,5 +33,10 @@ export interface Vault {
   timestamp: Types.ObjectId;
 };
 export interface CustomRequest extends Request{
-  payload?: String | jwt.JwtPayload,
+  /*
+    payload was previously set to jwt.JwtPayload but i kept getting type errors in the subscription route
+    in user.ts. 
+  */
+  payload?: any,
+  token?: String,
 }

@@ -1,5 +1,6 @@
 //setup enviornment variables
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 //import type defintions
 import { NextFunction,Request, Response } from "express";
 import createError from 'http-errors';
