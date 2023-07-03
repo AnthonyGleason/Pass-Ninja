@@ -3,8 +3,8 @@ import {Response,NextFunction} from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
-import { CustomRequest, Timestamp} from '../../interfaces/interfaces';
-import { authenticateToken, invalidatedTokens } from '../../auth';
+import { CustomRequest, Timestamp, User} from '../../interfaces/interfaces';
+import { authenticateToken, generateHashedPassword, invalidatedTokens, issueToken } from '../../auth';
 import { createUser, getUserByDocID, getUserByEmail, updateUserByUserID } from '../../controllers/User';
 import { createTimestamp, getTimestampByDocID } from '../../controllers/Timestamp';
 import { createVaultForUserID, getVaultByUserID } from '../../controllers/Vault';
@@ -20,21 +20,33 @@ userRouter.get('/verify',authenticateToken,(req:CustomRequest, res: Response, ne
 //register, create a new vault for the signed in user storing hashed password as the master password
 userRouter.post('/register',async (req:CustomRequest, res: Response, next:NextFunction)=>{
   //destructure request body
-  const {firstName,lastName,email,password} = req.body;
-  const timestamp = await createTimestamp(new Date(),new Date());
-  //create new user
-  const user = await createUser(firstName,lastName,email,timestamp._id);
-  //generate hashed password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password,salt);
-  //create new vault
-  const vault = await createVaultForUserID(user._id,hashedPassword,timestamp._id);
-  res.status(200).json({
-    'vault': vault,
-    'user': user,
-  });
-  }
-);
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirm
+  }:{
+    firstName:string,
+    lastName:string,
+    email:string,
+    password:string,
+    passwordConfirm:string
+  } = req.body;
+  //check to see if passwords match
+  if (password===passwordConfirm){
+    const timestamp = await createTimestamp(new Date(),new Date());
+    //create new user
+    const user = await createUser(firstName,lastName,email,timestamp._id);
+    const hashedPassword:string = await generateHashedPassword(password);
+    //create new vault
+    const vault = await createVaultForUserID(user._id,hashedPassword,timestamp._id);
+    const token = issueToken(user,vault);
+    res.status(200).json({
+      'token': token
+    });
+  };
+});
 
 //login
 userRouter.post('/login',async (req:CustomRequest,res:Response,next:NextFunction)=>{
@@ -48,11 +60,10 @@ userRouter.post('/login',async (req:CustomRequest,res:Response,next:NextFunction
   if (!vault) throw new Error(`No vault found for user ${user._id}`);
   //compared hashed master password in the users vault to plaintext password provided by user
   if (await bcrypt.compare(req.body.password,vault.masterPassword)){
-    token = jwt.sign({
-      user: user,
-      vault: vault,
-    },process.env.SECRET as jwt.Secret);
+    token = issueToken(user,vault);
   };
+  //additionlly the login must decrypt all the users passwords for then upon succesfully unlocking the vault
+  //these passwords will be returned in json format in an array
   res.status(200).json({'token': token});
 });
 

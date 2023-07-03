@@ -18,7 +18,7 @@ export const createPasswordEntry = async function(
   });
 };
 //update a password entry
-export const updatePasswordEntry = async function(
+export const updatePasswordEntryByDocID = async function(
   docID:Types.ObjectId,
   updatedPasswordEntry: PasswordEntry
   ){
@@ -28,11 +28,11 @@ export const updatePasswordEntry = async function(
 export const getPasswordEntryByDocID = async function(docID:Types.ObjectId){
   return await PasswordEntryModel.findById(docID);
 };
-//get all password entries
-export const getAllPasswordEntries = async function(){
-  return await PasswordEntryModel.find({});
+//get all password entries for a vault ID
+export const getAllPasswordEntriesByVaultID = async function(docID:Types.ObjectId){
+  return await PasswordEntryModel.find({'vault': docID});
 };
 //delete a password entry by docID
-export const removePasswordEntry = async function(docID: Types.ObjectId){
+export const removePasswordEntryByDocID = async function(docID: Types.ObjectId){
   return await PasswordEntryModel.findByIdAndDelete(docID);
 };
