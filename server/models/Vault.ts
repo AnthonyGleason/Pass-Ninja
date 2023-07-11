@@ -1,4 +1,5 @@
 import {Schema,Types,model} from 'mongoose';
+
 const VaultSchema:any = new Schema({
   user:{
     type: Types.ObjectId,
@@ -14,4 +15,5 @@ const VaultSchema:any = new Schema({
     required: true
   }
 });
+
 export const VaultModel =  model('Vault',VaultSchema);
