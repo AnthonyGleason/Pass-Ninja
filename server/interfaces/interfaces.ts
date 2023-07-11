@@ -1,6 +1,5 @@
 import { Types } from 'mongoose';
 import { Request } from 'express';
-import jwt from 'jsonwebtoken';
 
 export interface PasswordEntry {
   siteURL: String;
