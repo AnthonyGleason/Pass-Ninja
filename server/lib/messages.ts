@@ -1,0 +1,1 @@
+export const reportSuccessMessage:string = 'This incident has been recorded. If you were attempting to submit a form please try again later.';

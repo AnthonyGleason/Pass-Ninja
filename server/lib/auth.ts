@@ -1,4 +1,4 @@
-import { CustomRequest, User, Vault } from "./interfaces/interfaces";
+import { customRequest } from "../interfaces/interfaces";
 import { Response,NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -9,14 +9,14 @@ export const encryptPassword = function(password: string, masterPassword: string
   return cryptoJS.AES.encrypt(password, masterPassword).toString();
 };
 
-//decrypt the password
+//decrypt the password will be used on client
 export const decryptPassword = function(encryptedPassword: string, masterPassword: string): string {
   const decryptedBytes = cryptoJS.AES.decrypt(encryptedPassword, masterPassword);
   return decryptedBytes.toString(cryptoJS.enc.Utf8);
 };
 
 //issue jwt tokens
-export const issueToken = function(user:User, vault:Vault){
+export const issueToken = function(user:any, vault:any){
   return jwt.sign({
     user: user,
     vault: vault,
@@ -24,14 +24,14 @@ export const issueToken = function(user:User, vault:Vault){
 };
 
 //authenticates jwt tokens
-export const authenticateToken = function(req:CustomRequest, res:Response, next:NextFunction) {
+export const authenticateToken = function(req:customRequest, res:Response, next:NextFunction) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   //handle token does not exist or token is revoked
   if (!token || invalidatedTokens.includes(token)) {
     return res.status(401).json({ error: 'Unauthorized' });
   };
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret, (err, payload) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret, (err:any, payload:any) => {
     if (err) {
       return res.status(403).json({ error: 'Forbidden' });
     };
