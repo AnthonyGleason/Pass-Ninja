@@ -5,6 +5,9 @@ const VaultSchema = new mongoose.Schema({
     type: Types.ObjectId,
     ref: 'User',
   },
+  masterPassword:{
+    type:String,
+  }
 });
 
 export default mongoose.model('Vault',VaultSchema);
