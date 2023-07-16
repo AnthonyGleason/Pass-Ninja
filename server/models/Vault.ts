@@ -1,11 +1,14 @@
 import mongoose, { Types } from "mongoose";
 
 const VaultSchema = new mongoose.Schema({
-  user:{
+  userID:{
     type: Types.ObjectId,
     ref: 'User',
   },
   masterPassword:{
+    type:String,
+  },
+  nickName:{
     type:String,
   }
 });

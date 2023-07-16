@@ -1,6 +1,20 @@
-// createVault
-export const createVault = function(){
+import { Types } from "mongoose";
+import { Vault } from "../classes/Vault";
+import VaultModel from '../models/Vault';
 
+// createVault
+export const createVault = async function(
+  masterPassword: string,
+  userID: string,
+  nickName: string,
+):Promise<Vault>{
+  await VaultModel.create({
+    userID:userID,
+    masterPassword: masterPassword,
+    nickName: nickName,
+  });
+  const vault:Vault = new Vault(masterPassword,userID,nickName);
+  return vault;
 };
 // getVaultByUserID
 export const getVaultByUserID = function(){
