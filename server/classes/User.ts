@@ -1,6 +1,7 @@
-import { createVault } from "../controllers/Vault";
-import { Password } from "./Password";
+import { Document } from "mongoose";
+import { createVault, getVaultByUserID } from "../controllers/Vault";
 import { Vault } from "./Vault";
+import { customVaultDoc } from "../interfaces/interfaces";
 
 export class User{
   firstName: string;
@@ -8,6 +9,7 @@ export class User{
   email: string;
   vault: Vault | undefined;
   userID: string | undefined;
+
   constructor(
     firstName: string,
     lastName: string,
@@ -33,11 +35,13 @@ export class User{
     await createVault(hashedPassword,this.userID,nickName);
   };
 
-  populateUserData = ()=>{
-    //get vault data from mongodb based on the provided email
-
-    //populate the vault data with the users vault
-
-    //populate the userID with the correct userID
+  populateUserData = async ():Promise<void>=>{
+    //get vault data from mongodb based on userID
+    if (!this.userID) return;
+    const vaultDoc:customVaultDoc | null = await getVaultByUserID(this.userID);
+    //if vault does not exist exit
+    if (!vaultDoc) return;
+    //populate this classes userID with the correct userID
+    this.userID = vaultDoc.user;
   };
 }

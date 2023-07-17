@@ -2,18 +2,18 @@ import { Password } from "./Password";
 
 export class Vault{
   masterPassword:string;
-  userID:string;
+  user:string;
   passwords:[Password] | undefined;
   nickName: string | undefined;
   
   constructor(
     masterPassword: string,
-    userID: string,
+    user: string,
     nickName: string,
     passwords?: [Password],
   ){
     this.masterPassword = masterPassword;
-    this.userID = userID;
+    this.user = user;
     this.nickName = nickName || undefined;
     this.passwords = passwords || undefined;
   }

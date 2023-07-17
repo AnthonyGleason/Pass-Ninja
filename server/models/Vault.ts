@@ -1,9 +1,9 @@
 import mongoose, { Types } from "mongoose";
 
 const VaultSchema = new mongoose.Schema({
-  userID:{
+  user:{
     type: Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
   },
   masterPassword:{
     type:String,
@@ -13,4 +13,4 @@ const VaultSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('Vault',VaultSchema);
+export const VaultModel = mongoose.model('Vault',VaultSchema);

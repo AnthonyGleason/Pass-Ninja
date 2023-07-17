@@ -3,7 +3,7 @@ import mongoose, {Types} from "mongoose";
 const PasswordSchema = new mongoose.Schema({
   vault:{
     type: Types.ObjectId,
-    ref: 'Vault'
+    ref: 'vault'
   },
   password:{
     type:String,
@@ -16,4 +16,4 @@ const PasswordSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('Password',PasswordSchema)
+export const PasswordModel = mongoose.model('Password',PasswordSchema);
