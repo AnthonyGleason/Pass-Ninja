@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { createVault, getVaultByUserID } from "../controllers/Vault";
 import { Vault } from "./Vault";
-import { customVaultDoc } from "../interfaces/interfaces";
+import { vaultDoc } from "../interfaces/interfaces";
 
 export class User{
   firstName: string;
@@ -38,7 +38,7 @@ export class User{
   populateUserData = async ():Promise<void>=>{
     //get vault data from mongodb based on userID
     if (!this.userID) return;
-    const vaultDoc:customVaultDoc | null = await getVaultByUserID(this.userID);
+    const vaultDoc: vaultDoc | null = await getVaultByUserID(this.userID);
     //if vault does not exist exit
     if (!vaultDoc) return;
     //populate this classes userID with the correct userID

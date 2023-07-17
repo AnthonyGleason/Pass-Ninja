@@ -11,3 +11,9 @@ export interface customRequest extends Request{
   payload?: any,
   token?: String,
 };
+
+export interface vaultDoc extends Document {
+  user: string;
+  masterPassword: string;
+  nickName: string;
+}
