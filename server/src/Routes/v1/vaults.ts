@@ -83,9 +83,9 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
     const token:String = req.token;
     //add the token to the invalidated tokens array
     invalidatedTokens.push(token);
-    res.status(200);
+    res.status(200).json({message: 'You have been logged out.'});
   }else{
-    res.status(400);
+    res.status(400).json({message: 'There was an error with your request.'});
   };
 });
 

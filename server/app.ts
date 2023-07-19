@@ -20,9 +20,6 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL).then(()=>{
   console.log('Successfully connected to the mongodb database.')
 });
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());

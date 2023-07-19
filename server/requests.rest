@@ -1,14 +1,27 @@
-GET http://localhost:5000/v1/api/
+POST http://localhost:5000/v1/api/vaults/register/
 Content-Type: application/json
 
 {
-
+  "firstName": "b",
+  "lastName": "b",
+  "email": "b@b.com",
+  "masterPassword": "hello_world!"
 }
 
 ###
 
-GET http://localhost:5000/v1/api/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY4N2IxY2ExNjUzYTA0MWEwMDBhNDkiLCJ3aXNobGlzdCI6W10sImZpcnN0TmFtZSI6IkZpcnN0IiwibGFzdE5hbWUiOiJMYXN0IiwiZW1haWwiOiJhQGEuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkWGUzUzBRR09lak50bktRR2FnMFcwLlZ6UjNqc3FGalN6SzAzL2NOTkpwZk5WR1g4bGYxZ2kiLCJkYXRlQ3JlYXRlZCI6IjIwMjMtMDUtMjBUMDc6NDc6MzguMDE3WiIsImZyb3plbiI6ZmFsc2UsIl9fdiI6MCwiaWF0IjoxNjg0NTY5MTA3LCJleHAiOjE2ODQ2NTU1MDd9.iVQOFqKJujFARz-5ouKnVEQ8DwkSlPGt-t6NeJM7HgQ
+GET http://localhost:5000/v1/api/vaults/verify/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
+Content-Type: application/json
+
+{
+  
+}
+
+###
+
+POST http://localhost:5000/v1/api/vaults/logout/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
 Content-Type: application/json
 
 {

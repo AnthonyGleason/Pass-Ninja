@@ -20,10 +20,10 @@ export const authenticateToken = function(req:customRequest, res:Response, next:
       message: 'Unauthorized',
     });
   };
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as jwt.Secret, (err:any, payload:any) => {
+  jwt.verify(token, process.env.SECRET as jwt.Secret, (err:any, payload:any) => {
     if (err) {
       return res.status(403).json({
-        isValid: true,
+        isValid: false,
         message: 'Forbidden',
       });
     };
