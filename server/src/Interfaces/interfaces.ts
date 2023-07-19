@@ -1,7 +1,5 @@
 import { Document, Types } from 'mongoose';
 import { Request } from 'express';
-import { User } from '../classes/User';
-import { Password } from '../classes/Password';
 
 export interface customRequest extends Request{
   /*
@@ -12,8 +10,9 @@ export interface customRequest extends Request{
   token?: String,
 };
 
-export interface vaultDoc extends Document {
-  user: string;
-  masterPassword: string;
-  nickName: string;
-}
+export interface vault extends Document{
+  hashedMasterPassword: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+};

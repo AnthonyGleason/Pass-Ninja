@@ -7,7 +7,7 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 //import routers
-import {apiRouter} from  './routes/v1/api';
+import {apiRouter} from  './src/Routes/v1/api';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 const app = express();

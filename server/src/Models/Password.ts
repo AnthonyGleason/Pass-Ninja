@@ -1,11 +1,14 @@
 import mongoose, {Types} from "mongoose";
 
 const PasswordSchema = new mongoose.Schema({
-  vault:{
+  vaultID:{
     type: Types.ObjectId,
-    ref: 'vault'
+    ref: 'Vault'
   },
-  password:{
+  userName:{
+    type:String,
+  },
+  encryptedPassword:{ //hashed using crypto js library client side
     type:String,
   },
   nickName:{
