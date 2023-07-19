@@ -27,7 +27,7 @@ export const authenticateToken = function(req:customRequest, res:Response, next:
         message: 'Forbidden',
       });
     };
-    //payload is assigned in the request for use in routes by accessing req.payload
+    //payload is assigned in the issueToken() function above
     req.payload = payload;
     req.token = token;
     next();

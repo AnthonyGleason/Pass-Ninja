@@ -7,12 +7,20 @@ export interface customRequest extends Request{
     in user.ts. 
   */
   payload?: any,
-  token?: String,
+  token?: String, //token's stype is capitalized because bcrypt strictly enforces 'String' instead of 'string'
 };
 
-export interface vault extends Document{
+export interface vaultDoc extends Document{
   hashedMasterPassword: string,
   firstName: string,
   lastName: string,
   email: string,
 };
+
+export interface passwordDoc extends Document{
+  vaultID: string;
+  userName: string,
+  encryptedPassword:string;
+  nickName:string;
+  siteUrl: string;
+}
