@@ -1,10 +1,10 @@
 //    /v1/api/vaults/:vaultID/
 //import type definitions
 import { NextFunction, Response } from "express";
-import { customRequest} from '../../Interfaces/interfaces';
+import { customRequest, passwordDoc, vaultDoc} from '../../Interfaces/interfaces';
 import express from 'express';
 import { authenticateToken } from "../../Middlewares/Auth";
-import { createPasswordEntry, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
+import { createPasswordEntry, getAllPasswordsByVaultID, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
 
 export const passwordRouter = express.Router();
 
@@ -50,37 +50,60 @@ passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:custo
   const vaultID:string = req.payload.vault._id;
   const passID:string = req.params.passwordID;
   //get the password entry by password id from mongodb
-  const passwordDoc = await getPasswordByID(passID);
-  let updatedPasswordDoc = passwordDoc;
+  const passwordDoc:passwordDoc | null = await getPasswordByID(passID);
+  let userOwnsPassword:boolean = false;
+  /*
+    only procceed if the user is the owner of the password that will be updated.
+    I had to nest if statements here because the passwordDoc could be null due to getPasswordByID() not finding any matching documents
+  */
   if (passwordDoc){
-    if (passwordDoc.vaultID===vaultID && updatedPasswordDoc){
-      //input new values into the document
-      updatedPasswordDoc.userName = userName;
-      updatedPasswordDoc.encryptedPassword=encryptedPassword;
-      updatedPasswordDoc.nickName=nickName;
-      updatedPasswordDoc.siteUrl=siteUrl;
-      //update the password entry in mongodb
-      await updatePasswordByID(passID,updatedPasswordDoc);
-      //send the updated password to the client
-      res.status(200).json({password: updatedPasswordDoc});
-    }else{
-      res.status(401);
+    if (passwordDoc.vaultID===vaultID){
+      userOwnsPassword=true;
     }
-  }else{
-    res.status(401);
+  };
+  let updatedPasswordDoc = passwordDoc;
+  if (userOwnsPassword && updatedPasswordDoc){
+    //input new values into the document
+    updatedPasswordDoc.userName = userName;
+    updatedPasswordDoc.encryptedPassword=encryptedPassword;
+    updatedPasswordDoc.nickName=nickName;
+    updatedPasswordDoc.siteUrl=siteUrl;
+    //update the password entry in mongodb
+    await updatePasswordByID(passID,updatedPasswordDoc);
+    //send the updated password to the client
+    res.status(200).json({password: updatedPasswordDoc});
   };
 });
 
 //  GET /api/v1/vaults/passwords get all of the users password entries
-
 passwordRouter.get('/passwords', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //get vault id from payload
-  //get all passwords with vault id
+  const vaultID:string = req.payload.vault._id;
+  const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
+  //only proceed if the user is the owner of the vault containing the passwords
+  if (passwords[0].vaultID===vaultID){
+    const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
+    //get all passwords with vault id
+    res.status(200).json({passwords: passwords});
+  }else{
+    res.status(401);
+  }
 });
 
 // GET /api/v1/vaults/passwords/:passwordID get the data for a single password entry
-
-passwordRouter.get('/passwords/:passwordID',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
-  //get password ID from request body
+passwordRouter.get('/passwords/:passwordID',authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+  //get password ID from the route
+  const passwordID:string = req.params.passwordID;
   //get password from mongodb based on the password id
+  const password:passwordDoc | null = await getPasswordByID(passwordID);
+  let userOwnsPassword = false;
+  if (password){
+    if (password.vaultID===req.payload.vault._id) userOwnsPassword = true;
+  }
+  //only proceed if the user is the owner of the vault containing the password
+  if (userOwnsPassword){
+    res.status(200).json({password: password});
+  }else{
+    res.status(401);
+  }
 });

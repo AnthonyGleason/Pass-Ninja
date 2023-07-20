@@ -1,5 +1,6 @@
 import { Document } from "mongoose";
 import { PasswordModel } from "../Models/Password";
+import { passwordDoc } from "../Interfaces/interfaces";
 
 //create a new password
 export const createPasswordEntry = async function(
@@ -19,12 +20,12 @@ export const createPasswordEntry = async function(
 };
 
 //get a password by ID
-export const getPasswordByID = async function(passwordID:string){
+export const getPasswordByID = async function(passwordID:string):Promise<passwordDoc| null>{
   return await PasswordModel.findById(passwordID);
 };
 
 //get all passwords with vault ID
-export const getAllPasswordsByVaultID = async function(vaultID:string){
+export const getAllPasswordsByVaultID = async function(vaultID:string):Promise<passwordDoc[]>{
   return await PasswordModel.find({vaultID: vaultID});
 };
 
