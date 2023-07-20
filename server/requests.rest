@@ -1,3 +1,4 @@
+//create an account
 POST http://localhost:5000/v1/api/vaults/register/
 Content-Type: application/json
 
@@ -10,6 +11,7 @@ Content-Type: application/json
 
 ###
 
+//verify the user's jwt token
 GET http://localhost:5000/v1/api/vaults/verify/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
 Content-Type: application/json
@@ -20,7 +22,20 @@ Content-Type: application/json
 
 ###
 
+//invalidates jwt token so user is "signed out"
 POST http://localhost:5000/v1/api/vaults/logout/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
+Content-Type: application/json
+
+{
+  
+}
+
+###
+
+//get the latest version of the users vault based on the provided jwt token
+
+GET http://localhost:5000/v1/api/vaults/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
 Content-Type: application/json
 

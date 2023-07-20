@@ -4,7 +4,8 @@ import { NextFunction, Response } from "express";
 import { customRequest, vaultDoc} from '../../Interfaces/interfaces';
 import express from "express";
 import { passwordRouter } from "./passwords";
-import { authenticateToken, invalidatedTokens, issueToken } from "../../Configs/auth";
+import { invalidatedTokens, issueToken } from "../../Configs/auth";
+import { authenticateToken } from "../../Middlewares/Auth";
 import bcrypt, { genSalt } from 'bcrypt';
 import { createVault, getVaultByUserEmail } from "../../Controllers/vault";
 import { createPasswordEntry } from "../../Controllers/password";
@@ -89,8 +90,8 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
   };
 });
 
-// • GET	/api/v1/vaults/:vaultID		get the most recent version of the users vault data using token payload
-vaultsRouter.get('/:vaultID',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
+// • GET	/api/v1/vaults/		get the most recent version of the users vault data using token payload
+vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
   //get the current user's vault from mongodb
   const vault: vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
   if (vault){

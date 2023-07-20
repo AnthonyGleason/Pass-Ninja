@@ -1,14 +1,14 @@
 //    /v1/api/vaults/:vaultID/
 //import type definitions
 import { NextFunction, Response } from "express";
-import { customRequest, passwordDoc} from '../../Interfaces/interfaces';
+import { customRequest} from '../../Interfaces/interfaces';
 import express from 'express';
-import { authenticateToken } from "../../Configs/auth";
+import { authenticateToken } from "../../Middlewares/Auth";
 import { createPasswordEntry, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
 
 export const passwordRouter = express.Router();
 
-// • POST	/api/v1/vaults/:vaultID/passwords/	create a new password in a vault
+// • POST	/api/v1/vaults/passwords/	create a new password in a vault
 passwordRouter.post('/passwords', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure req.body
   const {
@@ -33,7 +33,7 @@ passwordRouter.post('/passwords', authenticateToken, async (req:customRequest,re
   };
 });
 
-// • PUT	/api/v1/vaults/:vaultID/passwords/:passwordID	update a password entry in the vault
+// • PUT	/api/v1/vaults/passwords/:passwordID	update a password entry in the vault
 passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure req.body
   const {
@@ -69,4 +69,18 @@ passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:custo
   }else{
     res.status(401);
   };
+});
+
+//  GET /api/v1/vaults/passwords get all of the users password entries
+
+passwordRouter.get('/passwords', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+  //get vault id from payload
+  //get all passwords with vault id
+});
+
+// GET /api/v1/vaults/passwords/:passwordID get the data for a single password entry
+
+passwordRouter.get('/passwords/:passwordID',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
+  //get password ID from request body
+  //get password from mongodb based on the password id
 });
