@@ -20,26 +20,26 @@ export const createPasswordEntry = async function(
 };
 
 //get a password by ID
-export const getPasswordByID = async function(passwordID:string):Promise<passwordDoc| null>{
-  return await PasswordModel.findById(passwordID);
+export const getPasswordByID = async function (passwordID: string): Promise<passwordDoc | null> {
+  return await PasswordModel.findById(passwordID).populate('vaultID');
 };
 
 //get all passwords with vault ID
-export const getAllPasswordsByVaultID = async function(vaultID:string):Promise<passwordDoc[]>{
-  return await PasswordModel.find({vaultID: vaultID});
+export const getAllPasswordsByVaultID = async function (vaultID: string): Promise<passwordDoc[]> {
+  return await PasswordModel.find({ vaultID: vaultID }).populate('vaultID')
 };
 
 //update a password by ID
-export const updatePasswordByID = async function(passwordID:string,updatedPasswordDoc:Document){
-  return await PasswordModel.findByIdAndUpdate(passwordID,updatedPasswordDoc);
+export const updatePasswordByID = async function (passwordID: string, updatedPasswordDoc: Document) {
+  return await PasswordModel.findByIdAndUpdate(passwordID, updatedPasswordDoc);
 };
 
 //delete a password by ID
-export const deletePasswordByID = async function(passwordID:string){
+export const deletePasswordByID = async function (passwordID: string) {
   return await PasswordModel.findByIdAndDelete(passwordID);
 }
 
 //delete all passwords by vault ID
-export const deleteAllPasswordsByVaulID = async function(vaultID:string){
-  return await PasswordModel.deleteMany({vaultID: vaultID});
+export const deleteAllPasswordsByVaulID = async function (vaultID: string) {
+  return await PasswordModel.deleteMany({ vaultID: vaultID });
 }

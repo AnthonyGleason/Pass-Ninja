@@ -1,15 +1,30 @@
 //    /v1/api/vaults/:vaultID/
 //import type definitions
 import { NextFunction, Response } from "express";
-import { customRequest, passwordDoc, vaultDoc} from '../../Interfaces/interfaces';
+import { customRequest, passwordDoc} from '../../Interfaces/interfaces';
 import express from 'express';
 import { authenticateToken } from "../../Middlewares/Auth";
 import { createPasswordEntry, getAllPasswordsByVaultID, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
 
 export const passwordRouter = express.Router();
 
+//  GET /api/v1/vaults/passwords get all of the users password entries
+passwordRouter.get('/', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+  console.log(req.payload.vault._id);
+  //get vault id from payload
+  const vaultID:string = req.payload.vault._id;
+  const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
+  //only proceed if the user is the owner of the vault containing the passwords
+  if (passwords[0].vaultID._id.toString()===vaultID){
+    //get all passwords with vault id
+    res.status(200).json({passwords: passwords});
+  }else{
+    res.status(401);
+  }
+});
+
 // • POST	/api/v1/vaults/passwords/	create a new password in a vault
-passwordRouter.post('/passwords', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure req.body
   const {
     userName,
@@ -34,7 +49,7 @@ passwordRouter.post('/passwords', authenticateToken, async (req:customRequest,re
 });
 
 // • PUT	/api/v1/vaults/passwords/:passwordID	update a password entry in the vault
-passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure req.body
   const {
     userName,
@@ -57,7 +72,7 @@ passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:custo
     I had to nest if statements here because the passwordDoc could be null due to getPasswordByID() not finding any matching documents
   */
   if (passwordDoc){
-    if (passwordDoc.vaultID===vaultID){
+    if (passwordDoc.vaultID._id.toString()===vaultID){
       userOwnsPassword=true;
     }
   };
@@ -75,30 +90,15 @@ passwordRouter.put('/passwords/:passwordID', authenticateToken, async (req:custo
   };
 });
 
-//  GET /api/v1/vaults/passwords get all of the users password entries
-passwordRouter.get('/passwords', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
-  //get vault id from payload
-  const vaultID:string = req.payload.vault._id;
-  const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
-  //only proceed if the user is the owner of the vault containing the passwords
-  if (passwords[0].vaultID===vaultID){
-    const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
-    //get all passwords with vault id
-    res.status(200).json({passwords: passwords});
-  }else{
-    res.status(401);
-  }
-});
-
 // GET /api/v1/vaults/passwords/:passwordID get the data for a single password entry
-passwordRouter.get('/passwords/:passwordID',authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
+passwordRouter.get('/:passwordID',authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
   //get password ID from the route
   const passwordID:string = req.params.passwordID;
   //get password from mongodb based on the password id
   const password:passwordDoc | null = await getPasswordByID(passwordID);
   let userOwnsPassword = false;
   if (password){
-    if (password.vaultID===req.payload.vault._id) userOwnsPassword = true;
+    if (password.vaultID._id.toString()===req.payload.vault._id) userOwnsPassword = true;
   }
   //only proceed if the user is the owner of the vault containing the password
   if (userOwnsPassword){

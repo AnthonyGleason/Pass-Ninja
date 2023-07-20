@@ -101,4 +101,4 @@ vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,nex
   };
 });
 
-vaultsRouter.use('/:vaultID/passwords',passwordRouter);
+vaultsRouter.use('/passwords',passwordRouter);

@@ -44,3 +44,40 @@ Content-Type: application/json
 }
 
 ###
+
+//create a new password in the vault
+POST http://localhost:5000/v1/api/vaults/passwords
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
+Content-Type: application/json
+
+{
+ 
+  "userName":"testUser",
+  "encrytedPassword": "testPass",
+  "nickName": "testNic",
+  "siteUrl": "testUrl.com" 
+}
+
+###
+
+//get all of the users password entries
+GET http://localhost:5000/v1/api/vaults/passwords
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
+Content-Type: application/json
+
+{
+
+}
+
+###
+
+//get the data for a password entry
+GET http://localhost:5000/v1/api/vaults/passwords/64b774e0bd3a9208131936ec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YXVsdCI6eyJmaXJzdE5hbWUiOiJiIiwibGFzdE5hbWUiOiJiIiwiZW1haWwiOiJiQGIuY29tIiwiaGFzaGVkTWFzdGVyUGFzc3dvcmQiOiIkMmIkMTUkbzJsTDJaLmN0SUt6bkpHQXEzelc1dS5tUjByUmxNYjNVcEcyOEVTVG0xSmdMNFZjek1NekMiLCJfaWQiOiI2NGI3NzRlMGJkM2E5MjA4MTMxOTM2ZWEiLCJfX3YiOjB9LCJpYXQiOjE2ODk3NDQ2MDh9.xz_weuONhzaDwTYIWUg4tezKaXLeTVVVsPz54MVqZCk
+Content-Type: application/json
+
+{
+  
+}
+
+###

@@ -18,7 +18,7 @@ export interface vaultDoc extends Document{
 };
 
 export interface passwordDoc extends Document{
-  vaultID: string;
+  vaultID: any;
   userName: string,
   encryptedPassword:string;
   nickName:string;
