@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
   console.log(`Server is listening on port ${PORT}`);
 });
+//setup cors
+import cors from 'cors';
+app.use(cors());
 //setup mongoose, connecting to the database url in .env
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL).then(()=>{

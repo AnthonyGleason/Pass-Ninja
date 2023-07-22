@@ -29,33 +29,41 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
     lastName,
     email,
     masterPassword,
+    masterPasswordConfirm,
   }:{
-    firstName: string,
-    lastName: string,
+    firstName:string,
+    lastName:string,
     email:string,
     masterPassword:string,
+    masterPasswordConfirm:string
   } = req.body;
-  //hash the masterPassword
-  const salt = await genSalt(15);
-  const hashedMasterPassword:string = await bcrypt.hash(masterPassword,salt)
-  //create a new vault in mongodb for the user
-  const vault = await createVault(firstName,lastName,email,hashedMasterPassword);
-  /*
-    Create the demo password entry for the new vault.
-    The password is encrypted using the users 'plain text' master password provided in the request
-    so the user can decrypt it clientside later.
-  */
-  const tempUserName:string = 'demoUser';
-  const tempEncryptedPass:string = encryptPassword(generatePassword(35,50,true,true,true),masterPassword)
-  const tempSiteUrl:string  = 'https://www.anthonyinfortun.io';
-  const tempNickName:string = 'Welcome to PassNinja'
-  await createPasswordEntry(vault._id,tempUserName,tempEncryptedPass,tempNickName,tempSiteUrl); 
-  //issue the client a token (so they do not need to login again)
-  const token = issueToken(vault);
-  //send the token and vault data to the client
-  res.status(200).json({
-    'token': token,
-  });
+  //ensure passwords match
+  if (masterPassword===masterPasswordConfirm){
+    //hash the masterPassword
+    const salt = await genSalt(15);
+    const hashedMasterPassword:string = await bcrypt.hash(masterPassword,salt)
+    //create a new vault in mongodb for the user
+    const vault = await createVault(firstName,lastName,email,hashedMasterPassword);
+    /*
+      Create the demo password entry for the new vault.
+      The password is encrypted using the users 'plain text' master password provided in the request
+      so the user can decrypt it clientside later.
+    */
+    const tempUserName:string = 'demoUser';
+    const tempEncryptedPass:string = encryptPassword(generatePassword(35,50,true,true,true),masterPassword)
+    const tempSiteUrl:string  = 'https://www.anthonyinfortun.io';
+    const tempNickName:string = 'Welcome to PassNinja'
+    await createPasswordEntry(vault._id,tempUserName,tempEncryptedPass,tempNickName,tempSiteUrl); 
+    //issue the client a token (so they do not need to login again)
+    const token = issueToken(vault);
+    //send the token and vault data to the client
+    res.status(200).json({
+      'token': token,
+    });
+  }else{
+    res.status(400).json({'message': 'Passwords do not match!'});
+  }
+  
 });
 
 // • POST	/api/v1/vaults/login	sign into already existing account 
@@ -67,7 +75,8 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
   if (vault===null || !vault.hashedMasterPassword) throw new Error('Error retrieving vault data.');
   //compare the hashed password to the provided password using bcrypt
   if (await bcrypt.compare(password,vault.hashedMasterPassword)){
-    //if passwords match issue the client a token and send a vault
+    //if passwords match issue the client a token
+    const token = issueToken(vault);
     res.status(200).json({
       'token': token,
     });
