@@ -6,18 +6,22 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
+import VaultComponent from './Components/Vault/Vault';
+import { Vault } from './Classes/Vault';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const vault = new Vault([]);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route element={<App />} path='/' />
-        <Route element={<Login/>} path='/login' />
-        <Route element={<Register/>} path='/register' />
+        <Route element={<Login vault={vault} />} path='/login' />
+        <Route element={<Register vault={vault} />} path='/register' />
+        <Route element={<VaultComponent vault={vault} />} path='/vault'/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

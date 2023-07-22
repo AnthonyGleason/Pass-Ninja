@@ -8,9 +8,8 @@ import { invalidatedTokens, issueToken } from "../../Configs/auth";
 import { authenticateToken } from "../../Middlewares/Auth";
 import bcrypt, { genSalt } from 'bcrypt';
 import { createVault, getVaultByUserEmail } from "../../Controllers/vault";
-import { createPasswordEntry } from "../../Controllers/password";
+import { createPasswordEntry, getAllPasswordsByVaultID } from "../../Controllers/password";
 import { encryptPassword, generatePassword } from "../../Helpers/auth";
-import { token } from "morgan";
 
 export const vaultsRouter = express.Router();
 
@@ -77,8 +76,10 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
   if (await bcrypt.compare(password,vault.hashedMasterPassword)){
     //if passwords match issue the client a token
     const token = issueToken(vault);
+    const passwords = await getAllPasswordsByVaultID(vault._id);
     res.status(200).json({
       'token': token,
+      'passwords': passwords
     });
   }else{
     //if they dont match send the client an unauthorized status code

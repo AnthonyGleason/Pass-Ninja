@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import { Vault } from '../../Classes/Vault';
 
-export default function Register(){
+export default function Register({vault}:{vault:Vault}){
   const [firstNameInput,setFirstNameInput] = useState<string>();
   const [lastNameInput,setLastNameInput] = useState<string>();
   const [emailInput,setEmailInput] = useState<string>();
@@ -23,6 +24,7 @@ export default function Register(){
     });
     const responseData = await response.json();
     localStorage.setItem('jwt',responseData.token);
+    //decrypt passwords using password input from above
   };
 
   return(

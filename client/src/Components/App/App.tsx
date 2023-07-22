@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       Welcome to PassNinja<br/>
-      <img src={ninjaImg} />
+      <img src={ninjaImg} alt='cartoon ninja holding sword' />
       <div>
         <a href='/login'>Login</a><br />
         <a href='/register'>Register</a>
