@@ -48,9 +48,9 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
       The password is encrypted using the users 'plain text' master password provided in the request
       so the user can decrypt it clientside later.
     */
-    const tempUserName:string = 'demoUser';
+    const tempUserName:string = 'demoUser123';
     const tempEncryptedPass:string = encryptPassword(generatePassword(35,50,true,true,true),masterPassword)
-    const tempSiteUrl:string  = 'https://www.anthonyinfortun.io';
+    const tempSiteUrl:string  = 'https://www.example.com';
     const tempNickName:string = 'Welcome to PassNinja'
     await createPasswordEntry(vault._id,tempUserName,tempEncryptedPass,tempNickName,tempSiteUrl); 
     //issue the client a token (so they do not need to login again)

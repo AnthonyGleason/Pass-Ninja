@@ -25,8 +25,12 @@ export default function Login({vault}:{vault:Vault}){
     //decrypt passwords using password input from above
     if (masterPasswordInput){
       passwords.forEach((password:any)=>{
+        if (!password.encryptedPassword || !password.userName) return;
+        console.log(password);
         password.decryptedPassword = decryptPassword(password.encryptedPassword,masterPasswordInput);
       });
+      //set master password in vault class so the user can perform crud operations on their vault,
+      vault.masterPassword=masterPasswordInput;
     };
     //set passwords in vault class
     vault.passwords=passwords;

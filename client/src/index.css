@@ -15,3 +15,6 @@ html{
   background-color: black;
   color: white;
 }
+input{
+  width: 50%;
+}
