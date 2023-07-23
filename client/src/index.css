@@ -14,7 +14,12 @@ code {
 html{
   background-color: black;
   color: white;
+  font-size: 20px;
 }
 input{
   width: 50%;
+  font-size: 20px;
+}
+select{
+  height: auto;
 }

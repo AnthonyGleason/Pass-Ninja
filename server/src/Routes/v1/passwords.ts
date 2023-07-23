@@ -4,23 +4,16 @@ import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc} from '../../Interfaces/interfaces';
 import express from 'express';
 import { authenticateToken } from "../../Middlewares/Auth";
-import { createPasswordEntry, getAllPasswordsByVaultID, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
+import { createPasswordEntry, deletePasswordByID, getAllPasswordsByVaultID, getPasswordByID, updatePasswordByID } from "../../Controllers/password";
 
 export const passwordRouter = express.Router();
 
 //  GET /api/v1/vaults/passwords get all of the users password entries
 passwordRouter.get('/', authenticateToken, async (req:customRequest,res:Response,next:NextFunction)=>{
-  console.log(req.payload.vault._id);
   //get vault id from payload
   const vaultID:string = req.payload.vault._id;
   const passwords:passwordDoc[] = await getAllPasswordsByVaultID(vaultID);
-  //only proceed if the user is the owner of the vault containing the passwords
-  if (passwords[0].vaultID._id.toString()===vaultID){
-    //get all passwords with vault id
-    res.status(200).json({passwords: passwords});
-  }else{
-    res.status(401);
-  }
+  res.status(200).json({passwords: passwords});
 });
 
 // • POST	/api/v1/vaults/passwords/	create a new password in a vault
@@ -45,6 +38,26 @@ passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Respons
     res.status(200).json({'password': passwordDoc});
   }else{
     res.status(401);
+  };
+});
+
+// DELETE /api/v1/vaults/passwords/:passwordID delete a password entry in the vault
+passwordRouter.delete('/:passwordID',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
+  //get the passwordID from the request route
+  const passwordID:string = req.params.passwordID;
+  const vaultID:string = req.payload.vault._id;
+  const passwordDoc:passwordDoc | null = await getPasswordByID(passwordID);
+  if (passwordDoc){
+    //verify user owns the password
+    console.log(passwordDoc.vaultID._id,vaultID)
+    if (passwordDoc.vaultID._id.toString()===vaultID){
+      await deletePasswordByID(passwordID);
+      res.status(200).json({'message': `Removed a password with id ${passwordID}.`});
+    }else{
+      res.status(401);
+    };
+  }else{
+    res.status(404);
   };
 });
 

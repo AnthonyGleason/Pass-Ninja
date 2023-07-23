@@ -15,6 +15,11 @@ export default function VaultComponent({vault}:{vault:Vault}){
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
   const [numbersInput, setNumbersInput] = useState<boolean>(true);
   const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
+  const [selectedUrlOption, setSelectedUrlOption] = useState<string>('https://');
+
+  useEffect(()=>{
+    getAndSetPasswords();
+  },[]);
 
   useEffect(()=>{
     setPasswordInput(generatePassword(
@@ -51,13 +56,13 @@ export default function VaultComponent({vault}:{vault:Vault}){
       },
       body: JSON.stringify({
         nickName: nickNameInput,
-        siteUrl: siteUrlInput,
+        siteUrl:  selectedUrlOption+siteUrlInput,
         userName: userNameInput,
         encryptedPassword: encryptPassword(passwordInput,vault.masterPassword),
       }),
     });
     const responseData = await response.json();
-    //  ********* get updated passwords list and update passwords state so the user sees their new password
+    await getAndSetPasswords();
   };
   
   const handlePasswordParamChange = function (field:string,updatedVal?:number){
@@ -80,6 +85,35 @@ export default function VaultComponent({vault}:{vault:Vault}){
         break;
     };
   };
+  const getAndSetPasswords = async function(){
+    await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
+      method: 'GET',
+      headers:{
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
+    .then(async (responseData:any)=>{
+      //decrypt passwords
+      const data = await responseData.json();
+      let passwords: any[] = data.passwords;
+      passwords.forEach((password:any)=>{
+        if (!password.encryptedPassword) return;
+        password.decryptedPassword=decryptPassword(password.encryptedPassword,vault.masterPassword);
+      });
+      setPasswords(passwords);
+    });
+  };
+  const handleDeletePassword = async function(passwordID:string){
+    const response = await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    });
+    //refresh passwords
+    await getAndSetPasswords();
+  };
 
   return(
     <div className='vault'>
@@ -91,6 +125,10 @@ export default function VaultComponent({vault}:{vault:Vault}){
         </div>
         <div>
           <label>Web Address</label>
+          <select value={selectedUrlOption} onChange={(e)=>{setSelectedUrlOption(e.target.value)}} >
+            <option>https://www.</option>
+            <option>http://www.</option>
+          </select>
           <input value={siteUrlInput} onChange={(e)=>{handleInputChange('siteUrl',e.target.value)}} />
         </div>
         <div>
@@ -101,30 +139,31 @@ export default function VaultComponent({vault}:{vault:Vault}){
           <label>Password</label>
           <input value={passwordInput} onChange={(e)=>{handleInputChange('password',e.target.value)}} />
         </div>
-        <div>
-          <div>
-            <p>Min Length: {minLengthInput} Characters</p>
-            <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
-          </div>
-          <div>
-            <p>Max Length: {maxLengthInput} Characters</p>
-            <input type="range" min={minLengthInput} max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
-          </div>
-          <div>
-            <p>UpperCases</p>
-            <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases')}} checked={upperCasesInput} />
-          </div>
-          <div>
-            <p>Special Characters</p>
-            <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars')}} checked={specialCharsInput} />
-          </div>
-          <div>
-            <p>Numbers</p>
-            <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers')}} checked={numbersInput} />
-          </div>
-          <button type='button' onClick={()=>{setPasswordInput(generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput))}}>Regenerate Password</button>
-        </div>
         <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
+      </form>
+      <form>
+        <h3>Secure Password Generator</h3>
+        <div>
+          <p>Min Length: {minLengthInput} Characters</p>
+          <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
+        </div>
+        <div>
+          <p>Max Length: {maxLengthInput} Characters</p>
+          <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
+        </div>
+        <div>
+          <p>UpperCases</p>
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases')}} checked={upperCasesInput} />
+        </div>
+        <div>
+          <p>Special Characters</p>
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars')}} checked={specialCharsInput} />
+        </div>
+        <div>
+          <p>Numbers</p>
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers')}} checked={numbersInput} />
+        </div>
+        <button type='button' onClick={()=>{setPasswordInput(generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput))}}>Regenerate Password</button>
       </form>
 
       {
@@ -132,10 +171,11 @@ export default function VaultComponent({vault}:{vault:Vault}){
           return(
             <div key={uuidGen()}>
               <p>Nickname: {password.nickName}</p>
-              <p>Site Url: {password.siteUrl}</p>
+              <p>Site Url: <a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
               <p>Username: {password.userName}</p>
               {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
               <p>Password: {password.decryptedPassword}</p> 
+              <button onClick={()=>{handleDeletePassword(password._id)}}>Delete</button>
             </div>
           )
         })
