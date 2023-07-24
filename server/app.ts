@@ -1,12 +1,10 @@
 //setup enviornment variables
 import dotenv from 'dotenv';
 dotenv.config();
-//import type defintions
 import { NextFunction,Request, Response } from "express";
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
-//import routers
 import {apiRouter} from  './src/Routes/v1/api';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';

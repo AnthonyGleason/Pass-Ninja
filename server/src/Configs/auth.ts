@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { vaultDoc } from '../Interfaces/interfaces';
+import { Vault } from '../Classes/Vault';
 
 //issue jwt tokens
-export const issueToken = function(vault:any){
+export const issueToken = function(vault:vaultDoc | Vault){
   return jwt.sign({
     vault: vault,
   },

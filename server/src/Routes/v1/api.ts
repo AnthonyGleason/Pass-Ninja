@@ -1,4 +1,3 @@
-//    /v1/api/
 //import type definitions
 import { NextFunction, Response } from "express";
 import { customRequest} from '../../Interfaces/interfaces';

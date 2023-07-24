@@ -9,7 +9,7 @@ import { authenticateToken } from "../../Middlewares/Auth";
 import bcrypt, { genSalt } from 'bcrypt';
 import { createVault, getVaultByUserEmail } from "../../Controllers/vault";
 import { createPasswordEntry, getAllPasswordsByVaultID } from "../../Controllers/password";
-import { encryptPassword, generatePassword } from "../../Helpers/auth";
+import { Vault } from "../../Classes/Vault";
 
 export const vaultsRouter = express.Router();
 
@@ -23,6 +23,7 @@ vaultsRouter.get('/verify', authenticateToken, (req:customRequest,res:Response,n
 
 // • POST /api/v1/vaults/register create a new vault
 vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFunction)=>{
+  //destructure the request body
   const {
     firstName,
     lastName,
@@ -36,33 +37,19 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
     masterPassword:string,
     masterPasswordConfirm:string
   } = req.body;
-  //ensure passwords match
-  if (masterPassword===masterPasswordConfirm){
-    //hash the masterPassword
-    const salt = await genSalt(15);
-    const hashedMasterPassword:string = await bcrypt.hash(masterPassword,salt)
-    //create a new vault in mongodb for the user
-    const vault = await createVault(firstName,lastName,email,hashedMasterPassword);
-    /*
-      Create the demo password entry for the new vault.
-      The password is encrypted using the users 'plain text' master password provided in the request
-      so the user can decrypt it clientside later.
-    */
-    const tempUserName:string = 'demoUser123';
-    const tempEncryptedPass:string = encryptPassword(generatePassword(35,50,true,true,true),masterPassword)
-    const tempSiteUrl:string  = 'https://www.example.com';
-    const tempNickName:string = 'Welcome to PassNinja'
-    await createPasswordEntry(vault._id,tempUserName,tempEncryptedPass,tempNickName,tempSiteUrl); 
-    //issue the client a token (so they do not need to login again)
-    const token = issueToken(vault);
-    //send the token and vault data to the client
+  //create new vault class locally
+  const vault:Vault = new Vault(masterPassword,email,firstName,lastName);
+  //create the vault in mongodb and get a jwt token
+  const token:string = await vault.createNewVault(masterPasswordConfirm);
+  //create a new example password in the users vault
+  await vault.createExamplePassword();
+  if (token){
     res.status(200).json({
       'token': token,
     });
   }else{
-    res.status(400).json({'message': 'Passwords do not match!'});
-  }
-  
+    res.status(400).json({'message': 'There was an error creating !'});
+  };
 });
 
 // • POST	/api/v1/vaults/login	sign into already existing account 

@@ -1,4 +1,3 @@
-import { Document } from "mongoose";
 import { VaultModel } from "../Models/Vault";
 import { vaultDoc } from "../Interfaces/interfaces";
 
@@ -8,13 +7,13 @@ export const createVault = async function(
   lastName:string,
   email:string,
   hashedMasterPassword:string
-):Promise<Document>{
+){
   return await VaultModel.create({
     firstName: firstName,
     lastName: lastName,
     email: email,
     hashedMasterPassword: hashedMasterPassword,
-  })
+  });
 };
 
 //get a vault by id
