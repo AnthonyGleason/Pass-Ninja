@@ -43,12 +43,13 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   const token:string = await vault.createNewVault(masterPasswordConfirm);
   //create a new example password in the users vault
   await vault.createExamplePassword();
+  //return the status based on if the token is available
   if (token){
     res.status(200).json({
       'token': token,
     });
   }else{
-    res.status(400).json({'message': 'There was an error creating !'});
+    res.status(400).json({'message': `There was an error creating an account with email ${email}`});
   };
 });
 

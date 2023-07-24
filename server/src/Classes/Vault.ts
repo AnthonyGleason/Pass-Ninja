@@ -29,7 +29,7 @@ export class Vault {
 
   };
 
-  isEmailUnique = async():Promise<boolean> =>{
+  isEmailAvailable = async():Promise<boolean> =>{
     const vault:vaultDoc | null = await getVaultByUserEmail(this.email);
     if (vault){
       return false;
@@ -39,21 +39,16 @@ export class Vault {
   };
 
   createNewVault = async(masterPasswordConfirm:string):Promise<string>=>{
-    //passwords must match and the firstName and lastName properties must be set
-    if (this.masterPassword===masterPasswordConfirm && this.firstName && this.lastName && await this.isEmailUnique()){
+    //passwords must match and the firstName and lastName properties must be set, email must be unique
+    if (this.masterPassword===masterPasswordConfirm && this.firstName && this.lastName && await this.isEmailAvailable()){
       //hash the masterPassword
       const salt = await genSalt(15);
       const hashedMasterPassword = await bcrypt.hash(this.masterPassword,salt);
       //create a new vault in mongodb for the user
-      /*
-        There is a compatibility issue between the returned mongoose document and the vaultDoc interface.
-        Adding a vaultDoc type to the vault and a Promise<vaultDoc> return type on the createVault controller function 
-        causes issues.
-      */
-      const vault = await createVault(this.firstName,this.lastName,this.email,hashedMasterPassword);
+      const vault = await createVault(this.firstName,this.lastName,this.email,hashedMasterPassword) as vaultDoc;
       this.id=vault._id.toString();
       //issue the client a token (so they do not need to login again)
-      const token:string = issueToken(vault as vaultDoc);
+      const token:string = issueToken(vault);
       return token;
     }else{
       return '';
@@ -65,6 +60,7 @@ export class Vault {
     The password is encrypted using the users 'plain text' master password provided in the request
     so the user can decrypt it clientside later.
   */
+  
   createExamplePassword = async()=>{
     const tempUserName:string = 'demoUser123';
     const tempEncryptedPass:string = encryptPassword(generatePassword(35,50,true,true,true),this.masterPassword)
