@@ -2,7 +2,7 @@ import bcrypt, { genSalt } from "bcrypt";
 import { createVault, getVaultByUserEmail } from "../Controllers/vault";
 import { encryptPassword, generatePassword } from "../Helpers/auth";
 import { issueToken } from "../Configs/auth";
-import { createPasswordEntry } from "../Controllers/password";
+import { createPasswordEntry, getAllPasswordsByVaultID } from "../Controllers/password";
 import { vaultDoc } from "../Interfaces/interfaces";
 
 export class Vault {
@@ -38,7 +38,22 @@ export class Vault {
     }
   };
 
-  createNewVault = async(masterPasswordConfirm:string):Promise<string>=>{
+  login = async():Promise<string>=>{
+    //get user's vault by email
+    const vault:vaultDoc | null = await getVaultByUserEmail(this.email);
+    if (vault===null || !vault.hashedMasterPassword) throw new Error('Error retrieving vault data.');
+    //compare the hashed password to the provided password using bcrypt
+    if (await bcrypt.compare(this.masterPassword,vault.hashedMasterPassword)){
+      //if passwords match issue the client a token
+      const token = issueToken(vault);
+      const passwords = await getAllPasswordsByVaultID(vault._id);
+      return token;
+    }else{
+      return '';
+    }
+  };
+
+  register = async(masterPasswordConfirm:string):Promise<vaultDoc | void>=>{
     //passwords must match and the firstName and lastName properties must be set, email must be unique
     if (this.masterPassword===masterPasswordConfirm && this.firstName && this.lastName && await this.isEmailAvailable()){
       //hash the masterPassword
@@ -46,15 +61,9 @@ export class Vault {
       const hashedMasterPassword = await bcrypt.hash(this.masterPassword,salt);
       //create a new vault in mongodb for the user
       const vault = await createVault(this.firstName,this.lastName,this.email,hashedMasterPassword) as vaultDoc;
-      this.id=vault._id.toString();
-      //issue the client a token (so they do not need to login again)
-      const token:string = issueToken(vault);
-      return token;
-    }else{
-      return '';
+      return vault;
     }
-  };
-
+  }
   /*
     Create the demo password entry for the new vault.
     The password is encrypted using the users 'plain text' master password provided in the request

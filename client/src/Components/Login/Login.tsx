@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { decryptPassword } from '../Vault/Vault';
 import { Vault } from '../../Classes/Vault';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,20 +19,7 @@ export default function Login({vault}:{vault:Vault}){
     });
     const responseData = await response.json();
     const token = responseData.token;
-    const passwords = responseData.passwords;
     localStorage.setItem('jwt',token);
-    //decrypt passwords using password input from above
-    if (masterPasswordInput){
-      passwords.forEach((password:any)=>{
-        if (!password.encryptedPassword || !password.userName) return;
-        console.log(password);
-        password.decryptedPassword = decryptPassword(password.encryptedPassword,masterPasswordInput);
-      });
-      //set master password in vault class so the user can perform crud operations on their vault,
-      vault.masterPassword=masterPasswordInput;
-    };
-    //set passwords in vault class
-    vault.passwords=passwords;
     navigate('/vault');
   };
 

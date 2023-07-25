@@ -39,10 +39,12 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   } = req.body;
   //create new vault class locally
   const vault:Vault = new Vault(masterPassword,email,firstName,lastName);
-  //create the vault in mongodb and get a jwt token
-  const token:string = await vault.createNewVault(masterPasswordConfirm);
+  //create the vault in mongodb
+  await vault.register(masterPasswordConfirm);
   //create a new example password in the users vault
   await vault.createExamplePassword();
+  //generate a token so users can access their vault immediately
+  const token:string = await vault.login();
   //return the status based on if the token is available
   if (token){
     res.status(200).json({
@@ -57,22 +59,13 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
 vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure the request body
   const {email, password}:{email:string, password:string} = req.body;
-  //get user's vault by email
-  const vault:vaultDoc | null = await getVaultByUserEmail(email);
-  if (vault===null || !vault.hashedMasterPassword) throw new Error('Error retrieving vault data.');
-  //compare the hashed password to the provided password using bcrypt
-  if (await bcrypt.compare(password,vault.hashedMasterPassword)){
-    //if passwords match issue the client a token
-    const token = issueToken(vault);
-    const passwords = await getAllPasswordsByVaultID(vault._id);
-    res.status(200).json({
-      'token': token,
-      'passwords': passwords
-    });
+  const vault:Vault = new Vault(password,email);
+  const token:string = await vault.login();
+  if (token){
+    res.status(200).json({'token': token});
   }else{
-    //if they dont match send the client an unauthorized status code
-    res.status(401).json({'message':'The entered password is incorrect'});
-  };
+    res.status(401);
+  }
 });
 
 // • POST	/api/v1/vaults/logout	log out of account invalidating the users token
