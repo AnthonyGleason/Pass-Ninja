@@ -4,11 +4,9 @@ import { NextFunction, Response } from "express";
 import { customRequest, vaultDoc} from '../../Interfaces/interfaces';
 import express from "express";
 import { passwordRouter } from "./passwords";
-import { invalidatedTokens, issueToken } from "../../Configs/auth";
+import { invalidatedTokens } from "../../Configs/auth";
 import { authenticateToken } from "../../Middlewares/Auth";
-import bcrypt, { genSalt } from 'bcrypt';
-import { createVault, getVaultByUserEmail } from "../../Controllers/vault";
-import { createPasswordEntry, getAllPasswordsByVaultID } from "../../Controllers/password";
+import { getVaultByUserEmail } from "../../Controllers/vault";
 import { Vault } from "../../Classes/Vault";
 
 export const vaultsRouter = express.Router();
@@ -77,7 +75,7 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
     invalidatedTokens.push(token);
     res.status(200).json({message: 'You have been logged out.'});
   }else{
-    res.status(400).json({message: 'There was an error with your request.'});
+    res.status(400).json({message: 'There was an error processing your request, please try again later.'});
   };
 });
 
@@ -93,3 +91,7 @@ vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,nex
 });
 
 vaultsRouter.use('/passwords',passwordRouter);
+
+/*
+  make the master password optional update login route and register route, continue with above may need a passwordsArr[] too
+*/

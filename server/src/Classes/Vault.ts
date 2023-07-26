@@ -1,7 +1,7 @@
 import bcrypt, { genSalt } from "bcrypt";
 import { createVault, getVaultByUserEmail } from "../Controllers/vault";
 import { encryptPassword, generatePassword } from "../Helpers/auth";
-import { issueToken } from "../Configs/auth";
+import { invalidatedTokens, issueToken } from "../Configs/auth";
 import { createPasswordEntry, getAllPasswordsByVaultID } from "../Controllers/password";
 import { vaultDoc } from "../Interfaces/interfaces";
 
@@ -52,7 +52,7 @@ export class Vault {
       return '';
     }
   };
-
+  
   register = async(masterPasswordConfirm:string):Promise<vaultDoc | void>=>{
     //passwords must match and the firstName and lastName properties must be set, email must be unique
     if (this.masterPassword===masterPasswordConfirm && this.firstName && this.lastName && await this.isEmailAvailable()){
