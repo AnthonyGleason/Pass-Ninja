@@ -1,19 +1,12 @@
-import jwt from 'jsonwebtoken';
-import { vaultDoc } from '../Interfaces/interfaces';
-import { Vault } from '../Classes/Vault';
+//how long after issuing jwt session tokens expire
+export const tokenExpireTime ='1d'
 
-//issue jwt tokens
-export const issueToken = function(vault:vaultDoc | Vault){
-  return jwt.sign({
-    vault: vault,
-  },
-  process.env.SECRET as jwt.Secret
-  ,{
-    // for testing tokens will expire in 1 day from issue time
-    //in the future this will need to be something more like 5-10 minutes to protect users from stolen jwt tokens and will display a session has expired error please login again if the user tries to access anything with an expired token.
-    expiresIn: '1d', 
-  });
-};
-
-//invalidated jwt tokens will be added to this array, tokens will expire in 5-10 minutes from issue so there is no need for a long term invalidatedTokens document in mongoDB or similar.
-export const invalidatedTokens: String[] = [];
+//customize the example password added to the users account when a new account is created.
+export const demoPassUserName:string = 'demoUser123';
+export const demoPassSiteUrl:string  = 'https://www.example.com';
+export const demoPassNickName:string = 'Welcome to PassNinja';
+export const demoPassMinLength:number = 35;
+export const demoPassMaxLength:number = 50;
+export const demoPassUseSpecialChars:boolean = true;
+export const demoPassUseUpperCases:boolean = true;
+export const demoPassUseNumbers:boolean = true;

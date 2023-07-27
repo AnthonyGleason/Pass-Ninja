@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { customRequest } from "../Interfaces/interfaces";
-import { invalidatedTokens } from "../Configs/auth";
 import jwt from 'jsonwebtoken';
+import { invalidatedTokens } from "../Helpers/auth";
 
 //authenticates jwt tokens
 export const authenticateToken = function(req:customRequest, res:Response, next:NextFunction) {

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Vault } from '../../Classes/Vault';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register({vault}:{vault:Vault}){
   const [firstNameInput,setFirstNameInput] = useState<string>();
@@ -7,7 +8,7 @@ export default function Register({vault}:{vault:Vault}){
   const [emailInput,setEmailInput] = useState<string>();
   const [masterPasswordInput,setMasterPasswordInput] = useState<string>();
   const [masterPasswordConfirmInput, setMasterPasswordConfirmInput] = useState<string>();
-
+  const navigate = useNavigate();
   const handleSubmit = async function(){
     const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
       method: 'POST',
@@ -24,7 +25,7 @@ export default function Register({vault}:{vault:Vault}){
     });
     const responseData = await response.json();
     localStorage.setItem('jwt',responseData.token);
-    //decrypt passwords using password input from above
+    navigate('/vault');
   };
 
   return(
