@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import cryptoJS from 'crypto-js';
 import { v4 as uuidGen } from 'uuid';
-import { Vault } from '../../Classes/Vault';
+import { VaultBrowser } from '../../Classes/VaultBrowser';
 
-export default function VaultComponent({vault}:{vault:Vault}){
-  const [passwords,setPasswords] = useState(vault.passwords);
+export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
+  const [passwords,setPasswords] = useState(vaultBrowser.passwords);
   //create the input states in the vault class
-  const [nickNameInput,setNickNameInput] = useState<string>(vault.nickNameInput);
-  const [siteUrlInput, setSiteUrlInput] = useState<string>(vault.siteUrlInput);
-  const [userNameInput, setUserNameInput] = useState<string>(vault.userNameInput);
-  const [passwordInput, setPasswordInput] = useState<string>(vault.passwordInput);
+  const [nickNameInput,setNickNameInput] = useState<string>(vaultBrowser.nickNameInput);
+  const [siteUrlInput, setSiteUrlInput] = useState<string>(vaultBrowser.siteUrlInput);
+  const [userNameInput, setUserNameInput] = useState<string>(vaultBrowser.emailInput);
+  const [passwordInput, setPasswordInput] = useState<string>(vaultBrowser.passwordInput);
   const [minLengthInput, setMinLengthInput] = useState<number>(35);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(50);
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
@@ -58,7 +58,7 @@ export default function VaultComponent({vault}:{vault:Vault}){
         nickName: nickNameInput,
         siteUrl:  selectedUrlOption+siteUrlInput,
         userName: userNameInput,
-        encryptedPassword: encryptPassword(passwordInput,vault.masterPassword),
+        encryptedPassword: encryptPassword(passwordInput,vaultBrowser.masterPassword),
       }),
     });
     const responseData = await response.json();
@@ -98,7 +98,7 @@ export default function VaultComponent({vault}:{vault:Vault}){
       let passwords: any[] = data.passwords;
       passwords.forEach((password:any)=>{
         if (!password.encryptedPassword) return;
-        password.decryptedPassword=decryptPassword(password.encryptedPassword,vault.masterPassword);
+        password.decryptedPassword=decryptPassword(password.encryptedPassword,vaultBrowser.masterPassword);
       });
       setPasswords(passwords);
     });

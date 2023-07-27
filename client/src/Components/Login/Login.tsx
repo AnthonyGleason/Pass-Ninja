@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { Vault } from '../../Classes/Vault';
+import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login({vault}:{vault:Vault}){
+export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
+  const [emailInput,setEmailInput] = useState(vaultBrowser.emailInput);
+  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.masterPasswordInput);
+
   const navigate = useNavigate();
-  const [emailInput,setEmailInput] = useState<string>();
-  const [masterPasswordInput,setMasterPasswordInput] = useState<string>();
   const handleSubmit = async function(){
     const response = await fetch('http://localhost:5000/v1/api/vaults/login',{
       method: 'POST',
@@ -13,8 +14,8 @@ export default function Login({vault}:{vault:Vault}){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: emailInput,
-        password: masterPasswordInput,
+        email: vaultBrowser.emailInput,
+        pmasterPassword: vaultBrowser.masterPasswordInput,
       }),
     });
     const responseData = await response.json();
@@ -28,11 +29,11 @@ export default function Login({vault}:{vault:Vault}){
       <form>
         <div>
           <label>Email</label>
-          <input type='email' onChange={(e)=>{setEmailInput(e.target.value)}} />
+          <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
         </div>
         <div>
           <label>Password</label>
-          <input type='password' onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
       </form>

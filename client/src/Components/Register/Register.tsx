@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import { Vault } from '../../Classes/Vault';
+import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
-export default function Register({vault}:{vault:Vault}){
+export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [firstNameInput,setFirstNameInput] = useState<string>();
   const [lastNameInput,setLastNameInput] = useState<string>();
   const [emailInput,setEmailInput] = useState<string>();

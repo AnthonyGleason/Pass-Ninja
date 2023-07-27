@@ -7,21 +7,21 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import VaultComponent from './Components/Vault/Vault';
-import { Vault } from './Classes/Vault';
+import { VaultBrowser } from './Classes/VaultBrowser';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const vault = new Vault([]);
+const vaultBrowser = new VaultBrowser([]);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route element={<App />} path='/' />
-        <Route element={<Login vault={vault} />} path='/login' />
-        <Route element={<Register vault={vault} />} path='/register' />
-        <Route element={<VaultComponent vault={vault} />} path='/vault'/>
+        <Route element={<Login vaultBrowser={vaultBrowser} />} path='/login' />
+        <Route element={<Register vaultBrowser={vaultBrowser} />} path='/register' />
+        <Route element={<VaultComponent vaultBrowser={vaultBrowser} />} path='/vault'/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
