@@ -3,37 +3,35 @@ import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [emailInput,setEmailInput] = useState(vaultBrowser.emailInput);
-  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.masterPasswordInput);
-
+  const [emailInput,setEmailInput] = useState(vaultBrowser.inputFields.emailInput);
+  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.inputFields.masterPasswordInput);
   const navigate = useNavigate();
   const handleSubmit = async function(){
-    const response = await fetch('http://localhost:5000/v1/api/vaults/login',{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: vaultBrowser.emailInput,
-        pmasterPassword: vaultBrowser.masterPasswordInput,
-      }),
-    });
-    const responseData = await response.json();
-    const token = responseData.token;
+    //login user
+    const token:string = await vaultBrowser.login();
+    //set token in local storage
     localStorage.setItem('jwt',token);
+    //redirect the user to their vault
     navigate('/vault');
   };
-
+  const handleEmailInputChange = function(updatedVal:string){
+    setEmailInput(updatedVal);
+    vaultBrowser.inputFields.emailInput=updatedVal;
+  };
+  const handleMasterPasswordInputChange = function(updatedVal:string){
+    setMasterPasswordInput(updatedVal);
+    vaultBrowser.inputFields.masterPasswordInput=updatedVal;
+  };
   return(
     <div className='login'>
       <form>
         <div>
           <label>Email</label>
-          <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+          <input type='email' value={emailInput} onChange={(e)=>{handleEmailInputChange(e.target.value)}} />
         </div>
         <div>
           <label>Password</label>
-          <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          <input type='password' value={masterPasswordInput} onChange={(e)=>{handleMasterPasswordInputChange(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
       </form>

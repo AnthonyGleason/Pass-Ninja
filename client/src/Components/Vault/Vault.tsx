@@ -6,10 +6,10 @@ import { VaultBrowser } from '../../Classes/VaultBrowser';
 export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [passwords,setPasswords] = useState(vaultBrowser.passwords);
   //create the input states in the vault class
-  const [nickNameInput,setNickNameInput] = useState<string>(vaultBrowser.nickNameInput);
-  const [siteUrlInput, setSiteUrlInput] = useState<string>(vaultBrowser.siteUrlInput);
-  const [userNameInput, setUserNameInput] = useState<string>(vaultBrowser.emailInput);
-  const [passwordInput, setPasswordInput] = useState<string>(vaultBrowser.passwordInput);
+  const [nickNameInput,setNickNameInput] = useState<string>('');
+  const [siteUrlInput, setSiteUrlInput] = useState<string>('');
+  const [userNameInput, setUserNameInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
   const [minLengthInput, setMinLengthInput] = useState<number>(35);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(50);
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);

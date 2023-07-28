@@ -17,7 +17,6 @@ export const loginExistingUser = async function(
   email:string,
   masterPassword:string,
 ):Promise<string>{
-  console.log(email,masterPassword);
   //get user's vault by email
   const vault:vaultDoc | null = await getVaultByUserEmail(email);
   if (vault===null || !vault.hashedMasterPassword) throw new Error('Error retrieving vault data.');

@@ -57,12 +57,12 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
   //destructure the request body
   const {
     email,
-    password
+    masterPassword
   }:{
     email:string,
-    password:string
+    masterPassword:string
   } = req.body;
-  const token:string = await loginExistingUser(email,password);
+  const token:string = await loginExistingUser(email,masterPassword);
   if (token){
     res.status(200).json({'token': token});
   }else{

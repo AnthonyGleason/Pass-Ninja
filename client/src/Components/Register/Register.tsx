@@ -3,11 +3,11 @@ import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [firstNameInput,setFirstNameInput] = useState<string>();
-  const [lastNameInput,setLastNameInput] = useState<string>();
-  const [emailInput,setEmailInput] = useState<string>();
-  const [masterPasswordInput,setMasterPasswordInput] = useState<string>();
-  const [masterPasswordConfirmInput, setMasterPasswordConfirmInput] = useState<string>();
+  const [firstNameInput,setFirstNameInput] = useState<string>('');
+  const [lastNameInput,setLastNameInput] = useState<string>('');
+  const [emailInput,setEmailInput] = useState<string>('');
+  const [masterPasswordInput,setMasterPasswordInput] = useState<string>('');
+  const [masterPasswordConfirmInput, setMasterPasswordConfirmInput] = useState<string>('');
   const navigate = useNavigate();
   const handleSubmit = async function(){
     const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
