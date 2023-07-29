@@ -69,10 +69,13 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
     switch(field){
       case 'minLength':
         if (typeof updatedVal==='number') setMinLengthInput(updatedVal);
-        if (minLengthInput>maxLengthInput && maxLengthInput+1<70) setMaxLengthInput(minLengthInput+1);
+        //check if the min length inputted by the user is above their max length input
+        //max input length must be less than 70 because when are setting the max input so we do not overflow the valid range when adding 1
+        if (minLengthInput>=maxLengthInput && maxLengthInput<70) setMaxLengthInput(minLengthInput+1);
         break;
       case 'maxLength':
         if (typeof updatedVal==='number') setMaxLengthInput(updatedVal);
+        if (maxLengthInput<=minLengthInput && minLengthInput>0) setMinLengthInput(minLengthInput-1);
         break;
       case 'upperCases':
         upperCasesInput === true ? setUpperCasesInput(false) : setUpperCasesInput(true);
