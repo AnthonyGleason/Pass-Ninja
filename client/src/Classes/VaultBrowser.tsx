@@ -1,50 +1,25 @@
-import { InputFields } from "./InputFields";
+import { LoginInputs } from "./LoginInputs";
+import { RegisterInputs } from "./RegisterInputs";
+import { VaultInputs } from "./VaultInputs";
 
 export class VaultBrowser{
   passwords:any[];
   masterPassword:string;
-  inputFields:InputFields;
+  loginInputs:LoginInputs;
+  vaultInputs:VaultInputs;
+  registerInputs:RegisterInputs;
 
   constructor(
     passwords:any[],
-    inputFields?:InputFields,
+    loginInputs?:LoginInputs,
+    registerInputs?:RegisterInputs,
+    vaultInputs?:VaultInputs,
   ){
     this.masterPassword='';
     this.passwords=passwords;
-    this.inputFields = inputFields || new InputFields();
+    this.loginInputs = loginInputs || new LoginInputs();
+    this.registerInputs = registerInputs || new RegisterInputs();
+    this.vaultInputs = vaultInputs || new VaultInputs();
   };
-  //login a user to their vault
-  login = async ():Promise<string>=>{
-    const response = await fetch('http://localhost:5000/v1/api/vaults/login',{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: this.inputFields.email,
-        masterPassword: this.inputFields.masterPassword
-      }),
-    });
-    const responseData = await response.json();
-    const token:string = responseData.token;
-    return token;
-  };
-  //move register here
-  register = async():Promise<string>=>{
-    const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        firstName: this.inputFields.firstName,
-        lastName: this.inputFields.lastName,
-        email: this.inputFields.email,
-        masterPassword: this.inputFields.masterPassword,
-        masterPasswordConfirm: this.inputFields.masterPasswordConfirm
-      }),
-    });
-    const responseData = await response.json();
-    return responseData.token;
-  };
+
 };

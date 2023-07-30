@@ -3,35 +3,31 @@ import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [emailInput,setEmailInput] = useState(vaultBrowser.inputFields.email);
-  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.inputFields.masterPassword);
+  const [emailInput,setEmailInput] = useState('');
+  const [masterPasswordInput,setMasterPasswordInput] = useState('');
   const navigate = useNavigate();
   const handleSubmit = async function(){
+    //set inputs in vault browser class instance
+    vaultBrowser.loginInputs.email = emailInput;
+    vaultBrowser.loginInputs.masterPassword = masterPasswordInput;
     //login user
-    const token:string = await vaultBrowser.login();
+    const token:string = await vaultBrowser.loginInputs.login();
     //set token in local storage
     localStorage.setItem('jwt',token);
     //redirect the user to their vault
     navigate('/vault');
   };
-  const handleEmailInputChange = function(updatedVal:string){
-    setEmailInput(updatedVal);
-    vaultBrowser.inputFields.email=updatedVal;
-  };
-  const handleMasterPasswordInputChange = function(updatedVal:string){
-    setMasterPasswordInput(updatedVal);
-    vaultBrowser.inputFields.masterPassword=updatedVal;
-  };
+  
   return(
     <div className='login'>
       <form>
         <div>
           <label>Email</label>
-          <input type='email' value={emailInput} onChange={(e)=>{handleEmailInputChange(e.target.value)}} />
+          <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
         </div>
         <div>
           <label>Password</label>
-          <input type='password' value={masterPasswordInput} onChange={(e)=>{handleMasterPasswordInputChange(e.target.value)}} />
+          <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
       </form>

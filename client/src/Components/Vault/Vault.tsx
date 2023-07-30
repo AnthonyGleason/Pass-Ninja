@@ -7,7 +7,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   const [passwords,setPasswords] = useState(vaultBrowser.passwords);
   //create the input states in the vault class
   const [nickNameInput,setNickNameInput] = useState<string>('');
-  const [siteUrlInput, setSiteUrlInput] = useState<string>('');
+  const [siteUrlInput, setSiteUrlInput] = useState<string>('https://');
   const [userNameInput, setUserNameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [minLengthInput, setMinLengthInput] = useState<number>(35);
@@ -15,7 +15,6 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
   const [numbersInput, setNumbersInput] = useState<boolean>(true);
   const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
-  const [selectedUrlOption, setSelectedUrlOption] = useState<string>('https://');
 
   useEffect(()=>{
     getAndSetPasswords();
@@ -30,23 +29,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
       numbersInput
     ));
   },[minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput]);
-
-  const handleInputChange = function(field:string,updatedVal:string){
-    switch (field){
-      case 'nickName':
-        setNickNameInput(updatedVal);
-        break;
-      case 'siteUrl':
-        setSiteUrlInput(updatedVal);
-        break;
-      case 'userName':
-        setUserNameInput(updatedVal);
-        break;
-      case 'password':
-        setPasswordInput(updatedVal);
-        break;
-    };
-  };
+  
   const handleCreateNewPassword = async function(){
     const response = await fetch('http://localhost:5000/v1/api/vaults/passwords',{
       method: 'POST',
@@ -56,7 +39,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
       },
       body: JSON.stringify({
         nickName: nickNameInput,
-        siteUrl:  selectedUrlOption+siteUrlInput,
+        siteUrl:  siteUrlInput,
         userName: userNameInput,
         encryptedPassword: encryptPassword(passwordInput,vaultBrowser.masterPassword),
       }),
@@ -65,17 +48,15 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
     await getAndSetPasswords();
   };
   
-  const handlePasswordParamChange = function (field:string,updatedVal?:number){
+  const handlePasswordParamChange = function (field:string,updatedVal:number){
     switch(field){
       case 'minLength':
-        if (typeof updatedVal==='number') setMinLengthInput(updatedVal);
-        //check if the min length inputted by the user is above their max length input
-        //max input length must be less than 70 because when are setting the max input so we do not overflow the valid range when adding 1
-        if (minLengthInput>=maxLengthInput && maxLengthInput<70) setMaxLengthInput(minLengthInput+1);
+        setMinLengthInput(updatedVal);
+        if (maxLengthInput<=minLengthInput && minLengthInput+1<70) setMaxLengthInput(minLengthInput+1);
         break;
       case 'maxLength':
-        if (typeof updatedVal==='number') setMaxLengthInput(updatedVal);
-        if (maxLengthInput<=minLengthInput && minLengthInput>0) setMinLengthInput(minLengthInput-1);
+        setMaxLengthInput(updatedVal);
+        if (minLengthInput>=maxLengthInput && maxLengthInput-1>0) setMinLengthInput(maxLengthInput-1);
         break;
       case 'upperCases':
         upperCasesInput === true ? setUpperCasesInput(false) : setUpperCasesInput(true);
@@ -88,6 +69,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
         break;
     };
   };
+
   const getAndSetPasswords = async function(){
     await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
       method: 'GET',
@@ -124,23 +106,19 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
         <h3>New Password</h3>
         <div>
           <label>Nickname</label>
-          <input value={nickNameInput} onChange={(e)=>{handleInputChange('nickName',e.target.value)}} />
+          <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
         </div>
         <div>
           <label>Web Address</label>
-          <select value={selectedUrlOption} onChange={(e)=>{setSelectedUrlOption(e.target.value)}} >
-            <option>https://www.</option>
-            <option>http://www.</option>
-          </select>
-          <input value={siteUrlInput} onChange={(e)=>{handleInputChange('siteUrl',e.target.value)}} />
+          <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
         </div>
         <div>
           <label>Username</label>
-          <input value={userNameInput} onChange={(e)=>{handleInputChange('userName',e.target.value)}} />
+          <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
         </div>
         <div>
           <label>Password</label>
-          <input value={passwordInput} onChange={(e)=>{handleInputChange('password',e.target.value)}} />
+          <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
       </form>
@@ -156,15 +134,15 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
         </div>
         <div>
           <p>UpperCases</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases')}} checked={upperCasesInput} />
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
         </div>
         <div>
           <p>Special Characters</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars')}} checked={specialCharsInput} />
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
         </div>
         <div>
           <p>Numbers</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers')}} checked={numbersInput} />
+          <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
         </div>
         <button type='button' onClick={()=>{setPasswordInput(generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput))}}>Regenerate Password</button>
       </form>
