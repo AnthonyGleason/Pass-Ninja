@@ -8,10 +8,11 @@ export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const navigate = useNavigate();
   const handleSubmit = async function(){
     //set inputs in vault browser class instance
-    vaultBrowser.loginInputs.email = emailInput;
-    vaultBrowser.loginInputs.masterPassword = masterPasswordInput;
+    vaultBrowser.login.emailInput = emailInput;
+    vaultBrowser.login.masterPasswordInput = masterPasswordInput;
+    vaultBrowser.vault.masterPassword = masterPasswordInput;
     //login user
-    const token:string = await vaultBrowser.loginInputs.login();
+    const token:string = await vaultBrowser.login.login();
     //set token in local storage
     localStorage.setItem('jwt',token);
     //redirect the user to their vault

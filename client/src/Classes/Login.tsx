@@ -1,13 +1,13 @@
-export class LoginInputs{
-  email:string;
-  masterPassword:string;
+export class Login{
+  emailInput:string;
+  masterPasswordInput:string;
 
   constructor(
-    email?:string,
-    masterPassword?:string,
+    emailInput?:string,
+    masterPasswordInput?:string,
   ){
-    this.email = email || '';
-    this.masterPassword = masterPassword || '';
+    this.emailInput = emailInput || '';
+    this.masterPasswordInput = masterPasswordInput || '';
   };
 
   //login a user to their vault
@@ -18,8 +18,8 @@ export class LoginInputs{
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: this.email,
-        masterPassword: this.masterPassword
+        email: this.emailInput,
+        masterPassword: this.masterPasswordInput
       }),
     });
     const responseData = await response.json();

@@ -1,76 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import cryptoJS from 'crypto-js';
 import { v4 as uuidGen } from 'uuid';
 import { VaultBrowser } from '../../Classes/VaultBrowser';
+import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
+import { decryptPassword } from '../../Helpers/Passwords';
 
 export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [passwords,setPasswords] = useState(vaultBrowser.passwords);
+  const [passwords,setPasswords] = useState<any[]>([]);
   //create the input states in the vault class
   const [nickNameInput,setNickNameInput] = useState<string>('');
-  const [siteUrlInput, setSiteUrlInput] = useState<string>('https://');
+  const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
   const [userNameInput, setUserNameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-  const [minLengthInput, setMinLengthInput] = useState<number>(35);
-  const [maxLengthInput, setMaxLengthInput] = useState<number>(50);
-  const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
-  const [numbersInput, setNumbersInput] = useState<boolean>(true);
-  const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
 
+  //get passwords to populate passwords state on initial page load
   useEffect(()=>{
-    getAndSetPasswords();
+    const handleInitialPageLoad = async()=>{
+      setPasswords(await getPasswords());
+    };
+    handleInitialPageLoad();
   },[]);
 
-  useEffect(()=>{
-    setPasswordInput(generatePassword(
-      minLengthInput,
-      maxLengthInput,
-      specialCharsInput,
-      upperCasesInput,
-      numbersInput
-    ));
-  },[minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput]);
-  
   const handleCreateNewPassword = async function(){
-    const response = await fetch('http://localhost:5000/v1/api/vaults/passwords',{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-      },
-      body: JSON.stringify({
-        nickName: nickNameInput,
-        siteUrl:  siteUrlInput,
-        userName: userNameInput,
-        encryptedPassword: encryptPassword(passwordInput,vaultBrowser.masterPassword),
-      }),
-    });
-    const responseData = await response.json();
-    await getAndSetPasswords();
+    vaultBrowser.vault.nickNameInput = nickNameInput;
+    vaultBrowser.vault.siteUrlInput = siteUrlInput;
+    vaultBrowser.vault.userNameInput = userNameInput;
+    vaultBrowser.vault.passwordInput = passwordInput;
+    await vaultBrowser.vault.createNewPassword();
+    setPasswords(await getPasswords());
   };
   
-  const handlePasswordParamChange = function (field:string,updatedVal:number){
-    switch(field){
-      case 'minLength':
-        setMinLengthInput(updatedVal);
-        if (maxLengthInput<=minLengthInput && minLengthInput+1<70) setMaxLengthInput(minLengthInput+1);
-        break;
-      case 'maxLength':
-        setMaxLengthInput(updatedVal);
-        if (minLengthInput>=maxLengthInput && maxLengthInput-1>0) setMinLengthInput(maxLengthInput-1);
-        break;
-      case 'upperCases':
-        upperCasesInput === true ? setUpperCasesInput(false) : setUpperCasesInput(true);
-        break;
-      case 'specialChars':
-        specialCharsInput === true ? setSpecialCharsInput(false) : setSpecialCharsInput(true);
-        break;
-      case 'numbers':
-        numbersInput === true ? setNumbersInput(false) : setNumbersInput(true);
-        break;
-    };
-  };
+  
 
-  const getAndSetPasswords = async function(){
+  const getPasswords = async function():Promise<any[]>{
+    let fetchedPasswords:any[] = [];
     await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
       method: 'GET',
       headers:{
@@ -83,11 +45,13 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
       let passwords: any[] = data.passwords;
       passwords.forEach((password:any)=>{
         if (!password.encryptedPassword) return;
-        password.decryptedPassword=decryptPassword(password.encryptedPassword,vaultBrowser.masterPassword);
+        password.decryptedPassword=decryptPassword(password.encryptedPassword,vaultBrowser.vault.masterPassword);
       });
-      setPasswords(passwords);
+      fetchedPasswords = passwords;
     });
+    return fetchedPasswords;
   };
+
   const handleDeletePassword = async function(passwordID:string){
     const response = await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
       method: 'DELETE',
@@ -97,7 +61,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
       }
     });
     //refresh passwords
-    await getAndSetPasswords();
+    setPasswords(await getPasswords());
   };
 
   return(
@@ -122,31 +86,6 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
         </div>
         <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
       </form>
-      <form>
-        <h3>Secure Password Generator</h3>
-        <div>
-          <p>Min Length: {minLengthInput} Characters</p>
-          <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
-        </div>
-        <div>
-          <p>Max Length: {maxLengthInput} Characters</p>
-          <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
-        </div>
-        <div>
-          <p>UpperCases</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
-        </div>
-        <div>
-          <p>Special Characters</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
-        </div>
-        <div>
-          <p>Numbers</p>
-          <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
-        </div>
-        <button type='button' onClick={()=>{setPasswordInput(generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput))}}>Regenerate Password</button>
-      </form>
-
       {
         passwords.map((password)=>{
           return(
@@ -161,50 +100,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
           )
         })
       }
+      <PasswordGenerator />
     </div>
   )
-};
-
-//encrypt the password using the masterPassword
-export const encryptPassword = function(password: string, masterPassword: string): string {
-  return cryptoJS.AES.encrypt(password, masterPassword).toString();
-};
-
-//decrypt the password will be used on client
-export const decryptPassword = function(encryptedPassword: string, masterPassword: string): string {
-  const decryptedBytes = cryptoJS.AES.decrypt(encryptedPassword, masterPassword);
-  return decryptedBytes.toString(cryptoJS.enc.Utf8);
-};
-
-//generate a secure password
-export const generatePassword = function(minLength:number,maxLength:number,specialChars:boolean,upperCases:boolean,numbers:boolean){
-  //define character sets
-  const lowerCaseCharsSet = 'abcdefghijklmnopqrstuvwxyz';
-  const specialCharsSet = '!@#$%^&*()_+{}:"<>?|';
-  const upperCaseCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const numbersSet = '0123456789';
-  const getRandomInt = function(min:number,max:number){
-    return Math.floor(Math.random()*(max-min+1))+min;
-  }
-  // Initialize the character pool with lowercase characters
-  let charPool = lowerCaseCharsSet;
-  // Add character sets to the pool based on user constraints
-  if (specialChars) {
-    charPool += specialCharsSet;
-  };
-  if (upperCases) {
-    charPool += upperCaseCharsSet;
-  };
-  if (numbers) {
-    charPool += numbersSet;
-  };
-  // Generate a random password length within the user provided range
-  const passwordLength = getRandomInt(minLength,maxLength);
-  // Generate the secure password by getting random characters from the charPool;
-  let password = '';
-  for (let i = 0; i < passwordLength; i++) {
-    const randomIndex = getRandomInt(0, charPool.length - 1); //get a ran
-    password += charPool.charAt(randomIndex);
-  }
-  return password;
 };

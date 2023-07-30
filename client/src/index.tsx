@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const vaultBrowser = new VaultBrowser([]);
+const vaultBrowser = new VaultBrowser();
 root.render(
   <React.StrictMode>
     <BrowserRouter>

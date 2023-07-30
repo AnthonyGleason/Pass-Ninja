@@ -1,25 +1,19 @@
-import { LoginInputs } from "./LoginInputs";
-import { RegisterInputs } from "./RegisterInputs";
-import { VaultInputs } from "./VaultInputs";
+import { Login} from "./Login";
+import { Register} from "./Register";
+import { Vault } from "./Vault";
 
 export class VaultBrowser{
-  passwords:any[];
-  masterPassword:string;
-  loginInputs:LoginInputs;
-  vaultInputs:VaultInputs;
-  registerInputs:RegisterInputs;
+  login:Login;
+  vault:Vault;
+  register:Register;
 
   constructor(
-    passwords:any[],
-    loginInputs?:LoginInputs,
-    registerInputs?:RegisterInputs,
-    vaultInputs?:VaultInputs,
+    login?:Login,
+    register?:Register,
+    vault?:Vault,
   ){
-    this.masterPassword='';
-    this.passwords=passwords;
-    this.loginInputs = loginInputs || new LoginInputs();
-    this.registerInputs = registerInputs || new RegisterInputs();
-    this.vaultInputs = vaultInputs || new VaultInputs();
+    this.login = login || new Login();
+    this.register = register || new Register();
+    this.vault = vault || new Vault();
   };
-
 };

@@ -12,13 +12,13 @@ export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   
   const handleSubmit = async function(){
     //set inputs in vaultBrowser class instance
-    vaultBrowser.registerInputs.email = emailInput;
-    vaultBrowser.registerInputs.firstName= firstNameInput;
-    vaultBrowser.registerInputs.lastName = lastNameInput;
-    vaultBrowser.registerInputs.masterPassword = masterPasswordInput;
-    vaultBrowser.registerInputs.masterPasswordConfirm = masterPasswordConfirmInput;
+    vaultBrowser.register.emailInput = emailInput;
+    vaultBrowser.register.firstNameInput= firstNameInput;
+    vaultBrowser.register.lastNameInput = lastNameInput;
+    vaultBrowser.register.masterPasswordInput = masterPasswordInput;
+    vaultBrowser.register.masterPasswordConfirmInput = masterPasswordConfirmInput;
     //register new user
-    const token:string = await vaultBrowser.registerInputs.register();
+    const token:string = await vaultBrowser.register.register();
     localStorage.setItem('jwt',token);
     //redirect user to their vault
     navigate('/vault');
