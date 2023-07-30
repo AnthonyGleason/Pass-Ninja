@@ -21,8 +21,8 @@ export class VaultBrowser{
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: this.inputFields.emailInput,
-        masterPassword: this.inputFields.masterPasswordInput
+        email: this.inputFields.email,
+        masterPassword: this.inputFields.masterPassword
       }),
     });
     const responseData = await response.json();
@@ -30,5 +30,21 @@ export class VaultBrowser{
     return token;
   };
   //move register here
-  //maybe make a passwords data class because we have to work with that data
+  register = async():Promise<string>=>{
+    const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName: this.inputFields.firstName,
+        lastName: this.inputFields.lastName,
+        email: this.inputFields.email,
+        masterPassword: this.inputFields.masterPassword,
+        masterPasswordConfirm: this.inputFields.masterPasswordConfirm
+      }),
+    });
+    const responseData = await response.json();
+    return responseData.token;
+  };
 };

@@ -3,8 +3,8 @@ import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [emailInput,setEmailInput] = useState(vaultBrowser.inputFields.emailInput);
-  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.inputFields.masterPasswordInput);
+  const [emailInput,setEmailInput] = useState(vaultBrowser.inputFields.email);
+  const [masterPasswordInput,setMasterPasswordInput] = useState(vaultBrowser.inputFields.masterPassword);
   const navigate = useNavigate();
   const handleSubmit = async function(){
     //login user
@@ -16,11 +16,11 @@ export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   };
   const handleEmailInputChange = function(updatedVal:string){
     setEmailInput(updatedVal);
-    vaultBrowser.inputFields.emailInput=updatedVal;
+    vaultBrowser.inputFields.email=updatedVal;
   };
   const handleMasterPasswordInputChange = function(updatedVal:string){
     setMasterPasswordInput(updatedVal);
-    vaultBrowser.inputFields.masterPasswordInput=updatedVal;
+    vaultBrowser.inputFields.masterPassword=updatedVal;
   };
   return(
     <div className='login'>
