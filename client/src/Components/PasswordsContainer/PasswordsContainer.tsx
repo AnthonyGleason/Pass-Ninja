@@ -19,15 +19,16 @@ export default function PasswordsContainer({
 
   return(
     <>
+    <h3>Vault</h3>
       {
         passwords.map((password)=>{
           return(
             <div key={uuidGen()}>
-              <p>Nickname: {password.nickName}</p>
-              <p>Site Url: <a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
+              <p>{password.nickName}</p>
+              <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
               <p>Username: {password.userName}</p>
               {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
-              <p>Password: {password.decryptedPassword}</p> 
+              <p>Password: {password.decryptedPassword}</p>
               <button onClick={()=>{handleDeletePassword(password._id)}}>Delete</button>
             </div>
           )
