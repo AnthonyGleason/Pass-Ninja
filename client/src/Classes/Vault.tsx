@@ -1,4 +1,4 @@
-import { encryptPassword } from "../Helpers/Passwords";
+import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
 
 export class Vault{
   nickNameInput:string;
@@ -39,5 +39,37 @@ export class Vault{
       }),
     });
     await response.json();
+  };
+
+  populatePasswords = async()=>{
+    let fetchedPasswords:any[] = [];
+    await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
+      method: 'GET',
+      headers:{
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    })
+    .then(async (responseData:any)=>{
+      //decrypt passwords
+      const data = await responseData.json();
+      let passwords: any[] = data.passwords;
+      passwords.forEach((password:any)=>{
+        if (!password.encryptedPassword) return;
+        password.decryptedPassword=decryptPassword(password.encryptedPassword,this.masterPassword);
+      });
+      fetchedPasswords = passwords;
+    });
+    this.passwords=fetchedPasswords;
+    return fetchedPasswords;
+  };
+
+  deletePassword = async(passwordID:string)=>{
+    await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    });
   };
 };

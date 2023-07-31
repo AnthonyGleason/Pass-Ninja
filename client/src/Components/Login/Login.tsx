@@ -34,4 +34,4 @@ export default function Login({vaultBrowser}:{vaultBrowser:VaultBrowser}){
       </form>
     </div>
   )
-}
+};

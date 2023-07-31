@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 
-export default function PasswordGenerator(){
+export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(35);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(50);
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
@@ -78,12 +78,18 @@ export default function PasswordGenerator(){
     };
   };
 
+  const handleGeneratePassword = function():void{
+    const generatedPassword:string = generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput);
+    setGenPasswordInput(generatedPassword);
+  };
+
   return(
     <form>
       <h3>Secure Password Generator</h3>
       <div>
         <input value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></input>
-        <button type='button' onClick={()=>{setGenPasswordInput(generatePassword(minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput))}}>Regenerate Password</button>
+        <button type='button' onClick={()=>{handleGeneratePassword()}}>Regenerate Password</button>
+        <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
       </div>
       <div>
         <p>Min Length: {minLengthInput} Characters</p>
