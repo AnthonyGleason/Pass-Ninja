@@ -12,7 +12,7 @@ export default function PasswordsContainer({
     setPasswords:Function
   }){
   const handleDeletePassword = async function(passwordID:string){
-    vault.deletePassword(passwordID);
+    await vault.deletePassword(passwordID);
     //refresh client passwords data
     setPasswords(await vault.populatePasswords());
   };

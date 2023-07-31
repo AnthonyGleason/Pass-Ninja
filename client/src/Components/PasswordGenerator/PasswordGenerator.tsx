@@ -149,7 +149,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
       <div>
         <p>Password Entropy: {passwordEntropy} bits</p>
         <p>This is a {getPasswordEntropyKeyword()} password.</p>
-        <input className='password-entropy-input' type="range" min='0' max='150' value={passwordEntropy} />
+        <input className='password-entropy-input' type="range" min='0' max='150' value={passwordEntropy} readOnly />
       </div>
       <div>
         <p>Min Length: {minLengthInput} Characters</p>
@@ -173,41 +173,45 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
       </div>
       <h3>How Are Passwords Rated?</h3>
       <table>
-        <tr>
-          <th>Bits</th>
-          <th>Strength</th>
-          <th>Time to Crack</th>
-        </tr>
-        <tr>
-          <td>0-39</td>
-          <td>Very Weak</td>
-          <td>Instantly</td>
-        </tr>
-        <tr>
-          <td>40-59</td>
-          <td>Weak</td>
-          <td>Minutes to Hours</td>
-        </tr>
-        <tr>
-          <td>60-79</td>
-          <td>Moderate</td>
-          <td>Hours to Days</td>
-        </tr>
-        <tr>
-          <td>80-99</td>
-          <td>Strong</td>
-          <td>Days to Weeks</td>
-        </tr>
-        <tr>
-          <td>100-119</td>
-          <td>Very Strong</td>
-          <td>Months to Years</td>
-        </tr>
-        <tr>
-          <td>120+</td>
-          <td>Extremely Strong</td>
-          <td>Millions of Years</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Bits</th>
+            <th>Strength</th>
+            <th>Time to Crack</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0-39</td>
+            <td>Very Weak</td>
+            <td>Instantly</td>
+          </tr>
+          <tr>
+            <td>40-59</td>
+            <td>Weak</td>
+            <td>Minutes to Hours</td>
+          </tr>
+          <tr>
+            <td>60-79</td>
+            <td>Moderate</td>
+            <td>Hours to Days</td>
+          </tr>
+          <tr>
+            <td>80-99</td>
+            <td>Strong</td>
+            <td>Days to Weeks</td>
+          </tr>
+          <tr>
+            <td>100-119</td>
+            <td>Very Strong</td>
+            <td>Months to Years</td>
+          </tr>
+          <tr>
+            <td>120+</td>
+            <td>Extremely Strong</td>
+            <td>Millions of Years</td>
+          </tr>
+        </tbody>
       </table>
     </form>
   );
