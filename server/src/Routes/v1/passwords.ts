@@ -31,9 +31,12 @@ passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Respons
     siteUrl:string
   } = req.body;
   const vaultID = req.payload.vault._id;
+  let validatedNickName:string;
+  //nickname is used to search through passwords so it is needed, if it was left blank replace it with untitled.
+  nickName==='' ? validatedNickName='Untitled Password' : validatedNickName=nickName;
   if (vaultID){
     //create a new password entry
-    const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,nickName,siteUrl);
+    const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,validatedNickName,siteUrl);
     //send the new password entry to the client
     res.status(200).json({'password': passwordDoc});
   }else{
