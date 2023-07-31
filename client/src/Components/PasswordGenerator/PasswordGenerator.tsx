@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import './PasswordGenerator.css';
 import { PasswordScore } from '../../Classes/PasswordScore';
 import PasswordScoreTable from '../PasswordScoreTable/PasswordScoreTable';
+
 export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(20);
@@ -14,8 +15,16 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   const specialCharsSet = '!@#$%^&*()_+{}:"<>?|';
   const upperCaseCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbersSet = '0123456789';
-  // Initialize the character pool with lowercase characters
-  let charPool = lowerCaseCharsSet;
+  const updateCharPool = function():string{
+    let newCharPool = lowerCaseCharsSet;
+    // Add character sets to the pool based on user constraints
+    if (specialCharsInput) newCharPool += specialCharsSet;
+    if (upperCasesInput) newCharPool += upperCaseCharsSet;
+    if (numbersInput) newCharPool += numbersSet;
+    //set the new char pool
+    return newCharPool;
+  };
+  let charPool = updateCharPool();
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(new PasswordScore(genPasswordInput,charPool.length));
   
   //if any of the password generator's input states are adjusted a new password will be generated within the updated constraints
@@ -41,19 +50,6 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     strengthBarElement.style.accentColor=passwordScore.color;
   },[genPasswordInput]);
 
-  const updateCharPool = function(
-    genSpecialChars:boolean,
-    genUpperCases:boolean,
-    genNumbers:boolean
-  ){
-    let newCharPool = lowerCaseCharsSet;
-    // Add character sets to the pool based on user constraints
-    if (genSpecialChars) newCharPool += specialCharsSet;
-    if (genUpperCases) newCharPool += upperCaseCharsSet;
-    if (genNumbers) newCharPool += numbersSet;
-    //set the new char pool
-    charPool = newCharPool;
-  };
   //generate a secure password
   const generatePassword = function(
     minLength:number,
@@ -65,8 +61,6 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     const getRandomInt = function(min:number,max:number){
         return Math.floor(Math.random()*(max-min+1))+min;
     };
-    //update char pool
-    updateCharPool(genSpecialChars,genUpperCases,genNumbers);
     // Generate a random password length within the user provided range
     const passwordLength = getRandomInt(minLength,maxLength);
     // Generate the secure password by getting random characters from the character pool
