@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import { Vault } from '../../Classes/Vault';
+import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 
 export default function NewPasswordForm({
     vault,
-    passwordInput,
-    setPasswordInput,
     setPasswords
   }:{
     vault:Vault,
-    passwordInput:string,
-    setPasswordInput:Function,
     setPasswords:Function
   }){
+
+  const [passwordInput, setPasswordInput] = useState<string>('');
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
   const [userNameInput, setUserNameInput] = useState<string>('');
@@ -26,6 +25,7 @@ export default function NewPasswordForm({
     //refresh client's password data
     setPasswords(await vault.populatePasswords());
   };
+
   return(
     <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
       <h3>New Password</h3>
@@ -46,6 +46,7 @@ export default function NewPasswordForm({
         <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
       </div>
       <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
+      <PasswordGenerator setPasswordInput={setPasswordInput} />
     </form>
   )
 }
