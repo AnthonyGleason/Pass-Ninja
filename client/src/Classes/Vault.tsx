@@ -40,6 +40,24 @@ export class Vault{
     });
     await response.json();
   };
+  updatePassword = async(passwordID:string) =>{
+    //update the password
+    await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
+      method: 'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      },
+      body: JSON.stringify({
+        nickName: this.nickNameInput,
+        siteUrl:  this.siteUrlInput,
+        userName: this.userNameInput,
+        encryptedPassword: encryptPassword(this.passwordInput,this.masterPassword),
+      }),
+    });
+    //retrieve the new password data again from the server
+    return await this.populatePasswords();
+  };
 
   populatePasswords = async()=>{
     let fetchedPasswords:any[] = [];

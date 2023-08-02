@@ -1,4 +1,4 @@
-//    /v1/api/vaults/
+//    /api/v1/vaults/
 //import type definitions
 import { NextFunction, Response } from "express";
 import { customRequest, vaultDoc} from '../../Interfaces/interfaces';

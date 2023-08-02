@@ -9,7 +9,7 @@ export default function NewPasswordForm({
     vault:Vault,
     setPasswords:Function
   }){
-
+  const [isUserCreatingPass,setIsUserCreatingPass] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
@@ -25,28 +25,33 @@ export default function NewPasswordForm({
     //refresh client's password data
     setPasswords(await vault.populatePasswords());
   };
-
-  return(
-    <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-      <h3>New Password</h3>
-      <div>
-        <label>Nickname</label>
-        <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
-      </div>
-      <div>
-        <label>Web Address</label>
-        <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
-      </div>
-      <div>
-        <label>Username</label>
-        <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
-      </div>
-      <div>
-        <label>Password</label>
-        <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
-      </div>
-      <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
-      <PasswordGenerator setPasswordInput={setPasswordInput} />
-    </form>
-  )
+  if (isUserCreatingPass){
+    return(
+      <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
+        <h3 onClick={()=>{setIsUserCreatingPass(false)}}>New Password</h3>
+        <div>
+          <label>Nickname</label>
+          <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
+        </div>
+        <div>
+          <label>Web Address</label>
+          <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
+        </div>
+        <div>
+          <label>Username</label>
+          <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
+        </div>
+        <div>
+          <label>Password</label>
+          <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
+        </div>
+        <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
+        <PasswordGenerator setPasswordInput={setPasswordInput} />
+      </form>
+    )
+  }else{
+    return(
+      <h3 onClick={()=>{setIsUserCreatingPass(true)}}>New Password</h3>
+    )
+  }
 }

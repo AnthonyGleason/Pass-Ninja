@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
+import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 
 export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
@@ -49,6 +50,7 @@ export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
         </div>
         <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
       </form>
+      <PasswordGenerator setPasswordInput={setMasterPasswordInput} />
     </div>
   )
 }
