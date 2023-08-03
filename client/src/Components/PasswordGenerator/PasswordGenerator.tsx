@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import './PasswordGenerator.css';
 import { PasswordScore } from '../../Classes/PasswordScore';
 import PasswordScoreTable from '../PasswordScoreTable/PasswordScoreTable';
+import Tooltip from '../Tooltip/Tooltip';
 
 export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
@@ -129,35 +130,31 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
           <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
         </div>
         <div>
-          <p>
-            This password has a <u>calculated entropy</u><p className='tooltip'>Passwords are calculated using the algorithm, log2(length of character pool ^ length of the password) = entropy in bits.</p> of <b>{passwordScore.entropy}</b> bits and
-            an <u>approximate crack time</u> <p className='tooltip'> Attacker's skill and computing power can influence the password cracking speed causing faster or slower times.</p> of <b>{passwordScore.crackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
-          </p>
+          <div>
+            This password has a&nbsp;
+            <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of character pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropy}</b> bits and an&nbsp;
+            <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.crackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
+          </div>
           <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropy} readOnly />
         </div>
         <div>
-          <p><u>Min Length</u>: {minLengthInput} Characters</p>
-          <p className='tooltip'>Changing this input modifies the minimum amount of characters a newly generated password could have.</p>
+          <Tooltip term='Min Length' desc='Changing this input modifies the minimum amount of characters a newly generated password could have.' /> {minLengthInput}
           <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
         </div>
         <div>
-          <p><u>Max Length</u>: {maxLengthInput} Characters</p>
-          <p className='tooltip'>Changing this input modifies the maximum amount of character a newly generated password could have.</p>
+          <Tooltip term='Max Length' desc='Changing this input modifies the maximum amount of characters a newly generated password could have.' /> {maxLengthInput}
           <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
         </div>
         <div>
-          <p><u>Generate UpperCases</u></p>
-          <p className='tooltip'>Checking this box allows the password generator to generate upper case letters in new passwords.</p>
+          <Tooltip term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
           <input type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
         </div>
         <div>
-          <p><u>Generate Special Characters</u></p>
-          <p className='tooltip'>Checking this box allows the password generator to generate special characters in new passwords.</p>
+          <Tooltip term='Generate Special Characters' desc='Checking this box allows the password generator to generate special characters in new passwords.' />
           <input type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
         </div>
         <div>
-          <p><u>Generate Numbers</u></p>
-          <p className='tooltip'>Checking this box allows the password generator to generate numbers in new passwords.</p>
+          <Tooltip term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
           <input type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
         </div>
       </div>

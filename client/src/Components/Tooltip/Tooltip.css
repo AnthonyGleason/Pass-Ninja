@@ -1,0 +1,17 @@
+.tooltip-term{
+  cursor: pointer;
+}
+
+.tooltip {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: gainsboro;
+  font-size: 1vw;
+  padding: 10px;
+  width: 100%;
+  height: max-content;
+  cursor: pointer;
+  text-align: center;
+}
