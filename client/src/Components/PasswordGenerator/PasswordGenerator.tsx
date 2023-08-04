@@ -120,7 +120,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   if (isPassGeneratorOpen){
     return(
       <div>
-        <h3 onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</h3>
+        <h3 onClick={()=>{setIsPassGeneratorOpen(false)}}><img alt='up arrow' />Secure Password Generator</h3>
         <PasswordScoreTable />
         <div>
           <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></input>
@@ -161,7 +161,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     );
   }else{
     return(
-      <h3 onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</h3>
+      <h3 onClick={()=>{setIsPassGeneratorOpen(true)}}><img alt='drop down arrow' />Secure Password Generator</h3>
     )
   }
 };

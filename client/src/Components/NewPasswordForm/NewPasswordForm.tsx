@@ -28,7 +28,7 @@ export default function NewPasswordForm({
   if (isUserCreatingPass){
     return(
       <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <h3 onClick={()=>{setIsUserCreatingPass(false)}}>New Password</h3>
+        <h3 onClick={()=>{setIsUserCreatingPass(false)}}><img alt='up arrow' />New Password</h3>
         <div>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -51,7 +51,7 @@ export default function NewPasswordForm({
     )
   }else{
     return(
-      <h3 onClick={()=>{setIsUserCreatingPass(true)}}>New Password</h3>
+      <h3 onClick={()=>{setIsUserCreatingPass(true)}}><img alt='drop down arrow' />New Password</h3>
     )
   }
 }

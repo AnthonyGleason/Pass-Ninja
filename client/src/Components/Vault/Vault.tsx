@@ -51,7 +51,8 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
     <div className='vault'>
       <h3>Vault</h3>
       <div>
-        <input value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}}/>
+        <img src='' alt='magnifying glass' />
+        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}}/>
       </div>
       {
         passSnip.map((password)=>{return(<Password key={uuidGen()} vault={vault} password={password} setPasswords={setPasswords} />)})

@@ -36,13 +36,13 @@ export default function Password({
   //check if the user is currently editing this password or not
   if (!isPasswordExpanded){
     return(
-      <p onClick={()=>{setIsPasswordExpanded(true)}}>{password.nickName}</p>
+      <h5 onClick={()=>{setIsPasswordExpanded(true)}}><img alt='drop down arrow' />{password.nickName}</h5>
     )
   }
   if (!isUserEditing){
     return(
       <div className='password'>
-        <p onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}</p>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}><img alt='up arrow' />{password.nickName}</h5>
         <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
