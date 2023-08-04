@@ -8,6 +8,7 @@ import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import VaultComponent from './Components/Vault/Vault';
 import { VaultBrowser } from './Classes/VaultBrowser';
+import AccountSettings from './Components/AccountSettings/AccountSettings';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +22,7 @@ root.render(
         <Route element={<App />} path='/' />
         <Route element={<Login vaultBrowser={vaultBrowser} />} path='/login' />
         <Route element={<Register vaultBrowser={vaultBrowser} />} path='/register' />
+        <Route element={<AccountSettings vaultBrowser={vaultBrowser} />} path='/vault/settings' />
         <Route element={<VaultComponent vaultBrowser={vaultBrowser} />} path='/vault'/>
       </Routes>
     </BrowserRouter>

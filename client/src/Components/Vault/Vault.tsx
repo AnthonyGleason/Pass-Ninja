@@ -49,7 +49,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   */
   return(
     <div className='vault'>
-      <h3>Vault</h3>
+      <h3>Vault<img src='' alt='settings menu' onClick={()=>{navigate('/vault/settings')}}/></h3>
       <div>
         <img src='' alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}}/>
