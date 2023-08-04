@@ -19,7 +19,7 @@ export default function Tooltip({
   }else{
     return(
       <>
-        <u className='tooltip-term'>{term}</u>
+        <u onClick={()=>{setIsUserBrowsing(false)}} className='tooltip-term'>{term}</u>
         <p className='tooltip' onClick={()=>{setIsUserBrowsing(false)}}>{desc}</p>
       </>
     )
