@@ -1,7 +1,7 @@
 //    /api/v1/vaults/
 //import type definitions
 import { NextFunction, Response } from "express";
-import { customRequest, vaultDoc} from '../../Interfaces/interfaces';
+import { customRequest, passwordDoc, vaultDoc} from '../../Interfaces/interfaces';
 import express from "express";
 import { passwordRouter } from "./passwords";
 import { invalidatedTokens, registerNewUser } from "../../Helpers/auth";
@@ -9,6 +9,10 @@ import { createExamplePassword } from "../../Helpers/vault";
 import { authenticateToken } from "../../Middlewares/Auth";
 import { getVaultByUserEmail } from "../../Controllers/vault";
 import { loginExistingUser } from "../../Helpers/auth";
+import bcrypt from 'bcrypt';
+import { updatePasswordByID } from "../../Controllers/password";
+import { generateHashedPassword } from "../../Helpers/auth";
+import { updateVaultByID } from "../../Controllers/vault";
 
 export const vaultsRouter = express.Router();
 
@@ -94,4 +98,38 @@ vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,nex
   };
 });
 
+// PUT /api/v1/vaults/settings update the users vault settings
+vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
+  //if the input is not provided we can assume the user is not changing that setting
+  const updatedMasterPassword:string = req.body.masterPassword || '';
+  const updatedMasterPasswordConfirm:string = req.body.masterPasswordConfirm || '';
+  const currentMasterPassword:string = req.body.currentMasterPassword || '';
+  const updatedEmail:string = req.body.updatedEmail || '';
+  //updated passwords is only provided if the user is updating their master password
+  const updatedPasswords:[passwordDoc] = req.body.updatedPasswords || [];
+  //ensure the user has entered their correct master password before updating any settings
+  if (await bcrypt.compare(currentMasterPassword,req.payload.vault.hashedMasterPassword)){
+    if (updatedEmail) req.payload.vault.email = updatedEmail;
+
+    // //if both passwords are provided and match update the vault and new passwords array with new encrypted passwords
+    // if (updatedMasterPassword && updatedMasterPasswordConfirm && updatedMasterPassword===updatedMasterPasswordConfirm){
+    //   //hash and set new hashed password
+    //   req.payload.vault.hashedMasterPassword=await generateHashedPassword(updatedMasterPassword);
+    //   //for each password update the password document by id with the new password data
+    //   updatedPasswords.forEach(async (password:passwordDoc)=>{
+    //     await updatePasswordByID(password.id,password);
+    //   })
+    // };
+    // //if email was updated, update the document with the new email
+    // if (updatedEmail){
+    //   req.payload.vault.email = updatedEmail;
+    // };
+    
+    //apply changes to vault
+    await updateVaultByID(req.payload.vault._id,req.payload.vault);
+    res.status(200).json({'vault': req.payload.vault});
+  }else{
+    res.status(401).json({'message': 'An error has occured when updating your vault data'});
+  }
+});
 vaultsRouter.use('/passwords',passwordRouter);
