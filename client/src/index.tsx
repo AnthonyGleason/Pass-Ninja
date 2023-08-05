@@ -9,6 +9,7 @@ import Register from './Components/Register/Register';
 import VaultComponent from './Components/Vault/Vault';
 import { VaultBrowser } from './Classes/VaultBrowser';
 import AccountSettings from './Components/AccountSettings/AccountSettings';
+import LogoutPopup from './Components/LogoutPopup/LogoutPopup';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

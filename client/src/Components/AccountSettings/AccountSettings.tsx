@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 import { encryptPassword } from '../../Helpers/Passwords';
+import { verifyToken } from '../../Helpers/Auth';
+import LogoutPopup from '../LogoutPopup/LogoutPopup';
 
 export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>(vaultBrowser.login.emailInput);
@@ -11,6 +13,17 @@ export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowse
   //these booleans will let the user know which fields are going to be updatedb
   const [isMasterPassUpdated, setIsMasterPassUpdated] = useState<boolean>(false);
   const [isEmailUpdated, setIsEmailUpdated] = useState<boolean>(false);
+  const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
+  useEffect(()=>{
+    const handleInitialPageLoad = async()=>{
+      //verify the users token and master password is present
+      if (!await verifyToken(localStorage.getItem('token') as string) || !vaultBrowser.vault.masterPassword){
+        // session is invalid, show user logged out popup
+        setIsUserLoggedOut(true);
+      };
+    };
+    handleInitialPageLoad();
+  },[]);
 
   const handleConfirmChanges = async function(){
     //send updated fields to server along with encrypted passwords
@@ -70,6 +83,10 @@ export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowse
   };
   const navigate = useNavigate();
 
+  if (isUserLoggedOut){
+    return(<LogoutPopup />)
+  };
+  
   if (isEmailUpdated || isMasterPassUpdated){
     return(
       <div>

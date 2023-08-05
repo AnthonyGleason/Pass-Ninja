@@ -5,11 +5,13 @@ import NewPasswordForm from '../NewPasswordForm/NewPasswordForm';
 import Password from '../Password/Password';
 import { verifyToken } from '../../Helpers/Auth';
 import { useNavigate } from 'react-router-dom';
+import LogoutPopup from '../LogoutPopup/LogoutPopup';
 
 export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [passwords,setPasswords] = useState<any[]>([]);
   const [passSnip,setPassSnip] = useState<any[]>([]);
   const [searchInput,setSearchInput] = useState<string>('');
+  const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
   const vault = vaultBrowser.vault;
   /*
     whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
@@ -34,12 +36,16 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
       if (await verifyToken(localStorage.getItem('token') as string) && vault.masterPassword){
         setPasswords(await vaultBrowser.vault.populatePasswords());
       }else{
-        //redirect the user to login again, session is invalid
-        navigate('/login');
+        //show user logged out popup
+        setIsUserLoggedOut(true);
       }
     };
     handleInitialPageLoad();
   },[]);
+  
+  if (isUserLoggedOut){
+    return(<LogoutPopup />)
+  };
   
   /* 
     I have chosen to use the passwords state to hold all passwords in an array and passSnip to hold all passwords that fit the users search input.
@@ -49,10 +55,10 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   */
   return(
     <div className='vault'>
-      <h3>Vault<img src='' alt='settings menu' onClick={()=>{navigate('/vault/settings')}}/></h3>
+      <h3>Vault<img src='' alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
       <div>
         <img src='' alt='magnifying glass' />
-        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}}/>
+        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
       </div>
       {
         passSnip.map((password)=>{return(<Password key={uuidGen()} vault={vault} password={password} setPasswords={setPasswords} />)})

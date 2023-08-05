@@ -48,7 +48,7 @@ export default function Password({
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
         <p>Password: {password.decryptedPassword}</p>
-        <p>Secure Notes: {password.decryptedNotes}</p>
+        <p>Notes: {password.decryptedNotes}</p>
         <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
         <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
       </div>
