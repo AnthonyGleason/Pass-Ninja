@@ -39,6 +39,7 @@ export const createExamplePassword = async function(
   vaultID:string,
   masterPassword:string
 ){
+  //create a password for the demo password entry
   const tempEncryptedPass:string = encryptPassword(
     generatePassword(
       demoPassMinLength,
@@ -46,12 +47,18 @@ export const createExamplePassword = async function(
       demoPassUseSpecialChars,
       demoPassUseUpperCases,
       demoPassUseNumbers,
-    ),masterPassword);
+    ),
+    masterPassword
+  );
+  //create the demo password's notes encrypted with the user's master password
+  const tempEncryptedNotes:string = encryptPassword('Thank you for trying Pass Ninja!', masterPassword);
+
   if (vaultID) await createPasswordEntry(
       vaultID,
       demoPassUserName,
       tempEncryptedPass,
       demoPassNickName,
       demoPassSiteUrl,
+      tempEncryptedNotes
     );
 };

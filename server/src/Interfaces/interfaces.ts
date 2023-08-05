@@ -21,6 +21,7 @@ export interface passwordDoc extends Document{
   vaultID: any,
   userName: string,
   encryptedPassword:string;
+  encryptedNotes:string;
   nickName:string;
   siteUrl: string;
 }

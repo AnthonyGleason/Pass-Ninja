@@ -11,6 +11,9 @@ const PasswordSchema = new mongoose.Schema({
   encryptedPassword:{ //hashed using crypto js library client side
     type:String,
   },
+  encryptedNotes:{  //hashed using crypto js library client side
+    type:String,
+  },
   nickName:{
     type:String,
   },

@@ -14,12 +14,14 @@ export default function NewPasswordForm({
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
   const [userNameInput, setUserNameInput] = useState<string>('');
+  const [notesInput,setNotesInput] = useState<string>('');
   const handleCreateNewPassword = async function(){
     //store the password inputs in the vault class
     vault.nickNameInput = nickNameInput;
     vault.siteUrlInput = siteUrlInput;
     vault.userNameInput = userNameInput;
     vault.passwordInput = passwordInput;
+    vault.notesInput = notesInput;
     //create the new password
     await vault.createNewPassword();
     //refresh client's password data
@@ -44,6 +46,10 @@ export default function NewPasswordForm({
         <div>
           <label>Password</label>
           <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
+        </div>
+        <div>
+          <label>Notes Input</label>
+          <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
         <PasswordGenerator setPasswordInput={setPasswordInput} />

@@ -11,7 +11,6 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   const [passSnip,setPassSnip] = useState<any[]>([]);
   const [searchInput,setSearchInput] = useState<string>('');
   const vault = vaultBrowser.vault;
-
   /*
     whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
     new password is included in the search by performing a search on the updated passwords list.
@@ -27,6 +26,7 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   },[passwords,searchInput]);
 
   const navigate = useNavigate();
+
   //get passwords to populate passwords state on initial page load
   useEffect(()=>{
     const handleInitialPageLoad = async()=>{

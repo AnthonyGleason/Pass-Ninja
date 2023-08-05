@@ -6,6 +6,7 @@ export class Vault{
   userNameInput:string;
   passwordInput:string;
   masterPassword:string;
+  notesInput:string;
   passwords:any[];
 
   constructor(
@@ -14,7 +15,8 @@ export class Vault{
     siteUrlInput?:string,
     userNameInput?:string,
     passwordInput?:string,
-    masterPassword?:string
+    masterPassword?:string,
+    notesInput?:string
   ){
     this.nickNameInput = nickNameInput || '';
     this.siteUrlInput = siteUrlInput || '';
@@ -22,6 +24,7 @@ export class Vault{
     this.passwordInput = passwordInput || '';
     this.passwords = passwords || [];
     this.masterPassword = masterPassword || '';
+    this.notesInput = notesInput || '';
   };
 
   createNewPassword = async()=>{
@@ -36,6 +39,7 @@ export class Vault{
         siteUrl:  this.siteUrlInput,
         userName: this.userNameInput,
         encryptedPassword: encryptPassword(this.passwordInput,this.masterPassword),
+        encryptedNotes: encryptPassword(this.notesInput,this.masterPassword),
       }),
     });
     await response.json();
@@ -53,6 +57,7 @@ export class Vault{
         siteUrl:  this.siteUrlInput,
         userName: this.userNameInput,
         encryptedPassword: encryptPassword(this.passwordInput,this.masterPassword),
+        encryptedNotes: encryptPassword(this.notesInput,this.masterPassword),
       }),
     });
     //retrieve the new password data again from the server
@@ -72,9 +77,14 @@ export class Vault{
       const data = await responseData.json();
       let passwords: any[] = data.passwords;
       passwords.forEach((password:any)=>{
-        if (!password.encryptedPassword) return;
+        if (!password.encryptedPassword) return null;
         password.decryptedPassword=decryptPassword(password.encryptedPassword,this.masterPassword);
       });
+      //decrypt notes
+      passwords.forEach((password:any)=>{
+        if (!password.encryptedNotes) return null;
+        password.decryptedNotes = decryptPassword(password.encryptedNotes,this.masterPassword);
+      })
       fetchedPasswords = passwords;
     });
     this.passwords=fetchedPasswords;

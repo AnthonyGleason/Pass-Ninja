@@ -8,14 +8,16 @@ export const createPasswordEntry = async function(
   userName: string,
   encryptedPassword:string,
   nickName:string,
-  siteUrl:string
+  siteUrl:string,
+  encryptedNotes: string
 ){
   return await PasswordModel.create({
     vaultID: vaultID,
     userName: userName,
     encryptedPassword: encryptedPassword,
     nickName: nickName,
-    siteUrl: siteUrl
+    siteUrl: siteUrl,
+    encryptedNotes: encryptedNotes
   })
 };
 

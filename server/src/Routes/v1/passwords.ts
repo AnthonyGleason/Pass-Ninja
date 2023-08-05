@@ -24,11 +24,13 @@ passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Respons
     encryptedPassword,
     nickName,
     siteUrl,
+    encryptedNotes,
   }:{
     userName: string,
     encryptedPassword:string,
     nickName:string,
-    siteUrl:string
+    siteUrl:string,
+    encryptedNotes:string
   } = req.body;
   const vaultID = req.payload.vault._id;
   let validatedNickName:string;
@@ -36,7 +38,7 @@ passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Respons
   nickName==='' ? validatedNickName='Untitled Password' : validatedNickName=nickName;
   if (vaultID){
     //create a new password entry
-    const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,validatedNickName,siteUrl);
+    const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,validatedNickName,siteUrl,encryptedNotes);
     //send the new password entry to the client
     res.status(200).json({'password': passwordDoc});
   }else{
@@ -72,11 +74,13 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
     encryptedPassword,
     nickName,
     siteUrl,
+    encryptedNotes
   }:{
     userName: string,
     encryptedPassword:string,
     nickName:string,
-    siteUrl:string
+    siteUrl:string,
+    encryptedNotes:string
   } = req.body;
   const vaultID:string = req.payload.vault._id;
   const passID:string = req.params.passwordID;
@@ -99,6 +103,7 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
     updatedPasswordDoc.encryptedPassword=encryptedPassword;
     updatedPasswordDoc.nickName=nickName;
     updatedPasswordDoc.siteUrl=siteUrl;
+    updatedPasswordDoc.encryptedNotes=encryptedNotes;
     //update the password entry in mongodb
     await updatePasswordByID(passID,updatedPasswordDoc);
     //send the updated password to the client

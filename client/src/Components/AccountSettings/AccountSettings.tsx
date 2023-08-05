@@ -26,8 +26,9 @@ export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowse
         let updatedPassword:any = password;
         //encrypt the passwords with the new master pass input
         updatedPassword.encryptedPassword = encryptPassword(updatedPassword.decryptedPassword,newMasterPassInput);
-        //stop the decryptedPassword from being sent to the server (* will come back to this with a better approach)
+        //stop the decryptedPassword and decryptedNotes from being sent to the server (* will come back to this with a better approach)
         updatedPassword.decryptedPassword = undefined;
+        updatedPassword.decryptedNotes = undefined;
         //add the password to the updated passwords array
         updatedPasswords.push(updatedPassword);
       });
@@ -109,7 +110,7 @@ export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowse
           <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
         </div>
         <h3>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h3>
-        <p>You will have an opportunity to confirm your account changes in the next page.</p>
+        <p>You will have an opportunity to confirm your account changes on the next page.</p>
         <button type='button' onClick={()=>{handleMakeChangesPress()}}>Update Account Settings</button>
       </div>
     );

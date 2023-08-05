@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Vault } from '../../Classes/Vault';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
-import { encryptPassword } from '../../Helpers/Passwords';
 
 export default function Password({
     password,
@@ -16,6 +15,7 @@ export default function Password({
   const [nickNameInput,setNickNameInput] = useState<string>(password.nickName);
   const [siteUrlInput,setSiteUrlInput] = useState<string>(password.siteUrl);
   const [userNameInput,setUserNameInput] = useState<string>(password.userName);
+  const [notesInput,setNotesInput] = useState<string>(password.decryptedNotes || '');
   const [isUserEditing,setIsUserEditing] = useState<boolean>(false);
   const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
   const handleDeletePassword = async function(){
@@ -29,6 +29,7 @@ export default function Password({
     vault.siteUrlInput = siteUrlInput;
     vault.userNameInput = userNameInput;
     vault.passwordInput = editPassInput;
+    vault.notesInput = notesInput;
     //call update password method on vault
     setPasswords(await vault.updatePassword(password._id));
     setIsUserEditing(false);
@@ -47,6 +48,7 @@ export default function Password({
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
         <p>Password: {password.decryptedPassword}</p>
+        <p>Secure Notes: {password.decryptedNotes}</p>
         <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
         <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
       </div>
@@ -69,6 +71,10 @@ export default function Password({
         <div>
           <p>Password</p>
           <input value={editPassInput} onChange={(e)=>{setEditPassInput(e.target.value)}} />
+        </div>
+        <div>
+          <p>Secure Notes</p>
+          <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
         <div>
           <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
