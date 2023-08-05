@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { Vault } from '../../Classes/Vault';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
+import menuDownArrow from '../../Assets/menu-down-arrow.svg';
+import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function Password({
     password,
@@ -37,13 +39,13 @@ export default function Password({
   //check if the user is currently editing this password or not
   if (!isPasswordExpanded){
     return(
-      <h5 onClick={()=>{setIsPasswordExpanded(true)}}><img alt='drop down arrow' />{password.nickName}</h5>
+      <h5 onClick={()=>{setIsPasswordExpanded(true)}}><img src={menuDownArrow} alt='drop down arrow' />{password.nickName}</h5>
     )
   }
   if (!isUserEditing){
     return(
       <div className='password'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}><img alt='up arrow' />{password.nickName}</h5>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}><img src={menuUpArrow} alt='up arrow' />{password.nickName}</h5>
         <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
@@ -73,7 +75,7 @@ export default function Password({
           <input value={editPassInput} onChange={(e)=>{setEditPassInput(e.target.value)}} />
         </div>
         <div>
-          <p>Secure Notes</p>
+          <p>Notes</p>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
         <div>

@@ -9,8 +9,7 @@ import Register from './Components/Register/Register';
 import VaultComponent from './Components/Vault/Vault';
 import { VaultBrowser } from './Classes/VaultBrowser';
 import AccountSettings from './Components/AccountSettings/AccountSettings';
-import LogoutPopup from './Components/LogoutPopup/LogoutPopup';
-
+import ninjaLogo from './Assets/publicdomainq-ninja-shinobi.svg';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -19,6 +18,10 @@ const vaultBrowser = new VaultBrowser();
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    <div>
+      {/* This is temporary, will be changed to useNaviagate in a proper nav component */}
+      <h2 onClick={()=>{window.location.href='/'}}>PassNinja</h2>
+    </div>
       <Routes>
         <Route element={<App />} path='/' />
         <Route element={<Login vaultBrowser={vaultBrowser} />} path='/login' />

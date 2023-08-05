@@ -3,6 +3,8 @@ import './PasswordGenerator.css';
 import { PasswordScore } from '../../Classes/PasswordScore';
 import PasswordScoreTable from '../PasswordScoreTable/PasswordScoreTable';
 import Tooltip from '../Tooltip/Tooltip';
+import menuDownArrow from '../../Assets/menu-down-arrow.svg';
+import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
@@ -120,7 +122,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   if (isPassGeneratorOpen){
     return(
       <div>
-        <h3 onClick={()=>{setIsPassGeneratorOpen(false)}}><img alt='up arrow' />Secure Password Generator</h3>
+        <h3 onClick={()=>{setIsPassGeneratorOpen(false)}}><img src={menuUpArrow} alt='up arrow' />Secure Password Generator</h3>
         <PasswordScoreTable />
         <div>
           <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></input>
@@ -161,7 +163,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     );
   }else{
     return(
-      <h3 onClick={()=>{setIsPassGeneratorOpen(true)}}><img alt='drop down arrow' />Secure Password Generator</h3>
+      <h3 onClick={()=>{setIsPassGeneratorOpen(true)}}><img src={menuDownArrow} alt='drop down arrow' />Secure Password Generator</h3>
     )
   }
 };

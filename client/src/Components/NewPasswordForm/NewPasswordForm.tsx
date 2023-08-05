@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { Vault } from '../../Classes/Vault';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
+import menuDownArrow from '../../Assets/menu-down-arrow.svg';
+import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function NewPasswordForm({
     vault,
@@ -30,7 +32,7 @@ export default function NewPasswordForm({
   if (isUserCreatingPass){
     return(
       <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <h3 onClick={()=>{setIsUserCreatingPass(false)}}><img alt='up arrow' />New Password</h3>
+        <h3 onClick={()=>{setIsUserCreatingPass(false)}}><img src={menuUpArrow} alt='up arrow' />New Password</h3>
         <div>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -48,7 +50,7 @@ export default function NewPasswordForm({
           <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
         </div>
         <div>
-          <label>Notes Input</label>
+          <label>Notes</label>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
         <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
@@ -57,7 +59,7 @@ export default function NewPasswordForm({
     )
   }else{
     return(
-      <h3 onClick={()=>{setIsUserCreatingPass(true)}}><img alt='drop down arrow' />New Password</h3>
+      <h3 onClick={()=>{setIsUserCreatingPass(true)}}><img src={menuDownArrow} alt='drop down arrow' />New Password</h3>
     )
   }
 }

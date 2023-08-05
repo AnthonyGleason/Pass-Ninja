@@ -6,6 +6,8 @@ import Password from '../Password/Password';
 import { verifyToken } from '../../Helpers/Auth';
 import { useNavigate } from 'react-router-dom';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
+import searchIcon from '../../Assets/search.svg';
+import settingsGear from '../../Assets/settings-outline.svg';
 
 export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [passwords,setPasswords] = useState<any[]>([]);
@@ -55,9 +57,9 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   */
   return(
     <div className='vault'>
-      <h3>Vault<img src='' alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
+      <h3>Vault<img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
       <div>
-        <img src='' alt='magnifying glass' />
+        <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
       </div>
       {
