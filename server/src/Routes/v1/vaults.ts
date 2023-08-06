@@ -1,18 +1,18 @@
-//    /api/v1/vaults/
-//import type definitions
-import { NextFunction, Response } from "express";
-import { customRequest, passwordDoc, vaultDoc} from '../../Interfaces/interfaces';
 import express from "express";
-import { passwordRouter } from "./passwords";
-import { invalidatedTokens, registerNewUser } from "../../Helpers/auth";
-import { createExamplePassword } from "../../Helpers/vault";
-import { authenticateToken } from "../../Middlewares/Auth";
-import { getVaultByUserEmail } from "../../Controllers/vault";
-import { loginExistingUser } from "../../Helpers/auth";
 import bcrypt from 'bcrypt';
+
+import { NextFunction, Response } from "express";
+import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
+
+import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser } from "../../Helpers/auth";
+import { createExamplePassword } from "../../Helpers/vault";
+
+import { authenticateToken } from "../../Middlewares/Auth";
+
+import { getVaultByUserEmail, updateVaultByID } from "../../Controllers/vault";
 import { updatePasswordByID } from "../../Controllers/password";
-import { generateHashedPassword } from "../../Helpers/auth";
-import { updateVaultByID } from "../../Controllers/vault";
+import { passwordRouter } from "./passwords";
+
 
 export const vaultsRouter = express.Router();
 
@@ -87,17 +87,6 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
   };
 });
 
-// • GET	/api/v1/vaults/		get the most recent version of the users vault data using token payload
-vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
-  //get the current user's vault from mongodb
-  const vault: vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
-  if (vault){
-    res.status(200).json({vault: vault});
-  }else{
-    res.status(400).json({message: 'There was an issue retrieving user data.'});
-  };
-});
-
 // PUT /api/v1/vaults/settings update the users vault settings
 vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
   //if the input is not provided we can assume the user is not changing that setting
@@ -131,4 +120,16 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
     res.status(401).json({'message': 'An error has occured when updating your vault data'});
   };
 });
+
+// • GET	/api/v1/vaults/		get the most recent version of the users vault data using token payload
+vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
+  //get the current user's vault from mongodb
+  const vault: vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
+  if (vault){
+    res.status(200).json({vault: vault});
+  }else{
+    res.status(400).json({message: 'There was an issue retrieving user data.'});
+  };
+});
+
 vaultsRouter.use('/passwords',passwordRouter);

@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//components
+import Settings from './Components/Settings/Settings';
+import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
+import Nav from './Components/Nav/Nav';
 import Register from './Components/Register/Register';
-import VaultComponent from './Components/Vault/Vault';
+import Vault from './Components/Vault/Vault';
+//classes
 import { VaultBrowser } from './Classes/VaultBrowser';
-import AccountSettings from './Components/AccountSettings/AccountSettings';
-import ninjaLogo from './Assets/publicdomainq-ninja-shinobi.svg';
+
+import './index.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -17,17 +20,14 @@ const root = ReactDOM.createRoot(
 const vaultBrowser = new VaultBrowser();
 root.render(
   <React.StrictMode>
+    <Nav />
     <BrowserRouter>
-    <div>
-      {/* This is temporary, will be changed to useNaviagate in a proper nav component */}
-      <h2 onClick={()=>{window.location.href='/'}}>PassNinja</h2>
-    </div>
       <Routes>
-        <Route element={<App />} path='/' />
-        <Route element={<Login vaultBrowser={vaultBrowser} />} path='/login' />
-        <Route element={<Register vaultBrowser={vaultBrowser} />} path='/register' />
-        <Route element={<AccountSettings vaultBrowser={vaultBrowser} />} path='/vault/settings' />
-        <Route element={<VaultComponent vaultBrowser={vaultBrowser} />} path='/vault'/>
+        <Route element={<Register vaultBrowser={vaultBrowser} />} path='/vault/register' />
+        <Route element={<Login vaultBrowser={vaultBrowser} />} path='/vault/login' />
+        <Route element={<Settings vaultBrowser={vaultBrowser} />} path='/vault/settings' />
+        <Route element={<Vault vaultBrowser={vaultBrowser} />} path='/vault'/>
+        <Route element={<Home />} path='/' />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

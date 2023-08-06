@@ -2,9 +2,10 @@
 export const tokenExpireTime ='1d'
 
 //customize the example password added to the users account when a new account is created.
-export const demoPassUserName:string = 'demoUser123';
+export const demoPassUserName:string = 'demoUser';
 export const demoPassSiteUrl:string  = 'https://www.example.com';
 export const demoPassNickName:string = 'Welcome to PassNinja';
+export const demoPassNotes:string = 'Thank you for trying PassNinja!'
 export const demoPassMinLength:number = 35;
 export const demoPassMaxLength:number = 50;
 export const demoPassUseSpecialChars:boolean = true;

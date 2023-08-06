@@ -5,7 +5,7 @@ import { encryptPassword } from '../../Helpers/Passwords';
 import { verifyToken } from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 
-export default function AccountSettings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
+export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>(vaultBrowser.login.emailInput);
   const [curMasterPassInput,setCurMasterPassInput] = useState<string>('');
   const [newMasterPassInput, setNewMasterPassInput] = useState<string>('');

@@ -1,4 +1,15 @@
-import { demoPassMaxLength, demoPassMinLength, demoPassNickName, demoPassSiteUrl, demoPassUseNumbers, demoPassUseSpecialChars, demoPassUseUpperCases, demoPassUserName, tokenExpireTime } from "../Configs/auth";
+import { 
+  demoPassMaxLength,
+  demoPassMinLength,
+  demoPassNickName,
+  demoPassNotes,
+  demoPassSiteUrl,
+  demoPassUseNumbers,
+  demoPassUseSpecialChars,
+  demoPassUseUpperCases,
+  demoPassUserName
+} from "../Configs/auth";
+
 import { createPasswordEntry } from "../Controllers/password";
 import { encryptPassword } from "./auth";
 
@@ -51,7 +62,7 @@ export const createExamplePassword = async function(
     masterPassword
   );
   //create the demo password's notes encrypted with the user's master password
-  const tempEncryptedNotes:string = encryptPassword('Thank you for trying Pass Ninja!', masterPassword);
+  const tempEncryptedNotes:string = encryptPassword(demoPassNotes, masterPassword);
 
   if (vaultID) await createPasswordEntry(
       vaultID,
