@@ -5,7 +5,7 @@ export default function LogoutPopup(){
   const navigate = useNavigate();
 
   const handleConfirmPopup = function(){
-    navigate('/login');
+    navigate('/vault/login');
   }
   return(
     <div>

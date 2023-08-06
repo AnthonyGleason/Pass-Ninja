@@ -33,7 +33,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
   //get passwords to populate passwords state on initial page load
   useEffect(()=>{
     const handleInitialPageLoad = async()=>{
-      //verify the users token and master password is present
+      //verify the users token and master password are present
       if (await verifyToken(localStorage.getItem('token') as string) && vaultController.masterPassword){
         setPasswords(await vaultController.populatePasswords());
       }else{

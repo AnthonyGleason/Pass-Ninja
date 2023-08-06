@@ -51,7 +51,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     setPasswordScore(passwordScore);
     //update the accent color of the strength bar
     const strengthBarElement:any  = document.querySelector('.password-entropy-input');
-    if (strengthBarElement) strengthBarElement.style.accentColor=passwordScore.color;
+    if (strengthBarElement) strengthBarElement.style.accentColor=passwordScore.colorCode;
   },[genPasswordInput]);
 
   //generate a secure password
@@ -134,10 +134,10 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
         <div>
           <div>
             This password has a&nbsp;
-            <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of character pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropy}</b> bits and an&nbsp;
-            <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.crackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
+            <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of character pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
+            <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
           </div>
-          <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropy} readOnly />
+          <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
         </div>
         <div>
           <Tooltip term='Min Length' desc='Changing this input modifies the minimum amount of characters a newly generated password could have.' /> {minLengthInput}

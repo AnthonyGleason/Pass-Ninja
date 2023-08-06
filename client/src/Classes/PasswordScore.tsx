@@ -1,44 +1,75 @@
 export class PasswordScore{
-  entropy:number;
-  color:string;
+  entropyInBits:number;
+  colorCode:string;
   strength:string;
-  crackTime:string;
+  estCrackTime:string;
 
   constructor(passwordInput:string,charPoolLength:number){
     const passCombinations = BigInt(Math.pow(charPoolLength, passwordInput.length));
-    //get entropy bits
-    const passEntropyBits = Math.log2(Number(passCombinations));
+    //get calculate entropy in bits
+    const entropyInBits:number = Math.log2(Number(passCombinations));
     //set the password entropy to the hundreths place
-    this.entropy = parseFloat(passEntropyBits.toFixed(2));
-    //get strength
-    if (passEntropyBits <= 39) {
-      this.strength = 'Very Weak';
-      this.color = 'grey';
-      this.crackTime = 'Instantly'
-    } else if (passEntropyBits >= 40 && passEntropyBits <= 59) {
-      this.strength = 'Weak';
-      this.color = 'red';
-      this.crackTime = 'Minutes to Hours';
-    } else if (passEntropyBits >= 60 && passEntropyBits <= 79) {
-      this.strength = 'Moderate';
-      this.color = 'orange';
-      this.crackTime = 'Hours to Days';
-    } else if (passEntropyBits >= 80 && passEntropyBits <= 99) {
-      this.strength = 'Strong';
-      this.color = 'yellow';
-      this.crackTime = 'Days to Weeks';
-    } else if (passEntropyBits >= 100 && passEntropyBits <= 119) {
-      this.strength = 'Very Strong';
-      this.color = 'green';
-      this.crackTime = 'Months to Years';
-    } else if (passEntropyBits >= 120) {
-      this.strength = 'Extremely Strong';
-      this.color = 'blue';
-      this.crackTime = 'Millions of Years';
-    }else{
-      this.strength = 'Very Weak';
-      this.color = 'grey';
-      this.crackTime = 'Instantly'
-    };
+    this.entropyInBits = parseFloat(entropyInBits.toFixed(2));
+    //populate score propertiesy
+    this.strength = this.getStrength();
+    this.colorCode = this.getColorCode();
+    this.estCrackTime = this.getEstCrackTime();
   };
+
+  getStrength = () => {
+    switch (true) {
+      case this.entropyInBits <= 39:
+        return 'Very Weak';
+      case this.entropyInBits <= 59:
+        return 'Weak';
+      case this.entropyInBits <= 79:
+        return 'Moderate';
+      case this.entropyInBits <= 99:
+        return 'Strong';
+      case this.entropyInBits <= 119:
+        return 'Very Strong';
+      case this.entropyInBits >= 120:
+        return 'Extremely Strong';
+      default:
+        return '';
+    }
+  };
+  
+  getColorCode = () => {
+    switch (true) {
+      case this.entropyInBits <= 39:
+        return 'grey';
+      case this.entropyInBits <= 59:
+        return 'red';
+      case this.entropyInBits <= 79:
+        return 'orange';
+      case this.entropyInBits <= 99:
+        return 'yellow';
+      case this.entropyInBits <= 119:
+        return 'green';
+      case this.entropyInBits >= 120:
+        return 'blue';
+      default:
+        return '';
+    }
+  };
+  
+  getEstCrackTime = () => {
+    switch (true) {
+      case this.entropyInBits <= 39:
+        return 'Instantly';
+      case this.entropyInBits <= 59:
+        return 'Minutes to Hours';
+      case this.entropyInBits <= 79:
+        return 'Hours to Days';
+      case this.entropyInBits <= 99:
+        return 'Days to Weeks';
+      case this.entropyInBits <= 119:
+        return 'Months to Years';
+      case this.entropyInBits >= 120:
+        return 'Millions of Years';
+      default:
+        return '';
+    }
+  };  
 };
