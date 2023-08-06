@@ -29,7 +29,11 @@ export default function Password({
 
   const handleApplyPassChange = async function(){
     //call update password method on vault
-    setPasswords(await vaultController.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput));
+    await vaultController.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput)
+      .then(()=>{
+        setPasswords(vaultController.passwords);
+      }
+    );
     setIsUserEditing(false);
   };
 

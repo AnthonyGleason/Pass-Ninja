@@ -35,7 +35,10 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     const handleInitialPageLoad = async()=>{
       //verify the users token and master password are present
       if (await verifyToken(localStorage.getItem('token') as string) && vaultController.masterPassword){
-        setPasswords(await vaultController.populatePasswords());
+        await vaultController.populatePasswords()
+        .then(()=>{
+          setPasswords(vaultController.passwords);
+        });
       }else{
         //show user logged out popup
         setIsUserLoggedOut(true);

@@ -35,6 +35,7 @@ export class VaultController{
     });
     await response.json();
   };
+
   updatePassword = async(
     passwordID:string,
     passwordInput: string,
@@ -59,11 +60,10 @@ export class VaultController{
       }),
     });
     //retrieve the new password data again from the server
-    return await this.populatePasswords();
+    await this.populatePasswords();
   };
 
   populatePasswords = async()=>{
-    let fetchedPasswords:any[] = [];
     await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
       method: 'GET',
       headers:{
@@ -73,8 +73,11 @@ export class VaultController{
     .then(async (responseData:any)=>{
       //decrypt passwords
       const data = await responseData.json();
+      //make a copy of the passwords array sent by the server
       let passwords: any[] = data.passwords;
+      //decrypt the user's passwords
       passwords.forEach((password:any)=>{
+        //checking for the encryptedPassword property to prevent malformed utf-8 errors
         if (!password.encryptedPassword) return null;
         password.decryptedPassword=decryptPassword(password.encryptedPassword,this.masterPassword);
       });
@@ -83,10 +86,8 @@ export class VaultController{
         if (!password.encryptedNotes) return null;
         password.decryptedNotes = decryptPassword(password.encryptedNotes,this.masterPassword);
       })
-      fetchedPasswords = passwords;
+      this.passwords = passwords;
     });
-    this.passwords=fetchedPasswords;
-    return fetchedPasswords;
   };
 
   deletePassword = async(passwordID:string)=>{
