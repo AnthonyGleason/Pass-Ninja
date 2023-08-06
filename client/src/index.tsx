@@ -20,8 +20,8 @@ const root = ReactDOM.createRoot(
 const vaultBrowser = new VaultBrowser();
 root.render(
   <React.StrictMode>
-    <Nav />
     <BrowserRouter>
+      <Nav />
       <Routes>
         <Route element={<Register vaultBrowser={vaultBrowser} />} path='/vault/register' />
         <Route element={<Login vaultBrowser={vaultBrowser} />} path='/vault/login' />
