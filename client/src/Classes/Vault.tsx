@@ -1,33 +1,24 @@
 import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
 
 export class Vault{
-  nickNameInput:string;
-  siteUrlInput:string;
-  userNameInput:string;
-  passwordInput:string;
   masterPassword:string;
-  notesInput:string;
   passwords:any[];
 
   constructor(
     passwords?:any[],
-    nickNameInput?:string,
-    siteUrlInput?:string,
-    userNameInput?:string,
-    passwordInput?:string,
     masterPassword?:string,
-    notesInput?:string
   ){
-    this.nickNameInput = nickNameInput || '';
-    this.siteUrlInput = siteUrlInput || '';
-    this.userNameInput = userNameInput || '';
-    this.passwordInput = passwordInput || '';
     this.passwords = passwords || [];
     this.masterPassword = masterPassword || '';
-    this.notesInput = notesInput || '';
   };
 
-  createNewPassword = async()=>{
+  createNewPassword = async(
+    passwordInput: string,
+    nickNameInput: string,
+    siteUrlInput: string,
+    userNameInput: string,
+    notesInput:string
+  )=>{
     const response = await fetch('http://localhost:5000/v1/api/vaults/passwords',{
       method: 'POST',
       headers:{
@@ -35,16 +26,23 @@ export class Vault{
         'Authorization': `Bearer ${localStorage.getItem('jwt')}`
       },
       body: JSON.stringify({
-        nickName: this.nickNameInput,
-        siteUrl:  this.siteUrlInput,
-        userName: this.userNameInput,
-        encryptedPassword: encryptPassword(this.passwordInput,this.masterPassword),
-        encryptedNotes: encryptPassword(this.notesInput,this.masterPassword),
+        nickName: nickNameInput,
+        siteUrl:  siteUrlInput,
+        userName: userNameInput,
+        encryptedPassword: encryptPassword(passwordInput,this.masterPassword),
+        encryptedNotes: encryptPassword(notesInput,this.masterPassword),
       }),
     });
     await response.json();
   };
-  updatePassword = async(passwordID:string) =>{
+  updatePassword = async(
+    passwordID:string,
+    passwordInput: string,
+    nickNameInput: string,
+    siteUrlInput: string,
+    userNameInput: string,
+    notesInput:string
+  ) =>{
     //update the password
     await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
       method: 'PUT',
@@ -53,11 +51,11 @@ export class Vault{
         'Authorization': `Bearer ${localStorage.getItem('jwt')}`
       },
       body: JSON.stringify({
-        nickName: this.nickNameInput,
-        siteUrl:  this.siteUrlInput,
-        userName: this.userNameInput,
-        encryptedPassword: encryptPassword(this.passwordInput,this.masterPassword),
-        encryptedNotes: encryptPassword(this.notesInput,this.masterPassword),
+        nickName: nickNameInput,
+        siteUrl:  siteUrlInput,
+        userName: userNameInput,
+        encryptedPassword: encryptPassword(passwordInput,this.masterPassword),
+        encryptedNotes: encryptPassword(notesInput,this.masterPassword),
       }),
     });
     //retrieve the new password data again from the server

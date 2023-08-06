@@ -18,14 +18,8 @@ export default function NewPasswordForm({
   const [userNameInput, setUserNameInput] = useState<string>('');
   const [notesInput,setNotesInput] = useState<string>('');
   const handleCreateNewPassword = async function(){
-    //store the password inputs in the vault class
-    vault.nickNameInput = nickNameInput;
-    vault.siteUrlInput = siteUrlInput;
-    vault.userNameInput = userNameInput;
-    vault.passwordInput = passwordInput;
-    vault.notesInput = notesInput;
     //create the new password
-    await vault.createNewPassword();
+    await vault.createNewPassword(passwordInput,nickNameInput,siteUrlInput,userNameInput,notesInput);
     //refresh client's password data
     setPasswords(await vault.populatePasswords());
   };

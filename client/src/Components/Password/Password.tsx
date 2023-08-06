@@ -20,20 +20,15 @@ export default function Password({
   const [notesInput,setNotesInput] = useState<string>(password.decryptedNotes || '');
   const [isUserEditing,setIsUserEditing] = useState<boolean>(false);
   const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
+
   const handleDeletePassword = async function(){
     await vault.deletePassword(password._id);
     //refresh client passwords data
     setPasswords(await vault.populatePasswords());
   };
   const handleApplyPassChange = async function(){
-    //set updated password inputs in vault
-    vault.nickNameInput = nickNameInput;
-    vault.siteUrlInput = siteUrlInput;
-    vault.userNameInput = userNameInput;
-    vault.passwordInput = editPassInput;
-    vault.notesInput = notesInput;
     //call update password method on vault
-    setPasswords(await vault.updatePassword(password._id));
+    setPasswords(await vault.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput));
     setIsUserEditing(false);
   };
   //check if the user is currently editing this password or not
@@ -64,11 +59,11 @@ export default function Password({
         </div>
         <div>
           <p>Website Url</p>
-          <input value={password.siteUrl} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
+          <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
         </div>
         <div>
           <p>Username</p>
-          <input value={password.userName} onChange={(e)=>{setUserNameInput(e.target.value)}} />
+          <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
         </div>
         <div>
           <p>Password</p>
