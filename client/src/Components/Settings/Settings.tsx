@@ -1,12 +1,12 @@
 import React, {useState,useEffect} from 'react';
-import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 import { encryptPassword } from '../../Helpers/Passwords';
 import { verifyToken } from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
+import { VaultController } from '../../Classes/VaultController';
 
-export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
-  const [emailAddressInput,setEmailAddressInput] = useState<string>(vaultBrowser.login.emailInput);
+export default function Settings({vaultController}:{vaultController:VaultController}){
+  const [emailAddressInput,setEmailAddressInput] = useState<string>('');
   const [curMasterPassInput,setCurMasterPassInput] = useState<string>('');
   const [newMasterPassInput, setNewMasterPassInput] = useState<string>('');
   const [newMasterPassConfInput, setNewMasterPassConfInput] = useState<string>('');
@@ -14,10 +14,12 @@ export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [isMasterPassUpdated, setIsMasterPassUpdated] = useState<boolean>(false);
   const [isEmailUpdated, setIsEmailUpdated] = useState<boolean>(false);
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
+  const navigate = useNavigate();
+
   useEffect(()=>{
     const handleInitialPageLoad = async()=>{
       //verify the users token and master password is present
-      if (!await verifyToken(localStorage.getItem('token') as string) || !vaultBrowser.vault.masterPassword){
+      if (!await verifyToken(localStorage.getItem('token') as string) || !vaultController.masterPassword){
         // session is invalid, show user logged out popup
         setIsUserLoggedOut(true);
       };
@@ -35,7 +37,7 @@ export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
     };
     //handle master pass updating
     if (isMasterPassUpdated){
-      vaultBrowser.vault.passwords.forEach((password:any)=>{
+      vaultController.passwords.forEach((password:any)=>{
         let updatedPassword:any = password;
         //encrypt the passwords with the new master pass input
         updatedPassword.encryptedPassword = encryptPassword(updatedPassword.decryptedPassword,newMasterPassInput);
@@ -46,6 +48,7 @@ export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
         updatedPasswords.push(updatedPassword);
       });
     };
+    
     try{
       const response = await fetch('http://localhost:5000/v1/api/vaults/settings',{
         method: 'PUT',
@@ -77,11 +80,10 @@ export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
       setIsMasterPassUpdated(true);
     }
     //email is being updated (different than the usnew arrayer's current email) and the email is not an empty string
-    if (emailAddressInput!== vaultBrowser.login.emailInput && emailAddressInput){
+    if (emailAddressInput){
       setIsEmailUpdated(true);
     };
   };
-  const navigate = useNavigate();
 
   if (isUserLoggedOut){
     return(<LogoutPopup />)
@@ -93,7 +95,7 @@ export default function Settings({vaultBrowser}:{vaultBrowser:VaultBrowser}){
         <h3>The following changes will be applied.</h3>
         <ul>
           {isEmailUpdated ? (
-            <li>The email associated with your account will change from {vaultBrowser.login.emailInput} to {emailAddressInput}</li>
+            <li>The email associated with your account will change to {emailAddressInput}</li>
           ) : (
             null
           )}

@@ -10,23 +10,22 @@ import Nav from './Components/Nav/Nav';
 import Register from './Components/Register/Register';
 import Vault from './Components/Vault/Vault';
 //classes
-import { VaultBrowser } from './Classes/VaultBrowser';
-
+import { VaultController } from './Classes/VaultController';
 import './index.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const vaultBrowser = new VaultBrowser();
+const vaultController = new VaultController();
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Nav />
       <Routes>
-        <Route element={<Register vaultBrowser={vaultBrowser} />} path='/vault/register' />
-        <Route element={<Login vaultBrowser={vaultBrowser} />} path='/vault/login' />
-        <Route element={<Settings vaultBrowser={vaultBrowser} />} path='/vault/settings' />
-        <Route element={<Vault vaultBrowser={vaultBrowser} />} path='/vault'/>
+        <Route element={<Register vaultController={vaultController} />} path='/vault/register' />
+        <Route element={<Login />} path='/vault/login' />
+        <Route element={<Settings vaultController={vaultController} />} path='/vault/settings' />
+        <Route element={<Vault vaultController={vaultController} />} path='/vault'/>
         <Route element={<Home />} path='/' />
       </Routes>
     </BrowserRouter>

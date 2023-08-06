@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { v4 as uuidGen } from 'uuid';
 import NewPasswordForm from '../NewPasswordForm/NewPasswordForm';
 import Password from '../Password/Password';
@@ -8,13 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import searchIcon from '../../Assets/search.svg';
 import settingsGear from '../../Assets/settings-outline.svg';
+import { VaultController } from '../../Classes/VaultController';
 
-export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser}){
+export default function VaultComponent({vaultController}:{vaultController:VaultController}){
   const [passwords,setPasswords] = useState<any[]>([]);
   const [passSnip,setPassSnip] = useState<any[]>([]);
   const [searchInput,setSearchInput] = useState<string>('');
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
-  const vault = vaultBrowser.vault;
   /*
     whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
     new password is included in the search by performing a search on the updated passwords list.
@@ -35,8 +34,8 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
   useEffect(()=>{
     const handleInitialPageLoad = async()=>{
       //verify the users token and master password is present
-      if (await verifyToken(localStorage.getItem('token') as string) && vault.masterPassword){
-        setPasswords(await vaultBrowser.vault.populatePasswords());
+      if (await verifyToken(localStorage.getItem('token') as string) && vaultController.masterPassword){
+        setPasswords(await vaultController.populatePasswords());
       }else{
         //show user logged out popup
         setIsUserLoggedOut(true);
@@ -63,9 +62,9 @@ export default function VaultComponent({vaultBrowser}:{vaultBrowser:VaultBrowser
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
       </div>
       {
-        passSnip.map((password)=>{return(<Password key={uuidGen()} vault={vault} password={password} setPasswords={setPasswords} />)})
+        passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
       }
-      <NewPasswordForm vault={vault} setPasswords={setPasswords} />
+      <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
     </div>
   )
 };

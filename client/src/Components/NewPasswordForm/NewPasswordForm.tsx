@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import { Vault } from '../../Classes/Vault';
+import { VaultController } from '../../Classes/VaultController';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import menuDownArrow from '../../Assets/menu-down-arrow.svg';
 import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function NewPasswordForm({
-    vault,
+    vaultController,
     setPasswords
   }:{
-    vault:Vault,
+    vaultController:VaultController,
     setPasswords:Function
   }){
   const [isUserCreatingPass,setIsUserCreatingPass] = useState<boolean>(false);
@@ -19,9 +19,9 @@ export default function NewPasswordForm({
   const [notesInput,setNotesInput] = useState<string>('');
   const handleCreateNewPassword = async function(){
     //create the new password
-    await vault.createNewPassword(passwordInput,nickNameInput,siteUrlInput,userNameInput,notesInput);
+    await vaultController.createNewPassword(passwordInput,nickNameInput,siteUrlInput,userNameInput,notesInput);
     //refresh client's password data
-    setPasswords(await vault.populatePasswords());
+    setPasswords(await vaultController.populatePasswords());
   };
   if (isUserCreatingPass){
     return(

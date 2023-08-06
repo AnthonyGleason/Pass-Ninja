@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import { VaultBrowser } from '../../Classes/VaultBrowser';
 import { useNavigate } from 'react-router-dom';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
+import { VaultController } from '../../Classes/VaultController';
 
-export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
+export default function Register({vaultController}:{vaultController:VaultController}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
   const [lastNameInput,setLastNameInput] = useState<string>('');
   const [emailInput,setEmailInput] = useState<string>('');
@@ -11,15 +11,26 @@ export default function Register({vaultBrowser}:{vaultBrowser:VaultBrowser}){
   const [masterPasswordConfirmInput, setMasterPasswordConfirmInput] = useState<string>('');
   const navigate = useNavigate();
   
+  const register = async function ():Promise<string>{
+    const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName: firstNameInput,
+        lastName: lastNameInput,
+        email: emailInput,
+        masterPassword: masterPasswordInput,
+        masterPasswordConfirm: masterPasswordConfirmInput
+      }),
+    });
+    const responseData = await response.json();
+    return responseData.token;
+  }
   const handleSubmit = async function(){
-    //set inputs in vaultBrowser class instance
-    vaultBrowser.register.emailInput = emailInput;
-    vaultBrowser.register.firstNameInput= firstNameInput;
-    vaultBrowser.register.lastNameInput = lastNameInput;
-    vaultBrowser.register.masterPasswordInput = masterPasswordInput;
-    vaultBrowser.register.masterPasswordConfirmInput = masterPasswordConfirmInput;
     //register new user
-    const token:string = await vaultBrowser.register.register();
+    const token:string = await register();
     localStorage.setItem('jwt',token);
     //redirect user to their vault
     navigate('/vault');

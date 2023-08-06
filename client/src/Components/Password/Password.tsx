@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import { Vault } from '../../Classes/Vault';
+import { VaultController } from '../../Classes/VaultController';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import menuDownArrow from '../../Assets/menu-down-arrow.svg';
 import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function Password({
     password,
-    vault,
+    vaultController,
     setPasswords
   }:{
     password:any,
-    vault:Vault,
+    vaultController:VaultController,
     setPasswords:Function
 }){
   const [editPassInput, setEditPassInput] = useState<string>(password.decryptedPassword);
@@ -22,21 +22,24 @@ export default function Password({
   const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
 
   const handleDeletePassword = async function(){
-    await vault.deletePassword(password._id);
+    await vaultController.deletePassword(password._id);
     //refresh client passwords data
-    setPasswords(await vault.populatePasswords());
+    setPasswords(await vaultController.populatePasswords());
   };
+
   const handleApplyPassChange = async function(){
     //call update password method on vault
-    setPasswords(await vault.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput));
+    setPasswords(await vaultController.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput));
     setIsUserEditing(false);
   };
+
   //check if the user is currently editing this password or not
   if (!isPasswordExpanded){
     return(
       <h5 onClick={()=>{setIsPasswordExpanded(true)}}><img src={menuDownArrow} alt='drop down arrow' />{password.nickName}</h5>
     )
-  }
+  };
+  
   if (!isUserEditing){
     return(
       <div className='password'>
@@ -79,6 +82,6 @@ export default function Password({
         </div>
         <PasswordGenerator setPasswordInput={setEditPassInput} />
       </form>
-    )
-  }
-}
+    );
+  };
+};

@@ -1,6 +1,6 @@
 import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
 
-export class Vault{
+export class VaultController{
   masterPassword:string;
   passwords:any[];
 
