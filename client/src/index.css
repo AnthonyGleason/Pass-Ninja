@@ -19,6 +19,7 @@ body {
   flex-direction: column;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   background-image: url('./Assets/background-japan-landscape.jpg');
 }
 code {
@@ -42,4 +43,7 @@ select{
   background-size: cover;
   background-color: transparent;
   background-position: center;
+}
+.blur-background {
+  background-color: rgba(0, 0, 0, 0.3);
 }

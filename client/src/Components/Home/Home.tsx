@@ -23,9 +23,9 @@ export default function Home({vaultController}:any) {
   };
 
   return (
-    <div className="home">
-      <h3 className='scroll'>Welcome to PassNinja</h3>
-      <img src={largeNinjaImg} alt='cartoon ninja holding sword' />
+    <div className="home blur-background">
+      <h3 className='scroll'>Welcome to PassNinja</h3>`
+      <img src={largeNinjaImg} alt='cartoon ninja holding sword' />`
       <h4 className='scroll'>Master the Art of Password Security For Free Today!</h4>
       <div className='login-button-container'>
         <button className='scroll' type='button' onClick={()=>{handleDemoLogin()}}>Demo</button>
