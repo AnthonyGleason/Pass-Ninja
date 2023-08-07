@@ -32,7 +32,7 @@ export class PasswordScore{
         return 'Extremely Strong';
       default:
         return '';
-    }
+    };
   };
   
   getColorCode = () => {
@@ -51,7 +51,7 @@ export class PasswordScore{
         return 'blue';
       default:
         return '';
-    }
+    };
   };
   
   getEstCrackTime = () => {
@@ -70,6 +70,6 @@ export class PasswordScore{
         return 'Millions of Years';
       default:
         return '';
-    }
+    };
   };  
 };

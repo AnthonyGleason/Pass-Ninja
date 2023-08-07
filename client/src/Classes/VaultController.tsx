@@ -75,17 +75,13 @@ export class VaultController{
       const data = await responseData.json();
       //make a copy of the passwords array sent by the server
       let passwords: any[] = data.passwords;
-      //decrypt the user's passwords
+      //decrypt the user's passwords and notes
       passwords.forEach((password:any)=>{
-        //checking for the encryptedPassword property to prevent malformed utf-8 errors
-        if (!password.encryptedPassword) return null;
-        password.decryptedPassword=decryptPassword(password.encryptedPassword,this.masterPassword);
+        //checking for the encryptedPassword property  and encryptedNotes proprties to prevent malformed utf-8 errors
+        if (password.encryptedPassword) password.decryptedPassword=decryptPassword(password.encryptedPassword,this.masterPassword);
+        if (password.encryptedNotes) password.decryptedNotes = decryptPassword(password.encryptedNotes,this.masterPassword);
       });
-      //decrypt notes
-      passwords.forEach((password:any)=>{
-        if (!password.encryptedNotes) return null;
-        password.decryptedNotes = decryptPassword(password.encryptedNotes,this.masterPassword);
-      })
+      //populate the passwords property with the decryptedPasswords
       this.passwords = passwords;
     });
   };

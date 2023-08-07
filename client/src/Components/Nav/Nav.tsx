@@ -1,12 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './Nav.css';
 export default function Nav(){
   const navigate = useNavigate();
   return(
-    <div>
-      {/* This is temporary, will be changed to useNaviagate in a proper nav component */}
-      <h2 onClick={()=>{navigate('/')}}>PassNinja</h2>
+    <div className='nav'>
+      <ul>
+        <li onClick={()=>{navigate('/')}}>Home</li>
+        <li>Password Generator</li>
+        <li>Login</li>
+        <li>Register</li>
+      </ul>
     </div>
   )
 };

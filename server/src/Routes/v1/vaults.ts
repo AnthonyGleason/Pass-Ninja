@@ -5,7 +5,7 @@ import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
 
 import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser } from "../../Helpers/auth";
-import { createExamplePassword } from "../../Helpers/vault";
+import { createExamplePassword, generatePassword } from "../../Helpers/vault";
 
 import { authenticateToken } from "../../Middlewares/Auth";
 
@@ -54,6 +54,20 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   }else{
     res.status(400).json({'message': `There was an error creating an account with email ${email}`});
   };
+});
+
+// • POST	/api/v1/vaults/login	use the demo user
+vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFunction)=>{
+  const email:string = `demo@user${generatePassword(12,12,false,true,true)}`;
+  const vault= await registerNewUser('demopass','demopass','Demo','User',email);
+  //create a new example password in the users vault
+  if (vault) await createExamplePassword(vault._id,'demopass');
+  const token:string = await loginExistingUser(email,'demopass');
+  if (token){
+    res.status(200).json({'token': token});
+  }else{
+    res.status(401);
+  }
 });
 
 // • POST	/api/v1/vaults/login	sign into already existing account 

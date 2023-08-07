@@ -20,13 +20,12 @@ const vaultController = new VaultController();
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Nav />
       <Routes>
         <Route element={<Register vaultController={vaultController} />} path='/vault/register' />
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
         <Route element={<Settings vaultController={vaultController} />} path='/vault/settings' />
         <Route element={<Vault vaultController={vaultController} />} path='/vault'/>
-        <Route element={<Home />} path='/' />
+        <Route element={<Home vaultController={vaultController} />} path='/' />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

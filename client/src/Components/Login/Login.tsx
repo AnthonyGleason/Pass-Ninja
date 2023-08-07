@@ -27,6 +27,7 @@ export default function Login({vaultController}:{vaultController:VaultController
     //login user
     const token:string = await login();
     if (token){
+      //login was successful update masterPassword property of the vaultController class 
       vaultController.masterPassword = masterPasswordInput;
       //set token in local storage
       localStorage.setItem('jwt',token);

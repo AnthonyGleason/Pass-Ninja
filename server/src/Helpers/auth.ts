@@ -5,10 +5,9 @@ import { vaultDoc } from '../Interfaces/interfaces';
 import cryptoJS from 'crypto-js';
 import { tokenExpireTime } from "../Configs/auth";
 
-//String is set to lowercase here as the password argument type because bcrypt is St
 export const generateHashedPassword = async function(password:string):Promise<string>{ 
   //generate hashed password
-  const salt = await bcrypt.genSalt(16);
+  const salt = await bcrypt.genSalt(15);
   const hashedPassword:string = await bcrypt.hash(password,salt);
   return hashedPassword;
 };
