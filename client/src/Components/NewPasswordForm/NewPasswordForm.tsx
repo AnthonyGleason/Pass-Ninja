@@ -11,22 +11,24 @@ export default function NewPasswordForm({
     vaultController:VaultController,
     setPasswords:Function
   }){
-  const [isUserCreatingPass,setIsUserCreatingPass] = useState<boolean>(false);
+  const [isMenuExpanded,setIsMenuExpanded] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
   const [userNameInput, setUserNameInput] = useState<string>('');
   const [notesInput,setNotesInput] = useState<string>('');
+
   const handleCreateNewPassword = async function(){
     //create the new password
     await vaultController.createNewPassword(passwordInput,nickNameInput,siteUrlInput,userNameInput,notesInput);
     //refresh client's password data
     setPasswords(await vaultController.populatePasswords());
   };
-  if (isUserCreatingPass){
+
+  if (isMenuExpanded){ //if the user has expanded the New Password menu then display the form to create a new password
     return(
       <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <h3 onClick={()=>{setIsUserCreatingPass(false)}}><img src={menuUpArrow} alt='up arrow' />New Password</h3>
+        <h3 onClick={()=>{setIsMenuExpanded(false)}}><img src={menuUpArrow} alt='up arrow' />New Password</h3>
         <div>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -52,8 +54,8 @@ export default function NewPasswordForm({
       </form>
     )
   }else{
-    return(
-      <h3 onClick={()=>{setIsUserCreatingPass(true)}}><img src={menuDownArrow} alt='drop down arrow' />New Password</h3>
+    return( //return the closed new password menu
+      <h3 onClick={()=>{setIsMenuExpanded(true)}}><img src={menuDownArrow} alt='drop down arrow' />New Password</h3>
     )
-  }
-}
+  };
+};

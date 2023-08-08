@@ -1,3 +1,4 @@
+import { verifyToken } from "../Helpers/Auth";
 import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
 
 export class VaultController{

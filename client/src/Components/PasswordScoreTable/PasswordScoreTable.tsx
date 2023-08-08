@@ -46,5 +46,5 @@ export default function PasswordScoreTable(){
         </tr>
       </tbody>
     </table>
-  )
-}
+  );
+};

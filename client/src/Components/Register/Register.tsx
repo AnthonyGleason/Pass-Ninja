@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
-import { VaultController } from '../../Classes/VaultController';
 import './Register.css';
 
-export default function Register({vaultController}:{vaultController:VaultController}){
+export default function Register(){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
   const [lastNameInput,setLastNameInput] = useState<string>('');
   const [emailInput,setEmailInput] = useState<string>('');
@@ -38,8 +37,8 @@ export default function Register({vaultController}:{vaultController:VaultControl
   };
 
   return(
-    <div className='register darken-background'>
-      <form className='scroll'>
+    <div className='register'>
+      <form>
         <h3>Register</h3>
         <div>
           <label>First Name</label>

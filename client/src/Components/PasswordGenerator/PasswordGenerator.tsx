@@ -165,5 +165,5 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     return(
       <h3 onClick={()=>{setIsPassGeneratorOpen(true)}}><img src={menuDownArrow} alt='drop down arrow' />Secure Password Generator</h3>
     )
-  }
+  };
 };

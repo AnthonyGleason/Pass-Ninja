@@ -1,30 +1,33 @@
 import React, {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { encryptPassword } from '../../Helpers/Passwords';
-import { verifyToken } from '../../Helpers/Auth';
+import { handleProtectedInitialPageLoad, verifyToken } from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import { VaultController } from '../../Classes/VaultController';
+import menuDownArrow from '../../Assets/menu-down-arrow.svg';
+import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function Settings({vaultController}:{vaultController:VaultController}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>('');
   const [curMasterPassInput,setCurMasterPassInput] = useState<string>('');
   const [newMasterPassInput, setNewMasterPassInput] = useState<string>('');
   const [newMasterPassConfInput, setNewMasterPassConfInput] = useState<string>('');
-  //these booleans will let the user know which fields are going to be updatedb
+  //these booleans control the expansion of menu items
+  const [isEmailMenuSettingExpanded, setIsEmailMenuSettingExpanded] = useState<boolean>(false);
+  const [isPasswordMenuSettingExpanded, setIsPasswordMenuSettingExpanded] = useState<boolean>(false);
+
+  //these booleans will let the user know which fields are going to be updated
   const [isMasterPassUpdated, setIsMasterPassUpdated] = useState<boolean>(false);
   const [isEmailUpdated, setIsEmailUpdated] = useState<boolean>(false);
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(()=>{
-    const handleInitialPageLoad = async()=>{
-      //verify the users token and master password is present
-      if (!await verifyToken(localStorage.getItem('token') as string) || !vaultController.masterPassword){
-        // session is invalid, show user logged out popup
-        setIsUserLoggedOut(true);
-      };
-    };
-    handleInitialPageLoad();
+    handleProtectedInitialPageLoad(
+      vaultController,
+      ()=>{}, //supplied empty function because we do not need to update the passwords here
+      setIsUserLoggedOut,
+    );
   },[]);
 
   const handleConfirmChanges = async function(){
@@ -75,35 +78,38 @@ export default function Settings({vaultController}:{vaultController:VaultControl
 
   //check to see which inputs were changed and also switches to confirm changes view once the state is updated
   const handleMakeChangesPress = function(){
-    //all password inputs are not empty and new passwords match
+    //all password inputs are not empty and new password matches the confirmation password
     if (newMasterPassInput && newMasterPassConfInput && newMasterPassInput===newMasterPassConfInput){
       setIsMasterPassUpdated(true);
     }
-    //email is being updated (different than the usnew arrayer's current email) and the email is not an empty string
+    //email is being updated (different than the user's current email) and the email is not an empty string
     if (emailAddressInput){
       setIsEmailUpdated(true);
     };
   };
-
-  if (isUserLoggedOut){
-    return(<LogoutPopup />)
-  };
   
-  if (isEmailUpdated || isMasterPassUpdated){
+  if (isUserLoggedOut){
+    return(<LogoutPopup />) //user is not signed in, prevent access
+  }else if (isEmailUpdated || isMasterPassUpdated){ //any of the settings are updated
     return(
+      // show user changes that will be applied to their vault
       <div>
         <h3>The following changes will be applied.</h3>
         <ul>
-          {isEmailUpdated ? (
-            <li>The email associated with your account will change to {emailAddressInput}</li>
-          ) : (
-            null
-          )}
-          {isMasterPassUpdated ? (
-            <li>The master password associated with your account will change. (password hidden for your security).</li>
-          ) : (
-            null
-          )}
+          {
+            isEmailUpdated ? (
+              <li>The email associated with your account will change to {emailAddressInput}</li>
+            ) : (
+              null
+            )
+          }
+          {
+            isMasterPassUpdated ? (
+              <li>The master password associated with your account will change. (password hidden for your security).</li>
+            ) : (
+              null
+            )
+          }
         </ul>
         <p>Enter your current master password</p>
         <input type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
@@ -113,24 +119,47 @@ export default function Settings({vaultController}:{vaultController:VaultControl
     )
   }else{
     return(
+      // menu which lets the user update their account settings
       <div>
         <h3>Account settings</h3>
-        <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
         <div>
-          {/* make drop down forms later */}
-          <p>Change your login email address</p>
-          <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
+          <p onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
+            {isEmailMenuSettingExpanded===true ? <img src={menuUpArrow} alt='menu up arrow' /> : <img src={menuDownArrow} alt='menu down arrow' /> }
+            Email Address
+          </p>
+          {
+            isEmailMenuSettingExpanded ? (
+              <>
+                <p>Enter your new email address</p>
+                <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
+              </>
+            ) : (
+              null
+            )
+          }
         </div>
         <div>
-          <p>Change your master password</p>
-          <p>Enter your new master password</p>
-          <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
-          <p>Enter your new master password (again)</p>
-          <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
+          <p onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
+            {isPasswordMenuSettingExpanded===true ? <img src={menuUpArrow} alt='menu up arrow' /> : <img src={menuDownArrow} alt='menu down arrow' /> }
+            Master Password
+          </p>
+          {
+            isPasswordMenuSettingExpanded ? (
+              <>
+                <p>Enter your new master password</p>
+                <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
+                <p>Enter your new master password (again)</p>
+                <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
+              </>
+            ) : (
+              null
+            )
+          }
         </div>
         <h3>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h3>
         <p>You will have an opportunity to confirm your account changes on the next page.</p>
-        <button type='button' onClick={()=>{handleMakeChangesPress()}}>Update Account Settings</button>
+        <button type='button' onClick={()=>{handleMakeChangesPress()}}>Apply Settings</button>
+        <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
       </div>
     );
   };

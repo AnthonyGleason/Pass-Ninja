@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidGen } from 'uuid';
 import NewPasswordForm from '../NewPasswordForm/NewPasswordForm';
 import Password from '../Password/Password';
-import { verifyToken } from '../../Helpers/Auth';
+import { handleProtectedInitialPageLoad, verifyToken } from '../../Helpers/Auth';
 import { useNavigate } from 'react-router-dom';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import searchIcon from '../../Assets/search.svg';
@@ -32,19 +32,11 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
 
   //get passwords to populate passwords state on initial page load
   useEffect(()=>{
-    const handleInitialPageLoad = async()=>{
-      //verify the users token and master password are present
-      if (await verifyToken(localStorage.getItem('token') as string) && vaultController.masterPassword){
-        await vaultController.populatePasswords()
-        .then(()=>{
-          setPasswords(vaultController.passwords);
-        });
-      }else{
-        //show user logged out popup
-        setIsUserLoggedOut(true);
-      }
-    };
-    handleInitialPageLoad();
+    handleProtectedInitialPageLoad(
+      vaultController,
+      setPassSnip,
+      setIsUserLoggedOut
+    );
   },[]);
   
   if (isUserLoggedOut){
@@ -58,7 +50,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     issues pressing on smaller elements on the page.
   */
   return(
-    <div className='vault darken-background'>
+    <div className='vault'>
       <h3>Vault<img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
       <div>
         <img src={searchIcon} alt='magnifying glass' />

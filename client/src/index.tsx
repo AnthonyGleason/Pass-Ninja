@@ -21,7 +21,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route element={<Register vaultController={vaultController} />} path='/vault/register' />
+        <Route element={<Register />} path='/vault/register' />
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
         <Route element={<Settings vaultController={vaultController} />} path='/vault/settings' />
         <Route element={<Vault vaultController={vaultController} />} path='/vault'/>
