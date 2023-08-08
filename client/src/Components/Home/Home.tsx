@@ -23,14 +23,14 @@ export default function Home({vaultController}:any) {
   };
 
   return (
-    <div className="home blur-background">
-      <h3 className='scroll'>Welcome to PassNinja</h3>`
-      <img src={largeNinjaImg} alt='cartoon ninja holding sword' />`
-      <h4 className='scroll'>Master the Art of Password Security For Free Today!</h4>
+    <div className="home">
+      <h2>Welcome to PassNinja</h2>
+      <img src={largeNinjaImg} alt='cartoon ninja holding sword' />
+      <h3>Master the Art of Password Security For Free Today!</h3>
       <div className='login-button-container'>
-        <button className='scroll' type='button' onClick={()=>{handleDemoLogin()}}>Demo</button>
-        <button className='scroll' type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-        <button className='scroll' type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
+        <button type='button' onClick={()=>{handleDemoLogin()}}>Demo</button>
+        <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+        <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
       </div>
     </div>
   );

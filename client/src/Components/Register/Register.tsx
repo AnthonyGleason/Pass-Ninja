@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import { VaultController } from '../../Classes/VaultController';
+import './Register.css';
 
 export default function Register({vaultController}:{vaultController:VaultController}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
@@ -37,8 +38,9 @@ export default function Register({vaultController}:{vaultController:VaultControl
   };
 
   return(
-    <div className='register'>
-      <form>
+    <div className='register darken-background'>
+      <form className='scroll'>
+        <h3>Register</h3>
         <div>
           <label>First Name</label>
           <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />

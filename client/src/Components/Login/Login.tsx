@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VaultController } from '../../Classes/VaultController';
+import './Login.css';
 
 export default function Login({vaultController}:{vaultController:VaultController}){
   const [emailInput,setEmailInput] = useState('');
@@ -39,6 +40,7 @@ export default function Login({vaultController}:{vaultController:VaultController
   return(
     <div className='login'>
       <form>
+        <h3>Login</h3>
         <div>
           <label>Email</label>
           <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />

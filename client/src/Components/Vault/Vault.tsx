@@ -58,7 +58,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     issues pressing on smaller elements on the page.
   */
   return(
-    <div className='vault'>
+    <div className='vault darken-background'>
       <h3>Vault<img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
       <div>
         <img src={searchIcon} alt='magnifying glass' />
