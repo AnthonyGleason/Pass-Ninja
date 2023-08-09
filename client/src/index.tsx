@@ -12,6 +12,7 @@ import Vault from './Components/Vault/Vault';
 //classes
 import { VaultController } from './Classes/VaultController';
 import './index.css';
+import DemoLogin from './Components/DemoLogin/DemoLogin';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -23,9 +24,10 @@ root.render(
       <Routes>
         <Route element={<Register />} path='/vault/register' />
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
+        <Route element={<DemoLogin vaultController={vaultController} />} path='/vault/demologin' />
         <Route element={<Settings vaultController={vaultController} />} path='/vault/settings' />
         <Route element={<Vault vaultController={vaultController} />} path='/vault'/>
-        <Route element={<Home vaultController={vaultController} />} path='/' />
+        <Route element={<Home />} path='/' />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

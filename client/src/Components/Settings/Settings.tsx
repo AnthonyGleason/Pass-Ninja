@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { encryptPassword } from '../../Helpers/Passwords';
-import { handleProtectedInitialPageLoad, verifyToken } from '../../Helpers/Auth';
+import { handleProtectedInitialPageLoad} from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import { VaultController } from '../../Classes/VaultController';
 import menuDownArrow from '../../Assets/menu-down-arrow.svg';
@@ -35,16 +35,15 @@ export default function Settings({vaultController}:{vaultController:VaultControl
     let updatedPasswords:any[] = [];
     //handle email is updated
     let tempEmail:string ='';
-    if (isEmailUpdated){
-      tempEmail = emailAddressInput;
-    };
-    //handle master pass updating
+    //handle email update
+    if (isEmailUpdated) tempEmail = emailAddressInput;
+    //handle master password update
     if (isMasterPassUpdated){
       vaultController.passwords.forEach((password:any)=>{
         let updatedPassword:any = password;
-        //encrypt the passwords with the new master pass input
+        //encrypt the passwords with the updated master pass input
         updatedPassword.encryptedPassword = encryptPassword(updatedPassword.decryptedPassword,newMasterPassInput);
-        //stop the decryptedPassword and decryptedNotes from being sent to the server (* will come back to this with a better approach)
+        //stop the decryptedPassword and decryptedNotes from being sent to the server
         updatedPassword.decryptedPassword = undefined;
         updatedPassword.decryptedNotes = undefined;
         //add the password to the updated passwords array
@@ -63,7 +62,7 @@ export default function Settings({vaultController}:{vaultController:VaultControl
           updatedMasterPassword: newMasterPassInput,
           updatedMasterPasswordConfirm: newMasterPassConfInput,
           currentMasterPassword: curMasterPassInput,
-          updatedEmail: tempEmail,
+          updatedEmail: tempEmail, //if an empty string is provided (when the email is not being updated) the server will handle validation of this
           updatedPasswords: updatedPasswords,
         }),
       });

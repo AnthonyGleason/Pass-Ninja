@@ -49,7 +49,11 @@ export default function Login({vaultController}:{vaultController:VaultController
           <label>Password</label>
           <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
         </div>
-        <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+        <div>
+          <button type='button' onClick={()=>{handleSubmit()}}>Log In</button>
+          <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+          <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+        </div>
       </form>
     </div>
   )
