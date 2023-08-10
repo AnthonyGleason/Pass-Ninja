@@ -3,15 +3,25 @@
 }
 
 .tooltip {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: gainsboro;
-  font-size: 1vw;
   padding: 10px;
-  width: 100%;
+  width: max-content;
+  max-width: 90%;
+  border: 2px solid black;
   height: max-content;
   cursor: pointer;
   text-align: center;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  background-color: #131314;
+  /* center the tooltip */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* position it at an reasonable alert z-index */
+  z-index: 5;
+}
+.tooltip h3{
+  align-self: center;
 }

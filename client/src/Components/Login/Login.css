@@ -1,27 +1,8 @@
-.login form{
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-}
-.login form div{
-  justify-content: space-between;
-  width: 100%;
-  display: flex;
-  align-self: center;
-}
 .login{
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.login form button{
-  background-color: transparent;
-  border: 0px solid transparent;
-  font-size: 20px;
-  cursor: pointer;
 }
 .login-button-container{
   display: flex;

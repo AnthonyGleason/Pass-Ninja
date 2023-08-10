@@ -12,9 +12,9 @@ export default function Home() {
       <img src={largeNinjaImg} alt='cartoon ninja holding sword' />
       <h3>Master the Art of Password Security For Free Today!</h3>
       <div className='login-button-container'>
-        <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Demo</button>
-        <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
         <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
+        <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+        <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
       </div>
     </div>
   );

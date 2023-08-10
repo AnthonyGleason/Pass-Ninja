@@ -60,7 +60,11 @@ export default function Register(){
           <label>Master Password (again)</label>
           <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
         </div>
-        <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+        <div>
+          <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+          <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
+          <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+        </div>
       </form>
       <PasswordGenerator setPasswordInput={setMasterPasswordInput} />
     </div>

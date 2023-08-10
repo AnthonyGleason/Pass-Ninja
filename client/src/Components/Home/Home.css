@@ -30,18 +30,10 @@
   padding: 30px;
   background-color: transparent;
 }
-.login-button-container button {
-  width: 90%;
-  height: 65px;
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
-  font-size: 22px;
-}
-
 .login-button-container{
   display: flex;
   gap: 15px;
   width: 90vw;
   max-width: 500px;
+  justify-content: center;
 }

@@ -17,7 +17,8 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #cfcfcf;
+  background-color: #1d1d1f;
+  color: #ebe1e1;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -40,4 +41,58 @@ select{
   background-size: cover;
   background-color: transparent;
   background-position: center;
+}
+
+button{
+  margin: 10px;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #131314;
+  /* remove the default border */
+  border: 0px solid transparent;
+  color: #ebe1e1;
+}
+button:hover{
+  background-color: #222224;
+}
+form{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+form div{
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+  align-self: center;
+}
+input{
+  background-color: #131314;
+  padding: 10px;
+  /* remove the default border */
+  border: 0px solid transparent;
+
+  color: #ebe1e1;
+}
+.menu-arrow{
+  width: 50px;
+}
+.drop-down-menu{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: #131314;
+  color: #ebe1e1;
+  width: 100%;
+  cursor: pointer;
+  justify-content: center;
+}
+.drop-down-opened{
+  background-color: #ebe1e1;
+}
+.checkbox{
+  height: 35px;
 }

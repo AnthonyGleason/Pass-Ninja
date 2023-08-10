@@ -7,13 +7,13 @@ export default function PasswordScoreTable(){
         <tr>
           <th>How Are Passwords Rated?</th>
         </tr>
-        <tr>
-          <th>Bits</th>
-          <th>Strength</th>
-          <th>Time to Crack</th>
-        </tr>
       </thead>
       <tbody>
+        <tr style={{backgroundColor: 'ghostwhite'}}>
+          <td>Bits</td>
+          <td>Strength</td>
+          <td>Time to Crack</td>
+        </tr>
         <tr style={{backgroundColor: 'grey'}}>
           <td>0-39</td>
           <td>Very Weak</td>

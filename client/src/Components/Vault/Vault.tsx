@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidGen } from 'uuid';
 import NewPasswordForm from '../NewPasswordForm/NewPasswordForm';
 import Password from '../Password/Password';
-import { handleProtectedInitialPageLoad, verifyToken } from '../../Helpers/Auth';
+import { handleProtectedInitialPageLoad} from '../../Helpers/Auth';
 import { useNavigate } from 'react-router-dom';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import searchIcon from '../../Assets/search.svg';

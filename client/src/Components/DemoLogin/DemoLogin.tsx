@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VaultController } from '../../Classes/VaultController';
+import './DemoLogin.css';
 
 export default function DemoLogin({vaultController}:{vaultController:VaultController}){
   const navigate = useNavigate();
@@ -27,8 +28,8 @@ export default function DemoLogin({vaultController}:{vaultController:VaultContro
   },[])
 
   return(
-    <div>
-      <p>Creating your secure demo enviornment...</p>
+    <div className='demo-login'>
+      <p>Creating your secure demo environment...</p>
       <p>This page will automatically refresh when complete.</p>
     </div>
   )
