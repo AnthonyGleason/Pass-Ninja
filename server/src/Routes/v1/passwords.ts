@@ -54,7 +54,6 @@ passwordRouter.delete('/:passwordID',authenticateToken, async(req:customRequest,
   const passwordDoc:passwordDoc | null = await getPasswordByID(passwordID);
   if (passwordDoc){
     //verify user owns the password
-    console.log(passwordDoc.vaultID._id,vaultID)
     if (passwordDoc.vaultID._id.toString()===vaultID){
       await deletePasswordByID(passwordID);
       res.status(200).json({'message': `Removed a password with id ${passwordID}.`});

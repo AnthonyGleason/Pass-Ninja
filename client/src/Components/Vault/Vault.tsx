@@ -21,11 +21,13 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     additionally this useEffect will perform searches automatically as the user types. (accomplished by adding the searchInput as a useEffect dependency)
   */
   useEffect(()=>{
-    setPassSnip(()=>{
-      return passwords.filter((password) => {
-        return password.nickName.includes(searchInput);
+    if (passwords){
+      setPassSnip(()=>{
+        return passwords.filter((password) => {
+          return password.nickName.includes(searchInput);
+        });
       });
-    });
+    }
   },[passwords,searchInput]);
 
   const navigate = useNavigate();

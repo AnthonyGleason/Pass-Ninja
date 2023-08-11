@@ -85,6 +85,7 @@ export class VaultController{
       //populate the passwords property with the decryptedPasswords
       this.passwords = passwords;
     });
+    return this.passwords;
   };
 
   deletePassword = async(passwordID:string)=>{
