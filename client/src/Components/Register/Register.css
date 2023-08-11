@@ -30,6 +30,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "output settings"
+  "info settings";
 }
 .register .drop-down-menu{
   display: flex;

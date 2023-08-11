@@ -9,6 +9,7 @@ import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(20);
+  const [lowerCasesInput, setLowerCasesInput] = useState<boolean>(true);
   const [upperCasesInput, setUpperCasesInput] = useState<boolean>(true);
   const [numbersInput, setNumbersInput] = useState<boolean>(true);
   const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
@@ -19,13 +20,19 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   const specialCharsSet = '!@#$%^&*()_+{}:"<>?|';
   const upperCaseCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbersSet = '0123456789';
+
   const updateCharPool = function():string{
-    let newCharPool = lowerCaseCharsSet;
+    let newCharPool = '';
     // Add character sets to the pool based on user constraints
+    if (lowerCasesInput) newCharPool += lowerCaseCharsSet;
     if (specialCharsInput) newCharPool += specialCharsSet;
     if (upperCasesInput) newCharPool += upperCaseCharsSet;
     if (numbersInput) newCharPool += numbersSet;
-    //set the new char pool
+    // Handle instances where the user unchecks all boxes (which shouldnt be allowed because handlePasswordParamChange verifies at least one box is checked)
+    if (!newCharPool){
+      newCharPool = lowerCaseCharsSet;
+      setLowerCasesInput(true);
+    };
     return newCharPool;
   };
   let charPool = updateCharPool();
@@ -37,7 +44,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     const generatedPassword:string = generatePassword();
     //set the password in state so the user sees it
     setGenPasswordInput(generatedPassword);
-  },[minLengthInput,maxLengthInput,specialCharsInput,upperCasesInput,numbersInput]);
+  },[minLengthInput,maxLengthInput,specialCharsInput,lowerCasesInput,upperCasesInput,numbersInput]);
 
   //score the password when a the password input is modified (user will see realtime password scores)
   useEffect(()=>{
@@ -84,24 +91,26 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
           setMaxLengthInput(updatedVal);
         }
         break;
+      case 'lowerCases':
+        //if all other inputs are unchecked break (one char set must be enabled for password generation)
+        if (!upperCasesInput && !specialCharsInput && !numbersInput) break;
+        lowerCasesInput === true ? setLowerCasesInput(false) : setLowerCasesInput(true);
+        break;
       case 'upperCases':
+        //if all other inputs are unchecked break (one char set must be enabled for password generation)
+        if (!lowerCasesInput && !specialCharsInput && !numbersInput) break;
         upperCasesInput === true ? setUpperCasesInput(false) : setUpperCasesInput(true);
         break;
       case 'specialChars':
+        //if all other inputs are unchecked break (one char set must be enabled for password generation)
+        if (!upperCasesInput && !lowerCasesInput && !numbersInput) break;
         specialCharsInput === true ? setSpecialCharsInput(false) : setSpecialCharsInput(true);
         break;
       case 'numbers':
+        //if all other inputs are unchecked break (one char set must be enabled for password generation)
+        if (!upperCasesInput && !specialCharsInput && !lowerCasesInput) break;
         numbersInput === true ? setNumbersInput(false) : setNumbersInput(true);
         break;
-    };
-  };
-  
-  //return a or an to keep the sentence gramatically correct
-  const getStrengthPreceedingString = function():string{
-    if (passwordScore.strength==='Extremely Strong'){
-      return 'an';
-    }else{
-      return 'a';
     };
   };
 
@@ -131,6 +140,10 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
               <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
             </div>
             <div className='pass-gen-setting'>
+              <Tooltip term='Generate LowerCases' desc='Checking this box allows the password generator to generate lowercase characters in new passwords.' />
+              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('lowerCases',0)}} checked={lowerCasesInput} />
+            </div>
+            <div className='pass-gen-setting'>
               <Tooltip term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
               <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
             </div>
@@ -142,6 +155,10 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
               <Tooltip term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
               <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
             </div>
+            <div className='pass-gen-char-pool-info'>
+              There are <b>{charPool.length}</b> characters currently in the&nbsp;
+              <Tooltip term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
+            </div>
             <p>(Hint: Press on any underlined text to learn more!)</p>
           </div>
           <div className='pass-gen-info'>
@@ -149,13 +166,9 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
             <PasswordScoreTable />
             <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
             <div className='pass-gen-score'>
-              The currently generated password has a&nbsp;
-              <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
-              <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
-            </div>
-            <div className='pass-gen-char-pool-info'>
-              There are <b>{charPool.length}</b> characters currently in the&nbsp;
-              <Tooltip term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
+              The currently generated password is <b>{passwordScore.strength}</b>.
+              This password has a <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
+              <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>.
             </div>
           </div>
         </div>
