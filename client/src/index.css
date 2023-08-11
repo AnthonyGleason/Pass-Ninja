@@ -28,12 +28,15 @@ button{
   background-color: #1b1a1a;
   border: 0px solid transparent;
   color: #ebe1e1;
-  font-size: 16px;
-  padding: 10px;
-  margin: 5px;
+  font-size: 18px;
+  padding: 15px;
+  margin: 10px;
   cursor: pointer;
 }
 input{
   border: 0px solid transparent;
   font-size: 12px;
+}
+.menu-arrow{
+  width: 50px;
 }
