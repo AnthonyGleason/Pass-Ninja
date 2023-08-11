@@ -4,24 +4,27 @@ import './Tooltip.css';
 
 export default function Tooltip({
   term,
-  desc
+  desc,
+  activeTooltipTerm,
+  setActiveTooltipTerm
 }:{
   term:string,
-  desc:string
+  desc:string,
+  activeTooltipTerm:string,
+  setActiveTooltipTerm:Function
 }){
-  const [showTooltip,setShowTooltip] = useState<boolean>(false);
-  if (!showTooltip){ //add is not an active tooltip
+  if (activeTooltipTerm!==term){
     return(
       <>
-        <u onClick={()=>{setShowTooltip(true)}} className='tooltip-term'>{term}</u>
+        <u onClick={()=>{setActiveTooltipTerm(term)}} className='tooltip-term'>{term}</u>
       </>
     )
   }else{
     return(
       <>
-        <u onClick={()=>{setShowTooltip(false)}} className='tooltip-term'>{term}</u>
+        <u onClick={()=>{setActiveTooltipTerm('')}} className='tooltip-term'>{term}</u>
         {/* the tooltip class has a reasonable z-index so it appears above other elements as an alert */}
-        <div className='tooltip' onClick={()=>{setShowTooltip(false)}}>
+        <div className='tooltip' onClick={()=>{setActiveTooltipTerm(false)}}>
           <img src={xImg} alt='exit button' />
           <div>{desc}</div>
         </div>
