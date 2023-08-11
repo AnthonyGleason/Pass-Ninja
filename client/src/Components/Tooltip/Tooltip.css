@@ -26,3 +26,7 @@
 .tooltip h3{
   align-self: center;
 }
+.tooltip img{
+  align-self: flex-start;
+  padding: 3px;
+}

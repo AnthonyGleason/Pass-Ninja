@@ -124,7 +124,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
         <div className='pass-gen'>
           <div className='pass-gen-output'>
             <h4>Generated Password:</h4>
-            <textarea className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></textarea>
+            <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
             <div className='gen-password-button-container'>
               <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
               <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
