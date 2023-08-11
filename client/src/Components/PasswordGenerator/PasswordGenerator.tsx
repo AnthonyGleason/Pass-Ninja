@@ -67,20 +67,22 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   const handlePasswordParamChange = function (field:string,updatedVal:number){
     switch(field){
       case 'minLength':
-        //break if the minLength is going to be greater than the max length input
+        // if the new min length value is greater than the max length then update both the min and max length so they are the same. 
         if (updatedVal>maxLengthInput){
           setMaxLengthInput(updatedVal);
           setMinLengthInput(updatedVal);
+        }else{
+          // if the new min length is less than or equal to the max value it is a valid change and can be applied
+          setMinLengthInput(updatedVal);
         }
-        setMinLengthInput(updatedVal);
         break;
       case 'maxLength':
-        //break if the maxLength is going to be less than the min length input
         if (updatedVal<minLengthInput){
           setMaxLengthInput(updatedVal);
           setMinLengthInput(updatedVal);
+        }else{
+          setMaxLengthInput(updatedVal);
         }
-        setMaxLengthInput(updatedVal);
         break;
       case 'upperCases':
         upperCasesInput === true ? setUpperCasesInput(false) : setUpperCasesInput(true);
@@ -93,11 +95,6 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
         break;
     };
   };
-
-  const handleGeneratePassword = function():void{
-    const generatedPassword:string = generatePassword();
-    setGenPasswordInput(generatedPassword);
-  };
   
   //return a or an to keep the sentence gramatically correct
   const getStrengthPreceedingString = function():string{
@@ -107,68 +104,71 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
       return 'a';
     };
   };
+
   if (isPassGeneratorOpen){
     return(
-      <div className='pass-gen'>
+      <div className='pass-gen-menu'>
         <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>
           <img className='menu-arrow' src={menuDownArrow} alt='drop down arrow' />
           <p>Secure Password Generator</p>
         </h3>
-        <div className='pass-gen-content'>
-          <div className='pass-gen-left'>
-            <p>Generated Password:</p>
-            <div>
-              <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></input>
-            </div>
+        <div className='pass-gen'>
+          <div className='pass-gen-output'>
+            <h4>Generated Password:</h4>
+            <textarea className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}}></textarea>
             <div className='gen-password-button-container'>
-              <button type='button' onClick={()=>{handleGeneratePassword()}}>Regenerate Password</button>
+              <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
               <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
             </div>
-            <div>
+          </div>
+          <div className='pass-gen-settings'>
+            <div className='pass-gen-setting'>
               <Tooltip term='Min Length' desc='Changing this input modifies the minimum amount of characters a newly generated password could have.' /> {minLengthInput}
               <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
             </div>
-            <div>
-              <div>
-                <Tooltip term='Max Length' desc='Changing this input modifies the maximum amount of characters a newly generated password couldThe curre have.' /> {maxLengthInput}
-                <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
-              </div>
-              <div>
-                <Tooltip term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
-                <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
-              </div>
-              <div>
-                <Tooltip term='Generate Special Characters' desc='Checking this box allows the password generator to generate special characters in new passwords.' />
-                <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
-              </div>
+            <div className='pass-gen-setting'>
+              <Tooltip term='Max Length' desc='Changing this input modifies the maximum amount of characters a newly generated password could have.' /> {maxLengthInput}
+              <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
             </div>
-            <div>
+            <div className='pass-gen-setting'>
+              <Tooltip term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
+              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
+            </div>
+            <div className='pass-gen-setting'>
+              <Tooltip term='Generate Special Characters' desc='Checking this box allows the password generator to generate special characters in new passwords.' />
+              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
+            </div>
+            <div className='pass-gen-setting'>
               <Tooltip term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
               <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
             </div>
+            <p>(Hint: Press on any underlined text to learn more!)</p>
           </div>
-          <div className='pass-gen-right'>
+          <div className='pass-gen-info'>
+            <h4>How are passwords rated?</h4>
             <PasswordScoreTable />
-            <div>
-              This password has a&nbsp;
+            <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
+            <div className='pass-gen-score'>
+              The currently generated password has a&nbsp;
               <Tooltip term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
               <Tooltip term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>. This is {getStrengthPreceedingString()} <b>{passwordScore.strength}</b> password.
             </div>
-            <div>
+            <div className='pass-gen-char-pool-info'>
               There are <b>{charPool.length}</b> characters currently in the&nbsp;
               <Tooltip term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
             </div>
-            <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
           </div>
         </div>
       </div>
     );
   }else{
     return(
-      <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>
-        <img className='menu-arrow' src={menuUpArrow} alt='up arrow' />
-        <p>Secure Password Generator</p>
-      </h3>
-    )
+      <div className='pass-gen-menu'>
+        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>
+          <img className='menu-arrow' src={menuUpArrow} alt='up arrow' />
+          <p>Secure Password Generator</p>
+        </h3>
+      </div>
+    );
   };
 };

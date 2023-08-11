@@ -19,6 +19,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: #ebe1e1;
   /* position it at an reasonable alert z-index */
   z-index: 5;
 }

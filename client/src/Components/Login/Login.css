@@ -1,10 +1,31 @@
-.login{
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .login-button-container{
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.login{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+}
+.login form{
+  height: 100%;
+  flex-grow: 1;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+}
+.login .login-input{
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  height: 35px;
+  font-size: 18px;
+  align-items: center;
 }

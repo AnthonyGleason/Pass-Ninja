@@ -1,13 +1,38 @@
 .register{
-  flex-grow: 1;
   display: flex;
-  align-items: center;
-  flex-direction: column;
   justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
 }
 .register form{
+  height: 100%;
   flex-grow: 1;
+  align-self: center;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
+}
+.register .reg-input{
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  height: 35px;
+  font-size: 18px;
+  align-items: center;
+}
+.register .pass-gen-menu{
+  width: 100%;
+}
+.register .pass-gen{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.register .drop-down-menu{
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }

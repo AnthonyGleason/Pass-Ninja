@@ -3,11 +3,6 @@ import React from 'react';
 export default function PasswordScoreTable(){
   return(
     <table>
-      <thead>
-        <tr>
-          <th>How Are Passwords Rated?</th>
-        </tr>
-      </thead>
       <tbody>
         <tr style={{backgroundColor: 'ghostwhite'}}>
           <td>Bits</td>

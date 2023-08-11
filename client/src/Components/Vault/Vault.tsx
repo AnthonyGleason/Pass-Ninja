@@ -51,14 +51,19 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
   */
   return(
     <div className='vault'>
-      <h3>Vault<img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></h3>
-      <div>
+      <div className='vault-nav'>
+        <p>Vault</p>
+        <img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} />
+      </div>
+      <div className='search-vault-bar'>
         <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
       </div>
-      {
-        passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
-      }
+      <div className='passwords-container'>
+        {
+          passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
+        }
+      </div>
       <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
     </div>
   )
