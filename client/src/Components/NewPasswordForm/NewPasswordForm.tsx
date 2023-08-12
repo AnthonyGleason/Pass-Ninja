@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { VaultController } from '../../Classes/VaultController';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
-import menuDownArrow from '../../Assets/menu-down-arrow.svg';
-import menuUpArrow from '../../Assets/menu-up-arrow.svg';
+import './NewPasswordForm.css';
 
 export default function NewPasswordForm({
     vaultController,
@@ -27,8 +26,8 @@ export default function NewPasswordForm({
 
   if (isMenuExpanded){ //if the user has expanded the New Password menu then display the form to create a new password
     return(
-      <form method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <h3 onClick={()=>{setIsMenuExpanded(false)}}><img src={menuUpArrow} alt='up arrow' />New Password</h3>
+      <form className='new-password-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
+        <h3 onClick={()=>{setIsMenuExpanded(false)}}>New Password</h3>
         <div>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -55,7 +54,7 @@ export default function NewPasswordForm({
     )
   }else{
     return( //return the closed new password menu
-      <h3 onClick={()=>{setIsMenuExpanded(true)}}><img src={menuDownArrow} alt='drop down arrow' />New Password</h3>
+      <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>New Password</h3>
     )
   };
 };

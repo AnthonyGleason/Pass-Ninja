@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { VaultController } from '../../Classes/VaultController';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
-import menuDownArrow from '../../Assets/menu-down-arrow.svg';
-import menuUpArrow from '../../Assets/menu-up-arrow.svg';
+import './Password.css';
 
 export default function Password({
     password,
@@ -40,12 +39,12 @@ export default function Password({
 
   if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
-      <h5 onClick={()=>{setIsPasswordExpanded(true)}}><img src={menuDownArrow} alt='drop down arrow' />{password.nickName}</h5>
+      <h5 onClick={()=>{setIsPasswordExpanded(true)}}>{password.nickName}</h5>
     )
   }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <div className='password'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}><img src={menuUpArrow} alt='up arrow' />{password.nickName}</h5>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}</h5>
         <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
@@ -57,7 +56,8 @@ export default function Password({
     )
   }else{
     return(
-      <form>
+      <form className='password'>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}</h5>
         <div>
           <p>Nickname</p>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />

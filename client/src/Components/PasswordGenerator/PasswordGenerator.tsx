@@ -3,8 +3,6 @@ import './PasswordGenerator.css';
 import { PasswordScore } from '../../Classes/PasswordScore';
 import PasswordScoreTable from '../PasswordScoreTable/PasswordScoreTable';
 import Tooltip from '../Tooltip/Tooltip';
-import menuDownArrow from '../../Assets/menu-down-arrow.svg';
-import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
@@ -120,7 +118,6 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     return(
       <div className='pass-gen-menu'>
         <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>
-          <img className='menu-arrow' src={menuDownArrow} alt='drop down arrow' />
           <p>Secure Password Generator</p>
         </h3>
         <div className='pass-gen'>
@@ -133,6 +130,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
             </div>
           </div>
           <div className='pass-gen-settings'>
+            <h4>Generation Settings:</h4>
             <div className='pass-gen-setting'>
               <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum amount of characters a newly generated password could have.' /> {minLengthInput}
               <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
@@ -164,7 +162,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
             <p>(Hint: Press on any underlined text to learn more!)</p>
           </div>
           <div className='pass-gen-info'>
-            <h4>How are passwords rated?</h4>
+            <h4>How Are Passwords Rated?</h4>
             <PasswordScoreTable />
             <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
             <div className='pass-gen-score'>
@@ -180,7 +178,6 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
     return(
       <div className='pass-gen-menu'>
         <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>
-          <img className='menu-arrow' src={menuUpArrow} alt='up arrow' />
           <p>Secure Password Generator</p>
         </h3>
       </div>

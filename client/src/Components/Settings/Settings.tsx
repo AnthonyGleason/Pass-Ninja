@@ -4,8 +4,6 @@ import { encryptPassword } from '../../Helpers/Passwords';
 import { handleProtectedInitialPageLoad} from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import { VaultController } from '../../Classes/VaultController';
-import menuDownArrow from '../../Assets/menu-down-arrow.svg';
-import menuUpArrow from '../../Assets/menu-up-arrow.svg';
 
 export default function Settings({vaultController}:{vaultController:VaultController}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>('');
@@ -123,7 +121,6 @@ export default function Settings({vaultController}:{vaultController:VaultControl
         <h3>Account settings</h3>
         <div>
           <p onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
-            {isEmailMenuSettingExpanded===true ? <img src={menuUpArrow} alt='menu up arrow' /> : <img src={menuDownArrow} alt='menu down arrow' /> }
             Email Address
           </p>
           {
@@ -139,7 +136,6 @@ export default function Settings({vaultController}:{vaultController:VaultControl
         </div>
         <div>
           <p onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
-            {isPasswordMenuSettingExpanded===true ? <img src={menuUpArrow} alt='menu up arrow' /> : <img src={menuDownArrow} alt='menu down arrow' /> }
             Master Password
           </p>
           {

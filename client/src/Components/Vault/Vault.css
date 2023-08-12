@@ -1,0 +1,67 @@
+.vault{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.1fr 1fr;
+  grid-template-areas: 
+  "nav nav"
+  "passwords newpass";
+  column-gap: 10px;
+  margin: 10px;
+}
+.vault-nav{
+  grid-area: nav;
+  display: flex;
+  height: 100px;
+  justify-content: space-around;
+  align-items: center;
+}
+.vault-nav img{
+  width: 30px;
+}
+.vault-nav .vault-buttons{
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 500px;
+  align-items: center;
+  font-size: 20px;
+}
+.vault-buttons *{
+  cursor: pointer;
+}
+.vault-buttons p{
+  padding: 12px;
+  background-color: #131313;
+}
+.passwords-container{
+  grid-area: passwords;
+  text-align: center;
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.passwords-container h5,
+.new-password-form h3,
+.new-pass-heading{
+  padding: 5px;
+  background-color: #131313;
+  height: 50px;
+  display:flex;
+  font-size: 22px;
+  align-items: center;
+  padding-left: 10px;
+}
+.new-password-form{
+  grid-area: newpass;
+}
+.search-vault-bar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.search-vault-bar input{
+  height: 30px;
+}

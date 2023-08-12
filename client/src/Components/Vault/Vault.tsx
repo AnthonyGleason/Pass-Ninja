@@ -8,6 +8,7 @@ import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import searchIcon from '../../Assets/search.svg';
 import settingsGear from '../../Assets/settings-outline.svg';
 import { VaultController } from '../../Classes/VaultController';
+import './Vault.css';
 
 export default function VaultComponent({vaultController}:{vaultController:VaultController}){
   const [passwords,setPasswords] = useState<any[]>([]);
@@ -54,12 +55,16 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
   return(
     <div className='vault'>
       <div className='vault-nav'>
-        <p>Vault</p>
-        <img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} />
-      </div>
-      <div className='search-vault-bar'>
-        <img src={searchIcon} alt='magnifying glass' />
-        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
+        <div className='vault-buttons'>
+          <p onClick={()=>{navigate('/')}}>Home</p>
+          <p onClick={()=>{navigate('/vault')}}>My Vault</p>
+          <p>{new Date().toDateString()}</p>
+          <img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} />
+        </div>
+        <div className='search-vault-bar'>
+          <img src={searchIcon} alt='magnifying glass' />
+          <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
+        </div>
       </div>
       <div className='passwords-container'>
         {
