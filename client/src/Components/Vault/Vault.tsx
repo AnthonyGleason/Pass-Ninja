@@ -11,7 +11,7 @@ import { VaultController } from '../../Classes/VaultController';
 import './Vault.css';
 
 export default function VaultComponent({vaultController}:{vaultController:VaultController}){
-  const [passwords,setPasswords] = useState<any[]>([]);
+  const [passwords,setPasswords] = useState<any[]>(vaultController.passwords);
   const [passSnip,setPassSnip] = useState<any[]>([]);
   const [searchInput,setSearchInput] = useState<string>('');
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
@@ -22,13 +22,12 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     additionally this useEffect will perform searches automatically as the user types. (accomplished by adding the searchInput as a useEffect dependency)
   */
   useEffect(()=>{
-    if (passwords){
-      setPassSnip(()=>{
-        return passwords.filter((password) => {
-          return password.nickName.includes(searchInput);
-        });
+    const filterPasswords = function(){
+      return passwords.filter((password) => {
+        return password.nickName.includes(searchInput);
       });
-    }
+    };
+    if (passwords) setPassSnip(filterPasswords());
   },[passwords,searchInput]);
 
   const navigate = useNavigate();

@@ -117,9 +117,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   if (isPassGeneratorOpen){
     return(
       <div className='pass-gen-menu'>
-        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>
-          <p>Secure Password Generator</p>
-        </h3>
+        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</h3>
         <div className='pass-gen'>
           <div className='pass-gen-output'>
             <h4>Generated Password:</h4>

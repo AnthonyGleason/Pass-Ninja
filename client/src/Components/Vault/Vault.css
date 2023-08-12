@@ -44,7 +44,8 @@
 }
 .passwords-container h5,
 .new-password-form h3,
-.new-pass-heading{
+.new-pass-heading,
+.password .pass-gen-menu h3{
   padding: 5px;
   background-color: #131313;
   height: 50px;
@@ -52,6 +53,7 @@
   font-size: 22px;
   align-items: center;
   padding-left: 10px;
+  cursor: pointer;
 }
 .new-password-form{
   grid-area: newpass;
