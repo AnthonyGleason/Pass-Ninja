@@ -27,6 +27,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
       setIsUserLoggedOut
     );
   },[]);
+  
   if (isUserLoggedOut){
     return(<LogoutPopup />)
   }else{

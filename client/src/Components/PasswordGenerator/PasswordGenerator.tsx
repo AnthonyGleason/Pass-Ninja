@@ -20,6 +20,7 @@ export default function PasswordGenerator({
   const [genPasswordInput, setGenPasswordInput] = useState<string>('');
   const [isPassGeneratorOpen, setIsPassGeneratorOpen] = useState<boolean>(isExpandedByDefault);
   const [activeTooltipTerm, setActiveTooltipTerm] = useState<string>('');
+  const [passwordBarColor,setPasswordBarColor] = useState<string>('Grey');
 
   //define character sets
   const lowerCaseCharsSet = 'abcdefghijklmnopqrstuvwxyz';
@@ -57,8 +58,7 @@ export default function PasswordGenerator({
     const passwordScore:PasswordScore = new PasswordScore(genPasswordInput,charPool.length);
     setPasswordScore(passwordScore);
     //update the accent color of the strength bar
-    const strengthBarElement:any  = document.querySelector('.password-entropy-input');
-    if (strengthBarElement) strengthBarElement.style.accentColor=passwordScore.colorCode;
+    setPasswordBarColor(passwordScore.colorCode);
   },[genPasswordInput]);
 
   //generate a secure password
@@ -168,7 +168,7 @@ export default function PasswordGenerator({
           <div className='pass-gen-info'>
             <h4>How Are Passwords Rated?</h4>
             <PasswordScoreTable />
-            <input className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
+            <input style={{accentColor: passwordBarColor }} className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
             <div className='pass-gen-score'>
               The currently generated password is <b>{passwordScore.strength}</b>.
               This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;

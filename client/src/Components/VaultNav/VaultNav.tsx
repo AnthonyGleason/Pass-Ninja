@@ -44,11 +44,15 @@ export default function VaultNav({
 
   const getVaultHealthPercent = function(){
     const getExpireDays = (password:any): number => {
-      // Get the time difference in milliseconds
-      // basically expiration time - current time. converts the date string to a date then finds the difference in milliseconds
-      const timeDifference = new Date(password.expiresOn).getTime() - new Date().getTime(); 
-      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-      return daysDifference;
+      if (password.expiresOn){
+        // Get the time difference in milliseconds
+        // basically expiration time - current time. converts the date string to a date then finds the difference in milliseconds
+        const timeDifference = new Date(password.expiresOn).getTime() - new Date().getTime(); 
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+        return daysDifference;
+      }else{
+        return 0;
+      }
     };
 
     let calculatedTotalPercent = 0;
@@ -69,8 +73,12 @@ export default function VaultNav({
   useEffect(()=>{
     setVaultHealthColor(getVaultHealthColor());
     setVaultHealthStatus(getVaultHealthStatus());
-  },[vaultHealthPercent])
+  },[vaultHealthPercent]);
 
+  useEffect(()=>{
+    setVaultHealthPercent(getVaultHealthPercent());
+  },[]);
+  
   const navigate = useNavigate();
   /*
     whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
