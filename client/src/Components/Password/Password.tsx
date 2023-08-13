@@ -18,7 +18,7 @@ export default function Password({
   const [userNameInput,setUserNameInput] = useState<string>(password.userName);
   const [notesInput,setNotesInput] = useState<string>(password.decryptedNotes || '');
   const [isUserEditing,setIsUserEditing] = useState<boolean>(false);
-  const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
+  const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(true);
 
   const handleDeletePassword = async function(){
     await vaultController.deletePassword(password._id);
@@ -82,7 +82,7 @@ export default function Password({
           <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
           <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>
         </div>
-        <PasswordGenerator setPasswordInput={setEditPassInput} />
+        <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />
       </form>
     );
   };

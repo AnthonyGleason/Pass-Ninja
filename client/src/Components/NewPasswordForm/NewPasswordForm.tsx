@@ -10,7 +10,7 @@ export default function NewPasswordForm({
     vaultController:VaultController,
     setPasswords:Function
   }){
-  const [isMenuExpanded,setIsMenuExpanded] = useState<boolean>(false);
+  const [isMenuExpanded,setIsMenuExpanded] = useState<boolean>(true);
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');
@@ -27,7 +27,7 @@ export default function NewPasswordForm({
   if (isMenuExpanded){ //if the user has expanded the New Password menu then display the form to create a new password
     return(
       <form className='new-password-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <h3 onClick={()=>{setIsMenuExpanded(false)}}>New Password</h3>
+        <h3 onClick={()=>{setIsMenuExpanded(false)}}>Create New Password</h3>
         <div>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -48,13 +48,13 @@ export default function NewPasswordForm({
           <label>Notes</label>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
-        <button type='button' onClick={()=>{handleCreateNewPassword()}}>Create New Password</button>
-        <PasswordGenerator setPasswordInput={setPasswordInput} />
+        <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
+        <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
       </form>
     )
   }else{
     return( //return the closed new password menu
-      <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>New Password</h3>
+      <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</h3>
     )
   };
 };

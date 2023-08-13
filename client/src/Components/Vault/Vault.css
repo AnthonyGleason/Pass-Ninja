@@ -6,7 +6,7 @@
   "nav nav"
   "passwords newpass";
   column-gap: 10px;
-  margin: 10px;
+  height: 100vh;
 }
 .vault-nav{
   grid-area: nav;
@@ -34,6 +34,8 @@
   background-color: #131313;
 }
 .passwords-container{
+  height: max-content;
+  max-height: 58%;
   grid-area: passwords;
   text-align: center;
   font-size: 30px;
@@ -54,9 +56,17 @@
   align-items: center;
   padding-left: 10px;
   cursor: pointer;
+  justify-content: center;
 }
-.new-password-form{
-  grid-area: newpass;
+.new-password-form::-webkit-scrollbar-thumb,
+.passwords-container::-webkit-scrollbar-thumb{
+  border: 2px solid #131313;
+  border-radius: 18px;
+}
+/* hide scroll bar */
+.new-password-form::-webkit-scrollbar,
+.passwords-container.passwords-container::-webkit-scrollbar{
+  width: 0px; 
 }
 .search-vault-bar{
   display: flex;

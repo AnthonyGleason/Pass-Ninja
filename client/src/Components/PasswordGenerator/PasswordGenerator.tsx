@@ -4,7 +4,13 @@ import { PasswordScore } from '../../Classes/PasswordScore';
 import PasswordScoreTable from '../PasswordScoreTable/PasswordScoreTable';
 import Tooltip from '../Tooltip/Tooltip';
 
-export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:Function}){
+export default function PasswordGenerator({
+  setPasswordInput,
+  isExpandedByDefault
+}:{
+  setPasswordInput:Function,
+  isExpandedByDefault:boolean
+}){
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(20);
   const [lowerCasesInput, setLowerCasesInput] = useState<boolean>(true);
@@ -12,7 +18,7 @@ export default function PasswordGenerator({setPasswordInput}:{setPasswordInput:F
   const [numbersInput, setNumbersInput] = useState<boolean>(true);
   const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
   const [genPasswordInput, setGenPasswordInput] = useState<string>('');
-  const [isPassGeneratorOpen, setIsPassGeneratorOpen] = useState<boolean>(false);
+  const [isPassGeneratorOpen, setIsPassGeneratorOpen] = useState<boolean>(isExpandedByDefault);
   const [activeTooltipTerm, setActiveTooltipTerm] = useState<string>('');
 
   //define character sets

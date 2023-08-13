@@ -3,34 +3,16 @@ import { v4 as uuidGen } from 'uuid';
 import NewPasswordForm from '../NewPasswordForm/NewPasswordForm';
 import Password from '../Password/Password';
 import { handleProtectedInitialPageLoad} from '../../Helpers/Auth';
-import { useNavigate } from 'react-router-dom';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
-import searchIcon from '../../Assets/search.svg';
-import settingsGear from '../../Assets/settings-outline.svg';
 import { VaultController } from '../../Classes/VaultController';
 import './Vault.css';
+import VaultNav from '../VaultNav/VaultNav';
 
 export default function VaultComponent({vaultController}:{vaultController:VaultController}){
   const [passwords,setPasswords] = useState<any[]>(vaultController.passwords);
   const [passSnip,setPassSnip] = useState<any[]>([]);
-  const [searchInput,setSearchInput] = useState<string>('');
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
-  /*
-    whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
-    new password is included in the search by performing a search on the updated passwords list.
-
-    additionally this useEffect will perform searches automatically as the user types. (accomplished by adding the searchInput as a useEffect dependency)
-  */
-  useEffect(()=>{
-    const filterPasswords = function(){
-      return passwords.filter((password) => {
-        return password.nickName.includes(searchInput);
-      });
-    };
-    if (passwords) setPassSnip(filterPasswords());
-  },[passwords,searchInput]);
-
-  const navigate = useNavigate();
+  
 
   //get passwords to populate passwords state on initial page load
   useEffect(()=>{
@@ -53,18 +35,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
   */
   return(
     <div className='vault'>
-      <div className='vault-nav'>
-        <div className='vault-buttons'>
-          <p onClick={()=>{navigate('/')}}>Home</p>
-          <p onClick={()=>{navigate('/vault')}}>My Vault</p>
-          <p>{new Date().toDateString()}</p>
-          <img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} />
-        </div>
-        <div className='search-vault-bar'>
-          <img src={searchIcon} alt='magnifying glass' />
-          <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
-        </div>
-      </div>
+      <VaultNav setPassSnip={setPassSnip} passwords={passwords}/>
       <div className='passwords-container'>
         {
           passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})

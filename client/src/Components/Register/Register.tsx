@@ -66,7 +66,7 @@ export default function Register(){
           <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
         </div>
       </form>
-      <PasswordGenerator setPasswordInput={setMasterPasswordInput} />
+      <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
     </div>
   )
 }
