@@ -81,6 +81,7 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
     siteUrl:string,
     encryptedNotes:string
   } = req.body;
+
   const vaultID:string = req.payload.vault._id;
   const passID:string = req.params.passwordID;
   //get the password entry by password id from mongodb
@@ -103,6 +104,12 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
     updatedPasswordDoc.nickName=nickName;
     updatedPasswordDoc.siteUrl=siteUrl;
     updatedPasswordDoc.encryptedNotes=encryptedNotes;
+    // update the expiration date for the password to be 90 days from the current time
+    updatedPasswordDoc.expiresOn = function() {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 90);
+      return currentDate;
+    }();
     //update the password entry in mongodb
     await updatePasswordByID(passID,updatedPasswordDoc);
     //send the updated password to the client

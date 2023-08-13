@@ -9,11 +9,16 @@ import './Vault.css';
 import VaultNav from '../VaultNav/VaultNav';
 
 export default function VaultComponent({vaultController}:{vaultController:VaultController}){
+  /* 
+    I have chosen to use the passwords state to hold all passwords in an array and passSnip to hold all passwords that fit the users search input.
+    The idea here is to allow the user to navigate their vault quicker by allowing them to instantly search their library as they type rather
+    then having to press a search button after changing their search input to perform a search. This is more mobile friendly because some users may have
+    issues pressing on smaller elements on the page.
+  */
   const [passwords,setPasswords] = useState<any[]>(vaultController.passwords);
   const [passSnip,setPassSnip] = useState<any[]>([]);
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
   
-
   //get passwords to populate passwords state on initial page load
   useEffect(()=>{
     handleProtectedInitialPageLoad(
@@ -22,26 +27,19 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
       setIsUserLoggedOut
     );
   },[]);
-  
   if (isUserLoggedOut){
     return(<LogoutPopup />)
-  };
-  
-  /* 
-    I have chosen to use the passwords state to hold all passwords in an array and passSnip to hold all passwords that fit the users search input.
-    The idea here is to allow the user to navigate their vault quicker by allowing them to instantly search their library as they type rather
-    then having to press a search button after changing their search input to perform a search. This is more mobile friendly because some users may have
-    issues pressing on smaller elements on the page.
-  */
-  return(
-    <div className='vault'>
-      <VaultNav setPassSnip={setPassSnip} passwords={passwords}/>
-      <div className='passwords-container'>
-        {
-          passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
-        }
+  }else{
+    return(
+      <div className='vault'>
+        <VaultNav setPassSnip={setPassSnip} passwords={passwords}/>
+        <div className='passwords-container'>
+          {
+            passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
+          }
+        </div>
+        <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
       </div>
-      <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
-    </div>
-  )
+    )
+  };
 };

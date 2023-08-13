@@ -11,6 +11,66 @@ export default function VaultNav({
   setPassSnip:Function,
 }){
   const [searchInput,setSearchInput] = useState<string>('');
+  const [vaultHealthColor,setVaultHealthColor] = useState<string>('Blue');
+  const [vaultHealthStatus,setVaultHealthStatus] = useState<string>('');
+  const [vaultHealthPercent,setVaultHealthPercent] = useState<number>(0);
+
+  const getVaultHealthStatus = function():string{
+    if (vaultHealthPercent>=80){
+      return 'Excellent'
+    }else if(vaultHealthPercent>=60){
+      return 'Very Good'
+    }else if(vaultHealthPercent>=40){
+      return 'Moderate';
+    }else if(vaultHealthPercent>=20){
+      return 'Poor'
+    }else{
+      return 'Very Poor';
+    }
+  }
+  const getVaultHealthColor = function():string{
+    if (vaultHealthPercent>=80){
+      return 'Blue'
+    }else if(vaultHealthPercent>=60){
+      return 'Yellow'
+    }else if(vaultHealthPercent>=40){
+      return 'Orange';
+    }else if(vaultHealthPercent>=20){
+      return 'Red'
+    }else{
+      return 'Grey';
+    }
+  };
+
+  const getVaultHealthPercent = function(){
+    const getExpireDays = (password:any): number => {
+      // Get the time difference in milliseconds
+      // basically expiration time - current time. converts the date string to a date then finds the difference in milliseconds
+      const timeDifference = new Date(password.expiresOn).getTime() - new Date().getTime(); 
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+      return daysDifference;
+    };
+
+    let calculatedTotalPercent = 0;
+    passwords.forEach((password)=>{
+      const percentage = (getExpireDays(password)/ 90) * 100; //calculate percentage health for a single password with 90 total days in a renewal cycle
+      calculatedTotalPercent+=Math.round(percentage); // Round to the nearest whole number
+    });
+    const vaultHealthPercent = calculatedTotalPercent / (passwords.length*100) * 100;
+    return vaultHealthPercent;
+  };
+
+  //when the passwords array is updated (user performs crud operations on their vault the percent is regenerated)
+  useEffect(()=>{
+    setVaultHealthPercent(getVaultHealthPercent());
+  },[passwords])
+
+  //when the vault health percent is changed the color and vault status are obtained
+  useEffect(()=>{
+    setVaultHealthColor(getVaultHealthColor());
+    setVaultHealthStatus(getVaultHealthStatus());
+  },[vaultHealthPercent])
+
   const navigate = useNavigate();
   /*
     whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
@@ -38,6 +98,9 @@ export default function VaultNav({
       <div className='search-vault-bar'>
         <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
+      </div>
+      <div className='vault-health' style={{color: vaultHealthColor}}>
+        Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
       </div>
     </div>
   )

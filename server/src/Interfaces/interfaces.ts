@@ -24,4 +24,5 @@ export interface passwordDoc extends Document{
   encryptedNotes:string;
   nickName:string;
   siteUrl: string;
+  expiresOn: Date;
 }

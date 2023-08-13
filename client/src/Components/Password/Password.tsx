@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { VaultController } from '../../Classes/VaultController';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import './Password.css';
@@ -20,6 +20,23 @@ export default function Password({
   const [isUserEditing,setIsUserEditing] = useState<boolean>(false);
   const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
 
+  const [passwordHealthColor,setPasswordHealthColor] = useState('Blue');
+  const [expireDays, setExpireDays] = useState<number>(0);
+
+  useEffect(()=>{
+    const expireDays:number = getExpireDays();
+    setExpireDays(expireDays);
+    setPasswordHealthColor(getPasswordHealthColor(expireDays));
+  },[]);
+
+  const getExpireDays = (): number => {
+    // Get the time difference in milliseconds
+    // basically expiration time - current time. converts the date string to a date then finds the difference in milliseconds
+    const timeDifference = new Date(password.expiresOn).getTime() - new Date().getTime(); 
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    return daysDifference;
+  };
+
   const handleDeletePassword = async function(){
     await vaultController.deletePassword(password._id);
     //refresh client passwords data
@@ -37,14 +54,28 @@ export default function Password({
     setIsUserEditing(false);
   };
 
+  const getPasswordHealthColor = function(expireDays:number){
+    if (expireDays>=30){
+      return 'Blue';
+    }else if (expireDays>=14){
+      return 'Yellow';
+    }else if (expireDays>=3){
+      return 'Orange';
+    }else if (expireDays>=0){
+      return 'Red';
+    }else{
+      return 'Grey';
+    }
+  };
+
   if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
-      <h5 onClick={()=>{setIsPasswordExpanded(true)}}>{password.nickName}</h5>
+      <h5 onClick={()=>{setIsPasswordExpanded(true)}}>{password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span></h5>
     )
   }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <div className='password'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}</h5>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span></h5>
         <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
         <p>Username: {password.userName}</p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
@@ -57,7 +88,7 @@ export default function Password({
   }else{
     return(
       <form className='password'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}</h5>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span></h5>
         <div>
           <p>Nickname</p>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />

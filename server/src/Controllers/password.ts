@@ -17,7 +17,7 @@ export const createPasswordEntry = async function(
     encryptedPassword: encryptedPassword,
     nickName: nickName,
     siteUrl: siteUrl,
-    encryptedNotes: encryptedNotes
+    encryptedNotes: encryptedNotes,
   })
 };
 

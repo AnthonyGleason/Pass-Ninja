@@ -19,7 +19,15 @@ const PasswordSchema = new mongoose.Schema({
   },
   siteUrl:{
     type:String,
-  }
+  },
+  expiresOn:{
+    type: Date,
+    default: () => {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 90);
+        return currentDate;
+    }
+  },
 });
 
 export const PasswordModel = mongoose.model('Password',PasswordSchema);
