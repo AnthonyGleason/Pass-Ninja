@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Settings from './Components/Settings/Settings';
 import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
-import Nav from './Components/Nav/Nav';
 import Register from './Components/Register/Register';
 import Vault from './Components/Vault/Vault';
 //classes

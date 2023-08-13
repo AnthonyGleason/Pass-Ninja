@@ -33,7 +33,7 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
   }else{
     return(
       <div className='vault'>
-        <VaultNav setPassSnip={setPassSnip} passwords={passwords}/>
+        <VaultNav setPassSnip={setPassSnip} vaultController={vaultController}/>
         <div className='passwords-container'>
           {
             passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})

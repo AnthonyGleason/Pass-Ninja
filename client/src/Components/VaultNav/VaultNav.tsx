@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import settingsGear from '../../Assets/settings-outline.svg';
 import searchIcon from '../../Assets/search.svg';
+import { VaultController } from '../../Classes/VaultController';
 
 export default function VaultNav({
-  passwords,
-  setPassSnip
+  vaultController,
+  setPassSnip,
 }:{
-  passwords:any[],
+  vaultController: VaultController,
   setPassSnip:Function,
 }){
   const [searchInput,setSearchInput] = useState<string>('');
@@ -56,28 +57,25 @@ export default function VaultNav({
     };
 
     let calculatedTotalPercent = 0;
-    passwords.forEach((password)=>{
+    vaultController.passwords.forEach((password)=>{
       const percentage = (getExpireDays(password)/ 90) * 100; //calculate percentage health for a single password with 90 total days in a renewal cycle
       calculatedTotalPercent+=Math.round(percentage); // Round to the nearest whole number
     });
-    const vaultHealthPercent = calculatedTotalPercent / (passwords.length*100) * 100;
+    const passwordsLength:number = vaultController.passwords.length || 1; //if the passwords.length is 0 we will see NaN because of the division by 0 errors in the next step
+    const vaultHealthPercent = calculatedTotalPercent / (passwordsLength*100) * 100;
     return vaultHealthPercent;
   };
 
   //when the passwords array is updated (user performs crud operations on their vault the percent is regenerated)
   useEffect(()=>{
     setVaultHealthPercent(getVaultHealthPercent());
-  },[passwords])
+  },[vaultController.passwords]);
 
   //when the vault health percent is changed the color and vault status are obtained
   useEffect(()=>{
     setVaultHealthColor(getVaultHealthColor());
     setVaultHealthStatus(getVaultHealthStatus());
   },[vaultHealthPercent]);
-
-  useEffect(()=>{
-    setVaultHealthPercent(getVaultHealthPercent());
-  },[]);
   
   const navigate = useNavigate();
   /*
@@ -88,12 +86,12 @@ export default function VaultNav({
   */
   useEffect(()=>{
     const filterPasswords = function(){
-      return passwords.filter((password:any) => {
+      return vaultController.passwords.filter((password:any) => {
         return password.nickName.toLowerCase().includes(searchInput);
       });
     };
-    if (passwords) setPassSnip(filterPasswords());
-  },[passwords,searchInput]);
+    if (vaultController.passwords) setPassSnip(filterPasswords());
+  },[vaultController.passwords,searchInput]);
   
   return(
     <div className='vault-nav'>
