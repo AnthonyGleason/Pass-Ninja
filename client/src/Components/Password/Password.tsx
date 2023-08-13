@@ -18,7 +18,7 @@ export default function Password({
   const [userNameInput,setUserNameInput] = useState<string>(password.userName);
   const [notesInput,setNotesInput] = useState<string>(password.decryptedNotes || '');
   const [isUserEditing,setIsUserEditing] = useState<boolean>(false);
-  const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(true);
+  const [isPasswordExpanded, setIsPasswordExpanded] = useState<boolean>(false);
 
   const handleDeletePassword = async function(){
     await vaultController.deletePassword(password._id);
