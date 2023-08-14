@@ -96,4 +96,14 @@ export class VaultController{
       }
     });
   };
+
+  logOutUser = async()=>{
+    await fetch(`http://localhost:5000/v1/api/vaults/logout`,{
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    });
+  };
 };

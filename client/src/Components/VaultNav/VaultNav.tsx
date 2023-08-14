@@ -93,11 +93,18 @@ export default function VaultNav({
     if (vaultController.passwords) setPassSnip(filterPasswords());
   },[vaultController.passwords,searchInput]);
   
+  const handleLogOut = async function(){
+    await vaultController.logOutUser()
+      .then(()=>{
+        navigate('/');
+      });
+  }
   return(
     <div className='vault-nav'>
       <div className='vault-buttons'>
         <p onClick={()=>{navigate('/')}}>Home</p>
         <p onClick={()=>{navigate('/vault')}}>My Vault</p>
+        <p onClick={()=>{handleLogOut()}}>Logout</p>
         <p>{new Date().toDateString()}</p>
         <img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} />
       </div>
