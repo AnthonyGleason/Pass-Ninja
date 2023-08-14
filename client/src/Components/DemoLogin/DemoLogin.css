@@ -1,4 +1,5 @@
-.demo-login{
+.demo-login,
+.logged-out{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,4 +12,6 @@
   font-size: 22px;
   text-align: center;
   color: white;
+  max-width: 700px;
+  gap: 5px;
 }

@@ -1,0 +1,23 @@
+.account-settings{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 500px;
+  align-self: center;
+  text-align: center;
+  gap: 10px;
+}
+.account-settings h3{
+  background-color: #131313;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+}
+.settings-update-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}

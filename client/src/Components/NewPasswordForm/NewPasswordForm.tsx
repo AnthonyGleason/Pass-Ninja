@@ -28,23 +28,23 @@ export default function NewPasswordForm({
     return(
       <form className='new-password-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
         <h3 onClick={()=>{setIsMenuExpanded(false)}}>Create New Password</h3>
-        <div>
+        <div className='input-container'>
           <label>Nickname</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='input-container'>
           <label>Web Address</label>
           <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='input-container'>
           <label>Username</label>
           <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='input-container'>
           <label>Password</label>
           <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='input-container'>
           <label>Notes</label>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>

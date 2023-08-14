@@ -34,10 +34,18 @@ button{
   margin: 10px;
   cursor: pointer;
 }
+button:hover{
+  background-color: #131313;
+}
 input{
   border: 0px solid transparent;
   font-size: 12px;
 }
 .menu-arrow{
   width: 50px;
+}
+/* hide scrollbar completely */
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

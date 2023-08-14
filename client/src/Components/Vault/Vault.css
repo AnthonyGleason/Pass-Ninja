@@ -1,6 +1,6 @@
 .vault{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.7fr 1fr;
   grid-template-rows: 0.1fr 1fr;
   grid-template-areas: 
   "nav nav"
@@ -12,17 +12,17 @@
   grid-area: nav;
   display: flex;
   height: 100px;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin: 20px;
   align-items: center;
+  gap: 10px;
 }
 .vault-nav img{
   width: 30px;
 }
 .vault-nav .vault-buttons{
   display: flex;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 800px;
+  gap: 10px;
   align-items: center;
   font-size: 20px;
 }
@@ -37,6 +37,12 @@
 .vault-buttons p{
   padding: 12px;
   background-color: #131313;
+  height: 70px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  max-width: max-content;
 }
 .passwords-container{
   height: max-content;
@@ -53,7 +59,7 @@
 .new-password-form h3,
 .new-pass-heading,
 .password .pass-gen-menu h3{
-  padding: 5px;
+  padding: 20px;
   background-color: #131313;
   height: 50px;
   display:flex;
@@ -61,7 +67,7 @@
   align-items: center;
   padding-left: 10px;
   cursor: pointer;
-  justify-content: center;
+  justify-content: space-between;
 }
 .new-password-form::-webkit-scrollbar-thumb,
 .passwords-container::-webkit-scrollbar-thumb{
@@ -78,7 +84,21 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  padding: 5px;
 }
 .search-vault-bar input{
   height: 30px;
+  width: 100%;
+  min-width: 300px;
+}
+.search-vault-bar input,
+.new-password-form input,
+.password input{
+  height: 35px;
+  padding: 5px;
+  width: 90%;
+  max-width: 400px;
+  font-size: 17px;
+  border: 2px solid #131313;
 }

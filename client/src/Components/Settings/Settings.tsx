@@ -4,6 +4,7 @@ import { encryptPassword } from '../../Helpers/Passwords';
 import { handleProtectedInitialPageLoad} from '../../Helpers/Auth';
 import LogoutPopup from '../LogoutPopup/LogoutPopup';
 import { VaultController } from '../../Classes/VaultController';
+import './Settings.css';
 
 export default function Settings({vaultController}:{vaultController:VaultController}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>('');
@@ -90,7 +91,7 @@ export default function Settings({vaultController}:{vaultController:VaultControl
   }else if (isEmailUpdated || isMasterPassUpdated){ //any of the settings are updated
     return(
       // show user changes that will be applied to their vault
-      <div>
+      <div className='account-settings'>
         <h3>The following changes will be applied.</h3>
         <ul>
           {
@@ -117,16 +118,17 @@ export default function Settings({vaultController}:{vaultController:VaultControl
   }else{
     return(
       // menu which lets the user update their account settings
-      <div>
+      <div className='account-settings'>
         <h3>Account settings</h3>
-        <div>
-          <p onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
-            Email Address
-          </p>
+        <h4>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h4>
+        <div className='settings-update-container'>
+          <button onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
+            Update Email Address
+          </button>
           {
             isEmailMenuSettingExpanded ? (
               <>
-                <p>Enter your new email address</p>
+                <label>Enter a new email address</label>
                 <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
               </>
             ) : (
@@ -134,16 +136,16 @@ export default function Settings({vaultController}:{vaultController:VaultControl
             )
           }
         </div>
-        <div>
-          <p onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
-            Master Password
-          </p>
+        <div className='settings-update-container'>
+          <button onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
+            Update Master Password
+          </button>
           {
             isPasswordMenuSettingExpanded ? (
               <>
-                <p>Enter your new master password</p>
+                <p>Enter a new master password</p>
                 <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
-                <p>Enter your new master password (again)</p>
+                <p>Enter a new master password (again)</p>
                 <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
               </>
             ) : (
@@ -151,10 +153,11 @@ export default function Settings({vaultController}:{vaultController:VaultControl
             )
           }
         </div>
-        <h3>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h3>
         <p>You will have an opportunity to confirm your account changes on the next page.</p>
-        <button type='button' onClick={()=>{handleMakeChangesPress()}}>Apply Settings</button>
-        <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+        <div>
+          <button type='button' onClick={()=>{handleMakeChangesPress()}}>Apply Settings</button>
+          <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+        </div>
       </div>
     );
   };

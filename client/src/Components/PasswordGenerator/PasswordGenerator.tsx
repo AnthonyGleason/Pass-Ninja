@@ -136,11 +136,11 @@ export default function PasswordGenerator({
           <div className='pass-gen-settings'>
             <h4>Generation Settings:</h4>
             <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum amount of characters a newly generated password could have.' /> {minLengthInput}
+              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' /> {minLengthInput}
               <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
             </div>
             <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum amount of characters a newly generated password could have.' /> {maxLengthInput}
+              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum number of characters a newly generated password could have.' /> {maxLengthInput}
               <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
             </div>
             <div className='pass-gen-setting'>
@@ -181,9 +181,7 @@ export default function PasswordGenerator({
   }else{
     return(
       <div className='pass-gen-menu'>
-        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>
-          <p>Secure Password Generator</p>
-        </h3>
+        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</h3>
       </div>
     );
   };
