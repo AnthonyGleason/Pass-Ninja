@@ -109,10 +109,14 @@ export default function Settings({vaultController}:{vaultController:VaultControl
             )
           }
         </ul>
-        <p>Enter your current master password</p>
-        <input type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
-        <button onClick={()=>{handleConfirmChanges()}}>Confirm</button>
-        <button onClick={()=>{navigate('/vault')}}>Cancel</button>
+        <div className='master-pass-confirm-input'>
+          <label>Enter your current master password</label>
+          <input type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} required />
+        </div>
+        <div>
+          <button onClick={()=>{handleConfirmChanges()}}>Confirm</button>
+          <button onClick={()=>{navigate('/vault')}}>Cancel</button>
+        </div>
       </div>
     )
   }else{
