@@ -101,22 +101,18 @@ export default function VaultNav({
   }
   return(
     <div className='vault-nav'>
-      <div className='vault-buttons'>
-        <p onClick={()=>{navigate('/')}}>Home</p>
-        <p onClick={()=>{navigate('/vault')}}>My Vault</p>
-      </div>
-      <div className='vault-buttons'>
-        <p className='search-vault-bar'>
-          <img src={searchIcon} alt='magnifying glass' />
-          <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
-        </p>
-        <p className='vault-health' style={{color: vaultHealthColor}}>
-          Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
-        </p>
-        <p>{new Date().toDateString()}</p>
-        <p><img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></p>
-        <p onClick={()=>{handleLogOut()}}>Logout</p>
-      </div>
+      <p onClick={()=>{navigate('/')}}>Home</p>
+      <p onClick={()=>{navigate('/vault')}}>My Vault</p>
+      <p className='search-vault-bar'>
+        <img src={searchIcon} alt='magnifying glass' />
+        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
+      </p>
+      <p className='vault-health' style={{color: vaultHealthColor}}>
+        Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
+      </p>
+      <p>{new Date().toDateString()}</p>
+      <p><img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></p>
+      <p onClick={()=>{handleLogOut()}}>Logout</p>
     </div>
   )
 }

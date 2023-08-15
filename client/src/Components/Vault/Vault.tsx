@@ -34,12 +34,14 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     return(
       <div className='vault'>
         <VaultNav setPassSnip={setPassSnip} vaultController={vaultController}/>
-        <div className='passwords-container'>
-          {
-            passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
-          }
+        <div className='vault-container'>
+          <div className='passwords-container'>
+            {
+              passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
+            }
+          </div>
+          <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
         </div>
-        <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
       </div>
     )
   };

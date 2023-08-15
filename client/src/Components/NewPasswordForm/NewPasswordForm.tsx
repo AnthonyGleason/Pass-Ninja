@@ -54,7 +54,9 @@ export default function NewPasswordForm({
     )
   }else{
     return( //return the closed new password menu
+    <form className='new-password-form'>
       <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</h3>
+    </form>
     )
   };
 };

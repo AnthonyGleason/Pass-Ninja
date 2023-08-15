@@ -1,21 +1,17 @@
 .vault{
-  display: grid;
-  grid-template-columns: 0.7fr 1fr;
-  grid-template-rows: 0.1fr 1fr;
-  grid-template-areas: 
-  "nav nav"
-  "passwords newpass";
-  column-gap: 10px;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .vault-nav{
-  grid-area: nav;
   display: flex;
-  height: 100px;
+  height: max-content;
   justify-content: space-between;
-  margin: 20px;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin: 10px;
 }
 .vault-nav img{
   width: 30px;
@@ -31,10 +27,10 @@
   background-color: #131313;
   width: max-content;
 }
-.vault-buttons *{
+.vault-nav *{
   cursor: pointer;
 }
-.vault-buttons p{
+.vault-nav p{
   padding: 12px;
   background-color: #131313;
   height: 70px;
@@ -42,12 +38,10 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  max-width: max-content;
+  width: max-content;
+  flex-grow: 1;
 }
 .passwords-container{
-  height: max-content;
-  max-height: 58%;
-  grid-area: passwords;
   text-align: center;
   font-size: 30px;
   display: flex;
@@ -61,7 +55,6 @@
 .password .pass-gen-menu h3{
   padding: 20px;
   background-color: #131313;
-  height: 50px;
   display:flex;
   font-size: 22px;
   align-items: center;
@@ -69,6 +62,25 @@
   cursor: pointer;
   justify-content: space-between;
 }
+@media screen and (min-width: 681px) {
+  .passwords-container h5,
+  .new-password-form h3,
+  .new-pass-heading,
+  .password .pass-gen-menu h3 {
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .passwords-container h5,
+  .new-password-form h3,
+  .new-pass-heading,
+  .password .pass-gen-menu h3 {
+    height: 100px;
+    width: 100%;
+  }
+}
+
 .new-password-form::-webkit-scrollbar-thumb,
 .passwords-container::-webkit-scrollbar-thumb{
   border: 2px solid #131313;
@@ -90,7 +102,6 @@
 .search-vault-bar input{
   height: 30px;
   width: 100%;
-  min-width: 300px;
 }
 .search-vault-bar input,
 .new-password-form input,
@@ -101,4 +112,20 @@
   max-width: 400px;
   font-size: 17px;
   border: 2px solid #131313;
+}
+.passwords-container,
+.new-vault-heading{
+  align-items: center;
+}
+.passwords-container h5{
+  width: 100%;
+}
+.new-pass-heading{
+  width: 100%;
+}
+.vault-container{
+  display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  gap: 10px;
 }
