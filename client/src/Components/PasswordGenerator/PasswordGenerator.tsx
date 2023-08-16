@@ -80,6 +80,8 @@ export default function PasswordGenerator({
   const handlePasswordParamChange = function (field:string,updatedVal:number){
     switch(field){
       case 'minLength':
+        // handle updated value is out of range
+        if (updatedVal<1||updatedVal>70) break;
         // if the new min length value is greater than the max length then update both the min and max length so they are the same. 
         if (updatedVal>maxLengthInput){
           setMaxLengthInput(updatedVal);
@@ -90,6 +92,8 @@ export default function PasswordGenerator({
         }
         break;
       case 'maxLength':
+        // handle updated value is out of range
+        if (updatedVal<1||updatedVal>70) break;
         if (updatedVal<minLengthInput){
           setMaxLengthInput(updatedVal);
           setMinLengthInput(updatedVal);
@@ -136,11 +140,13 @@ export default function PasswordGenerator({
           <div className='pass-gen-settings'>
             <h4>Generation Settings:</h4>
             <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' /> {minLengthInput}
+              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' />
+              <input type='number' min='1' max='70' value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
               <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
             </div>
             <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum number of characters a newly generated password could have.' /> {maxLengthInput}
+              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum number of characters a newly generated password could have.' />
+              <input type='number' min='1' max='70' value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
               <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
             </div>
             <div className='pass-gen-setting'>

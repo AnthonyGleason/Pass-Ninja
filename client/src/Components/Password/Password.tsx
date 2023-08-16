@@ -76,11 +76,23 @@ export default function Password({
     return(
       <div className='password'>
         <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span></h5>
-        <p><a href={`${password.siteUrl}`}>{password.siteUrl}</a></p>
-        <p>Username: {password.userName}</p>
+        <p className='pass-field-alt'>
+          <h4>Web Address:</h4>
+          <a href={`${password.siteUrl}`}>{password.siteUrl}</a>
+        </p>
+        <p className='pass-field-alt'>
+          <h4>Username:</h4>
+          <span>{password.userName}</span>
+        </p>
         {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
-        <p>Password: {password.decryptedPassword}</p>
-        <p>Notes: {password.decryptedNotes}</p>
+        <p className='pass-field-alt'>
+          <h4>Password:</h4>
+          <span>{password.decryptedPassword}</span>
+        </p>
+        <p>
+          <h4>Notes:</h4>
+          <span>{password.decryptedNotes}</span>
+        </p>
         <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
         <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
       </div>
@@ -89,23 +101,23 @@ export default function Password({
     return(
       <form className='password'>
         <h5 onClick={()=>{setIsPasswordExpanded(false)}}>{password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span></h5>
-        <div>
+        <div className='pass-field'>
           <p>Nickname</p>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
         </div>
-        <div>
-          <p>Website Url</p>
+        <div className='pass-field'>
+          <p>Web Address</p>
           <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
-        </div>
-        <div>
+        </div >
+        <div className='pass-field'>
           <p>Username</p>
           <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='pass-field'>
           <p>Password</p>
           <input value={editPassInput} onChange={(e)=>{setEditPassInput(e.target.value)}} />
         </div>
-        <div>
+        <div className='pass-field'>
           <p>Notes</p>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
