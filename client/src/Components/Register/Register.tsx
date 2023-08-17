@@ -40,31 +40,34 @@ export default function Register(){
     <div className='register'>
       <form className='register-form'>
         <h3>Register</h3>
-        <div className='reg-input'>
-          <label>First Name:</label>
-          <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+        <div className='register-form-content'>
+          <div className='reg-input'>
+            <label>First Name:</label>
+            <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Last Name:</label>
+            <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Email:</label>
+            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Master Password:</label>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Master Password (again):</label>
+            <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
+          </div>
+          <div>
+            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+            <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
+            <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+          </div>    
         </div>
-        <div className='reg-input'>
-          <label>Last Name:</label>
-          <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
-        </div>
-        <div className='reg-input'>
-          <label>Email:</label>
-          <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-        </div>
-        <div className='reg-input'>
-          <label>Master Password:</label>
-          <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-        </div>
-        <div className='reg-input'>
-          <label>Master Password (again):</label>
-          <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
-        </div>
-        <div>
-          <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-          <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
-          <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
-        </div>
+        
       </form>
       <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
     </div>

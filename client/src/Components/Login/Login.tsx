@@ -41,18 +41,20 @@ export default function Login({vaultController}:{vaultController:VaultController
     <div className='register'>
       <form>
         <h3>Login</h3>
-        <div className='reg-input'>
-          <label>Email:</label>
-          <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-        </div>
-        <div className='reg-input'>
-          <label>Password:</label>
-          <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-        </div>
-        <div>
-          <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-          <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-          <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+        <div className='register-form-content'>
+          <div className='reg-input'>
+            <label>Email:</label>
+            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Password:</label>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          </div>
+          <div>
+            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+            <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+            <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+          </div>
         </div>
       </form>
     </div>

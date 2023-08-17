@@ -10,7 +10,6 @@
   flex-grow: 1;
   align-self: center;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   text-align: center;
   gap: 30px;
@@ -56,4 +55,12 @@
   max-width: 500px;
   width: 100%;
   align-self: center;
+}
+.register-form-content{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
