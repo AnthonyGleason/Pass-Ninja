@@ -52,13 +52,13 @@ export default function NewPasswordForm({
           <div>
             <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
           </div>
+          <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
         </div>
-        
-        <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
       </form>
     )
   }else{
-    return( //return the closed new password menu
+    //return the closed new password menu
+    return( 
     <form className='new-password-form'>
       <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</h3>
     </form>
