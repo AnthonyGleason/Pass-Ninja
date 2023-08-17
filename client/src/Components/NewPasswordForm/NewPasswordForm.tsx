@@ -10,7 +10,7 @@ export default function NewPasswordForm({
     vaultController:VaultController,
     setPasswords:Function
   }){
-  const [isMenuExpanded,setIsMenuExpanded] = useState<boolean>(true);
+  const [isMenuExpanded,setIsMenuExpanded] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [nickNameInput,setNickNameInput] = useState<string>('');
   const [siteUrlInput, setSiteUrlInput] = useState<string>('https://www.');

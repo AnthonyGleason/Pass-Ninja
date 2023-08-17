@@ -42,11 +42,11 @@ export default function Login({vaultController}:{vaultController:VaultController
       <form>
         <h3>Login</h3>
         <div className='reg-input'>
-          <label>Email</label>
+          <label>Email:</label>
           <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
         </div>
         <div className='reg-input'>
-          <label>Password</label>
+          <label>Password:</label>
           <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
         </div>
         <div>

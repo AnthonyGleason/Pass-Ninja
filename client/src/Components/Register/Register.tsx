@@ -41,23 +41,23 @@ export default function Register(){
       <form className='register-form'>
         <h3>Register</h3>
         <div className='reg-input'>
-          <label>First Name</label>
+          <label>First Name:</label>
           <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
         </div>
         <div className='reg-input'>
-          <label>Last Name</label>
+          <label>Last Name:</label>
           <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
         </div>
         <div className='reg-input'>
-          <label>Email</label>
+          <label>Email:</label>
           <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
         </div>
         <div className='reg-input'>
-          <label>Master Password</label>
+          <label>Master Password:</label>
           <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
         </div>
         <div className='reg-input'>
-          <label>Master Password (again)</label>
+          <label>Master Password (again):</label>
           <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
         </div>
         <div>

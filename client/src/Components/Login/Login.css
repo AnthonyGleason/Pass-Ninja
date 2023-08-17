@@ -29,3 +29,7 @@
   font-size: 18px;
   align-items: center;
 }
+.login label,
+.register label{
+  text-align: center;
+}

@@ -84,25 +84,27 @@ export default function Password({
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </h5>
-        <p className='pass-field-alt'>
-          <h4>Web Address:</h4>
-          <a href={`${password.siteUrl}`}>{password.siteUrl}</a>
-        </p>
-        <p className='pass-field-alt'>
-          <h4>Username:</h4>
-          <span>{password.userName}</span>
-        </p>
-        {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
-        <p className='pass-field-alt'>
-          <h4>Password:</h4>
-          <span>{password.decryptedPassword}</span>
-        </p>
-        <p>
-          <h4>Notes:</h4>
-          <span>{password.decryptedNotes}</span>
-        </p>
-        <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
-        <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
+        <div className='password-content'>
+          <p className='pass-field-alt'>
+            <h4>Web Address:</h4>
+            <a href={`${password.siteUrl}`}>{password.siteUrl}</a>
+          </p>
+          <p className='pass-field-alt'>
+            <h4>Username:</h4>
+            <span>{password.userName}</span>
+          </p>
+          {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
+          <p className='pass-field-alt'>
+            <h4>Password:</h4>
+            <span>{password.decryptedPassword}</span>
+          </p>
+          <p>
+            <h4>Notes:</h4>
+            <span>{password.decryptedNotes}</span>
+          </p>
+          <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
+          <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
+        </div>
       </form>
     )
   }else{
