@@ -10,20 +10,15 @@
   flex-grow: 1;
   align-self: center;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
   text-align: center;
   gap: 30px;
-  padding: 20px;
-}
-.register .pass-gen-char-pool-info,
-.register .pass-gen-settings p{
-  text-align: center;
+  width: 100%;
 }
 .reg-input input,
 .login-input input,
-.pass-gen-output input,
-.register .pass-gen-setting input{
+.pass-gen-output input{
   padding: 5px;
   font-size: 17px;
   border: 2px solid #131313;
@@ -32,8 +27,7 @@
 @media screen and (width<530px){
   .reg-input input,
   .login-input input,
-  .pass-gen-output input,
-  .register .pass-gen-setting input{
+  .pass-gen-output input{
     width: 90%;
   }
   .login-input,
@@ -59,4 +53,7 @@
   display: flex;
   justify-content: space-between;
   text-align: left;
+  max-width: 500px;
+  width: 100%;
+  align-self: center;
 }

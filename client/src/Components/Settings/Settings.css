@@ -3,15 +3,17 @@
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
-  max-width: 500px;
-  align-self: center;
+  justify-content: space-between;
   text-align: center;
   gap: 10px;
+  font-size: 20px;
+}
+.account-settings > *:not(:first-child){
+  width: 90%;
 }
 .account-settings h3{
   background-color: #131313;
   width: 100%;
-  max-width: 500px;
   padding: 20px;
 }
 .settings-update-container{

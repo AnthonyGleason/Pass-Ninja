@@ -53,7 +53,9 @@
 .passwords-container h5,
 .new-password-form h3,
 .new-pass-heading,
-.password .pass-gen-menu h3{
+.pass-gen-menu h3,
+.register h3,
+.login h3{
   padding: 20px;
   background-color: #131313;
   display:flex;
@@ -67,7 +69,7 @@
   .passwords-container h5,
   .new-password-form h3,
   .new-pass-heading,
-  .password .pass-gen-menu h3 {
+  .pass-gen-menu h3 {
     height: 70px;
   }
 }
@@ -76,7 +78,7 @@
   .passwords-container h5,
   .new-password-form h3,
   .new-pass-heading,
-  .password .pass-gen-menu h3 {
+  .pass-gen-menu h3 {
     height: 100px;
     width: 100%;
   }
@@ -107,6 +109,7 @@
 .search-vault-bar input,
 .new-password-form input,
 .password input,
+.pass-gen-setting input,
 .settings-update-container input{
   height: 35px;
   padding: 5px;
@@ -114,6 +117,10 @@
   max-width: 400px;
   font-size: 17px;
   border: 2px solid #131313;
+}
+.passwords-container h5 span{
+  flex-grow: 1;
+  text-align: center;
 }
 .passwords-container,
 .new-vault-heading{

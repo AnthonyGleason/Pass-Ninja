@@ -49,3 +49,6 @@ input{
   width: 0;
   height: 0;
 }
+label{
+  width: 100%;
+}
