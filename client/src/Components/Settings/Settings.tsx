@@ -92,7 +92,7 @@ export default function Settings({vaultController}:{vaultController:VaultControl
     return(
       // show user changes that will be applied to their vault
       <div className='account-settings'>
-        <h3>The following changes will be applied.</h3>
+        <h3>The Following Changes Will Be Applied</h3>
         <ul>
           {
             isEmailUpdated ? (
@@ -124,43 +124,45 @@ export default function Settings({vaultController}:{vaultController:VaultControl
       // menu which lets the user update their account settings
       <div className='account-settings'>
         <h3>Account settings</h3>
-        <h4>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h4>
-        <div className='settings-update-container'>
-          <button onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
-            Update Email Address
-          </button>
-          {
-            isEmailMenuSettingExpanded ? (
-              <>
-                <label>Enter a new email address</label>
-                <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
-              </>
-            ) : (
-              null
-            )
-          }
-        </div>
-        <div className='settings-update-container'>
-          <button onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
-            Update Master Password
-          </button>
-          {
-            isPasswordMenuSettingExpanded ? (
-              <>
-                <p>Enter a new master password</p>
-                <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
-                <p>Enter a new master password (again)</p>
-                <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
-              </>
-            ) : (
-              null
-            )
-          }
-        </div>
-        <p>You will have an opportunity to confirm your account changes on the next page.</p>
-        <div>
-          <button type='button' onClick={()=>{handleMakeChangesPress()}}>Apply Settings</button>
-          <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+        <div className='account-settings-wrapper'>
+          <h4>Warning: These are critical settings and in very rare cases can cause corruption of your account. Please ensure you have backed up your vault before proceeding.</h4>
+          <div className='settings-update-container'>
+            <button onClick={()=>{isEmailMenuSettingExpanded===true ? setIsEmailMenuSettingExpanded(false) : setIsEmailMenuSettingExpanded(true)}}>
+              Update Email Address
+            </button>
+            {
+              isEmailMenuSettingExpanded ? (
+                <>
+                  <label>Enter a new email address</label>
+                  <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
+                </>
+              ) : (
+                null
+              )
+            }
+          </div>
+          <div className='settings-update-container'>
+            <button onClick={()=>{isPasswordMenuSettingExpanded===true ? setIsPasswordMenuSettingExpanded(false) : setIsPasswordMenuSettingExpanded(true)}}>
+              Update Master Password
+            </button>
+            {
+              isPasswordMenuSettingExpanded ? (
+                <>
+                  <p>Enter a new master password</p>
+                  <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
+                  <p>Enter a new master password (again)</p>
+                  <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
+                </>
+              ) : (
+                null
+              )
+            }
+          </div>
+          <p>You will have an opportunity to confirm your account changes on the next page.</p>
+          <div>
+            <button type='button' onClick={()=>{handleMakeChangesPress()}}>Apply Settings</button>
+            <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+          </div>
         </div>
       </div>
     );

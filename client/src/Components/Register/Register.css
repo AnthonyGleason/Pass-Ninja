@@ -13,17 +13,50 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  gap: 10px;
+  gap: 30px;
+  padding: 20px;
+}
+.register .pass-gen-char-pool-info,
+.register .pass-gen-settings p{
+  text-align: center;
 }
 .reg-input input,
 .login-input input,
-.pass-gen-output input{
-  height: 35px;
+.pass-gen-output input,
+.register .pass-gen-setting input{
   padding: 5px;
-  max-width: 400px;
   font-size: 17px;
   border: 2px solid #131313;
+  width: 300px;
 }
-.register .pass-gen{
+@media screen and (width<530px){
+  .reg-input input,
+  .login-input input,
+  .pass-gen-output input,
+  .register .pass-gen-setting input{
+    width: 90%;
+  }
+  .login-input,
+  .reg-input{
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+  }
+}
+.pass-gen-setting input{
+  text-align: end;
+}
+.pass-gen-setting input:first-of-type{
+  width: 60px;
+}
+.pass-gen{
   padding: 10px;
+}
+.reg-input input label{
+  width: 100%;
+}
+.reg-input{
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
 }

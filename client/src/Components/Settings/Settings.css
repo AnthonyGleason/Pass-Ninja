@@ -1,6 +1,5 @@
 .account-settings{
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
@@ -20,6 +19,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  align-items: center;
 }
 .master-pass-confirm-input{
   display: flex;
@@ -37,4 +37,13 @@
   max-width: 400px;
   font-size: 17px;
   border: 2px solid #131313;
+}
+.account-settings h3{
+  text-align: center;
+}
+.account-settings ul li{
+  font-size: 15px;
+}
+.account-settings-wrapper{
+  padding: 20px;
 }

@@ -6,6 +6,14 @@
   flex-grow: 1;
   gap: 15px;
 }
+.home > *{
+  width: 90%;
+  text-align: center;
+  max-width: 500px;
+}
 .home img{
   max-width: 300px;
+}
+.home h3{
+  text-align: center;
 }

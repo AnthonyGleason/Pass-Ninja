@@ -61,7 +61,7 @@
   align-items: center;
   padding-left: 10px;
   cursor: pointer;
-  justify-content: space-between;
+  justify-content: center;
 }
 @media screen and (min-width: 681px) {
   .passwords-container h5,
@@ -106,7 +106,8 @@
 }
 .search-vault-bar input,
 .new-password-form input,
-.password input{
+.password input,
+.settings-update-container input{
   height: 35px;
   padding: 5px;
   width: 90%;
@@ -130,4 +131,9 @@
   justify-content: space-around;
   gap: 10px;
   margin: 10px;
+}
+@media screen and (width<800px){
+  .vault-container{
+    flex-direction: column;
+  }
 }
