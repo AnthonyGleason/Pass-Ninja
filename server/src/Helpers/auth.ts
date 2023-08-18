@@ -83,3 +83,6 @@ export const issueToken = function(vault:vaultDoc){
 
 //invalidated jwt tokens will be added to this array, tokens will expire in 5-10 minutes from issue so there is no need for a long term invalidatedTokens document in mongoDB or similar.
 export const invalidatedTokens: String[] = [];
+
+//holds currently pending vertification 2fa tokens
+export const twoFactorPendingTokens: Object[] = [];

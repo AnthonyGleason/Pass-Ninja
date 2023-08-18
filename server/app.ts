@@ -8,6 +8,9 @@ import path from 'path';
 import {apiRouter} from  './src/Routes/v1/api';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import speakeasy from 'speakeasy';
+import qrcode from 'qrcode';
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{

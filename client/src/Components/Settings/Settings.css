@@ -3,10 +3,21 @@
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
-  justify-content: space-between;
   text-align: center;
   gap: 10px;
   font-size: 20px;
+  color: white;
+}
+.account-settings-content{
+  width: 90%;
+  max-width: 700px;
+  text-align: center;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.account-settings-content *{
+  padding: 10px;
 }
 .account-settings > *:not(:first-child){
   width: 90%;

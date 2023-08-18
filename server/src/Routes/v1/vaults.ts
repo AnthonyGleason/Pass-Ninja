@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
 
-import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser } from "../../Helpers/auth";
+import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens } from "../../Helpers/auth";
 import { createExamplePassword, generatePassword } from "../../Helpers/vault";
 
 import { authenticateToken } from "../../Middlewares/Auth";
@@ -12,11 +12,12 @@ import { authenticateToken } from "../../Middlewares/Auth";
 import { getVaultByUserEmail, updateVaultByID } from "../../Controllers/vault";
 import { updatePasswordByID } from "../../Controllers/password";
 import { passwordRouter } from "./passwords";
-
+import speakeasy from 'speakeasy';
+import QRCode from 'qrcode';
 
 export const vaultsRouter = express.Router();
 
-// • GET 	/api/v1/vaults/verify	verify the token provided
+// • GET 	/v1/api/vaults/verify	verify the token provided
 vaultsRouter.get('/verify', authenticateToken, (req:customRequest,res:Response,next:NextFunction)=>{
   res.status(200).json({
     isValid: true,
@@ -24,7 +25,7 @@ vaultsRouter.get('/verify', authenticateToken, (req:customRequest,res:Response,n
   });
 });
 
-// • POST /api/v1/vaults/register create a new vault
+// • POST /v1/api/vaults/register create a new vault
 vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure the request body
   const {
@@ -56,7 +57,7 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   };
 });
 
-// • POST	/api/v1/vaults/login	use the demo user
+// • POST	/v1/api/vaults/login	use the demo user
 vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFunction)=>{
   const email:string = `demo@user${generatePassword(12,12,false,true,true)}`;
   const vault= await registerNewUser('demopass','demopass','Demo','User',email);
@@ -70,7 +71,7 @@ vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFu
   }
 });
 
-// • POST	/api/v1/vaults/login	sign into already existing account 
+// • POST	/v1/api/vaults/login	sign into already existing account 
 vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunction)=>{
   //destructure the request body
   const {
@@ -88,11 +89,11 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
       res.status(200).json({'token': token});
     }else{
       res.status(400);
-    }
-  }
+    };
+  };
 });
 
-// • POST	/api/v1/vaults/logout	log out of account invalidating the users token
+// • POST	/v1/api/vaults/logout	log out of account invalidating the users token
 vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,next:NextFunction)=>{
   if (req.token){
     //get the users token from request token
@@ -105,7 +106,7 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
   };
 });
 
-// PUT /api/v1/vaults/settings update the users vault settings
+// PUT /v1/api/vaults/settings update the users vault settings
 vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
   //if the input is not provided we can assume the user is not changing that setting
   const updatedMasterPassword:string = req.body.updatedMasterPassword || '';
@@ -139,7 +140,31 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
   };
 });
 
-// • GET	/api/v1/vaults/		get the most recent version of the users vault data using token payload
+// POST  /v1/api/vaults/setup2FA
+vaultsRouter.post('/setup2FA',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
+  //generate the temporary secret
+  const speakeasySecret = speakeasy.generateSecret({'length': 45});
+  if (speakeasySecret && speakeasySecret.otpauth_url){
+    //store that secret in a temporary auth array with an object containing the userID and secret key
+    twoFactorPendingTokens.push({
+      'userID': req.payload.vault._id,
+      'secret': speakeasySecret
+    });
+    //create qr code
+    QRCode.toDataURL(speakeasySecret.otpauth_url, {errorCorrectionLevel: 'M'}, function (err, url) {
+      if (url){
+        //send the qr code url to the client
+        res.status(200).json({'qrCodeUrl': url});
+      }else{
+        res.status(500);
+      }
+    });
+  }else{
+    res.status(400);
+  };
+});
+
+// • GET	/v1/api/vaults/		get the most recent version of the users vault data using token payload
 vaultsRouter.get('/',authenticateToken,async (req:customRequest,res:Response,next:NextFunction)=>{
   //get the current user's vault from mongodb
   const vault: vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
