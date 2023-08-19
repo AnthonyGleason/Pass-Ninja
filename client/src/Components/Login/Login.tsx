@@ -61,7 +61,7 @@ export default function Login({vaultController}:{vaultController:VaultController
           <div>
             <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
             <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-            <button type='button' onClick={()=>{navigate('/vault/demologin')}}>Try the Demo</button>
+            <button type='button' onClick={()=>{navigate('/vault/login/demo')}}>Try the Demo</button>
           </div>
         </div>
       </form>
