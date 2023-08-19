@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
 
-import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens } from "../../Helpers/auth";
+import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens, userHasTwoFactorEnabled } from "../../Helpers/auth";
 import { createExamplePassword, generatePassword } from "../../Helpers/vault";
 
 import { authenticateToken } from "../../Middlewares/Auth";
 
-import { getVaultByUserEmail, updateVaultByID } from "../../Controllers/vault";
+import { getVaultByID, getVaultByUserEmail, updateVaultByID } from "../../Controllers/vault";
 import { updatePasswordByID } from "../../Controllers/password";
 import { passwordRouter } from "./passwords";
 import speakeasy from 'speakeasy';
@@ -84,9 +84,21 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
   if (!email||!masterPassword){
     res.status(401);
   }else{
-    const token:string = await loginExistingUser(email,masterPassword);
-    if (token){
-      res.status(200).json({'token': token});
+    const isTwoFactorEnabled:boolean = await userHasTwoFactorEnabled(email);
+    //user has two factor enabled
+    if (isTwoFactorEnabled){
+      res.status(200).json({
+        'token': '',
+        'otpRequired': true
+      })
+    }
+    //user does not have two factor enabled
+    if (!isTwoFactorEnabled){
+      const token:string = await loginExistingUser(email,masterPassword);
+      res.status(200).json({
+        'token': token,
+        'otpRequired': false
+      });
     }else{
       res.status(400);
     };
@@ -141,15 +153,16 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
 });
 
 // POST  /v1/api/vaults/setup2FA
-vaultsRouter.post('/setup2FA',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
+vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
   //generate the temporary secret
   const speakeasySecret = speakeasy.generateSecret({'length': 45});
   if (speakeasySecret && speakeasySecret.otpauth_url){
     //store that secret in a temporary auth array with an object containing the userID and secret key
     twoFactorPendingTokens.push({
-      'userID': req.payload.vault._id,
+      'vaultID': req.payload.vault._id,
       'secret': speakeasySecret
     });
+    console.log(twoFactorPendingTokens);
     //create qr code
     QRCode.toDataURL(speakeasySecret.otpauth_url, {errorCorrectionLevel: 'M'}, function (err, url) {
       if (url){
@@ -162,6 +175,54 @@ vaultsRouter.post('/setup2FA',authenticateToken,async(req:customRequest,res:Resp
   }else{
     res.status(400);
   };
+});
+
+// PUT /v1/api/vaults/verify2FACode
+vaultsRouter.put('/verify2FACode', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
+  const otpInputKey = req.body.otpInputKey;
+  let pendingSecretKey: string | undefined = undefined;
+
+  // Check if the user is pending 2FA setup
+  for (let i = 0; i < twoFactorPendingTokens.length; i++) {
+    console.log(twoFactorPendingTokens,req.payload.vault._id);
+    if (twoFactorPendingTokens[i].vaultID === req.payload.vault._id) {
+      pendingSecretKey = twoFactorPendingTokens[i].secret.base32; //provide secret in base32 encoding for speakeasy totp verification
+      break; // Stop loop once found
+    }
+  }
+
+  if (!pendingSecretKey) {
+    res.status(401).json({ 'verified': false });
+    return;
+  }
+  const isVerified: boolean = speakeasy.totp.verify({
+    secret: pendingSecretKey,
+    encoding: 'base32',
+    token: otpInputKey,
+    window: 1,
+  });
+
+  if (isVerified) {
+    let updatedVault: vaultDoc | null = await getVaultByID(req.payload.vault._id);
+    if (updatedVault) {
+      //update vault with the twoFactorAuthSecret
+      updatedVault.twoFactorAuthSecret = pendingSecretKey;
+      updateVaultByID(req.payload.vault._id, updatedVault);
+      res.status(200).json({ 'verified': true });
+      //remove the entry from the pending array
+      for (let i = 0; i < twoFactorPendingTokens.length; i++) {
+        console.log(twoFactorPendingTokens,req.payload.vault._id);
+        if (twoFactorPendingTokens[i].vaultID === req.payload.vault._id) {
+          twoFactorPendingTokens.splice(i,1);
+          break; // Stop loop once found
+        }
+      }
+    } else {
+      res.status(404).json({ 'message': 'User not found!' });
+    }
+  } else {
+    res.status(401).json({ 'verified': false });
+  }
 });
 
 // • GET	/v1/api/vaults/		get the most recent version of the users vault data using token payload

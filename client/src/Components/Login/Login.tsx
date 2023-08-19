@@ -4,8 +4,10 @@ import { VaultController } from '../../Classes/VaultController';
 import './Login.css';
 
 export default function Login({vaultController}:{vaultController:VaultController}){
-  const [emailInput,setEmailInput] = useState('');
-  const [masterPasswordInput,setMasterPasswordInput] = useState('');
+  const [emailInput,setEmailInput] = useState<string>('');
+  const [masterPasswordInput,setMasterPasswordInput] = useState<string>('');
+  const [isOtpRequired,setIsOtpRequired] = useState<boolean>(false);
+  const [otpInput, setOtpInput] = useState<string>('');
   const navigate = useNavigate();
 
   const login = async function():Promise<string>{
@@ -16,12 +18,18 @@ export default function Login({vaultController}:{vaultController:VaultController
       },
       body: JSON.stringify({
         email: emailInput,
-        masterPassword: masterPasswordInput
+        masterPassword: masterPasswordInput,
+        userOtpInput: otpInput || ''
       }),
     });
     const responseData = await response.json();
-    const token:string = responseData.token;
-    return token;
+    if (responseData.token){
+      const token:string = responseData.token;
+      return token;
+    }else{
+      setIsOtpRequired(true);
+      return ''; //return an empty token
+    }
   };
 
   const handleSubmit = async function(){
@@ -57,6 +65,16 @@ export default function Login({vaultController}:{vaultController:VaultController
           </div>
         </div>
       </form>
+      {
+        isOtpRequired ? (
+          <form>
+            <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
+            <button type='button' onClick={()=>{handleSubmit()}}>Submit OTP</button>
+          </form> 
+        ):(
+          null
+        )
+      }
     </div>
   )
 };

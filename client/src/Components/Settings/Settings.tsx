@@ -11,6 +11,8 @@ export default function Settings({vaultController}:{vaultController:VaultControl
   const [curMasterPassInput,setCurMasterPassInput] = useState<string>('');
   const [newMasterPassInput, setNewMasterPassInput] = useState<string>('');
   const [newMasterPassConfInput, setNewMasterPassConfInput] = useState<string>('');
+  const [otpInput, setOtpInput] = useState<string>('');
+
   const [twoFactorQrCode, setTwoFactorQrCode] = useState<string>('');
   //these booleans control the expansion of menu items
   const [isEmailMenuSettingExpanded, setIsEmailMenuSettingExpanded] = useState<boolean>(false);
@@ -75,6 +77,20 @@ export default function Settings({vaultController}:{vaultController:VaultControl
       console.log(`There was an error ${e} when updating your account settings.`)
     };
   };
+  const submitOTP = async function(){
+    await fetch('http://localhost:5000/v1/api/vaults/verify2FACode',{
+      method: 'PUT',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      },
+      body: JSON.stringify({
+        otpInputKey: otpInput
+      }),
+    }).then((data)=>{
+      console.log(data);
+    })
+  };
 
   //check to see which inputs were changed and also switches to confirm changes view once the state is updated
   const handleMakeChangesPress = function(){
@@ -88,8 +104,8 @@ export default function Settings({vaultController}:{vaultController:VaultControl
     };
   };
   
-  const handleTFAToggle = async function(){
-    const response = await fetch('http://localhost:5000/v1/api/vaults/setup2FA',{
+  const populateTwoFactorSetupCode = async function(){
+    const response = await fetch('http://localhost:5000/v1/api/vaults/request2FASetup',{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',
@@ -101,6 +117,7 @@ export default function Settings({vaultController}:{vaultController:VaultControl
       setTwoFactorQrCode(data.qrCodeUrl);
     });
   }
+
   if (isUserLoggedOut){
     return(<LogoutPopup />) //user is not signed in, prevent access
   }else if (isEmailUpdated || isMasterPassUpdated){ //any of the settings are updated
@@ -177,8 +194,19 @@ export default function Settings({vaultController}:{vaultController:VaultControl
           </div>
           <div className='settings-update-container'>
             <span>Two-Factor Authentication:</span>
-            <input onClick={()=>{handleTFAToggle()}} type='checkbox' />
-            <img src={twoFactorQrCode} alt='two factor authentication qr code' />
+            <button onClick={()=>{populateTwoFactorSetupCode()}} type='button'>Enable Two-Factor Authentication</button>
+            {
+              twoFactorQrCode ? (
+                <form>
+                  <p></p>
+                  <img src={twoFactorQrCode} alt='two factor authentication qr code' />
+                  <input type='number'value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
+                  <button type='button' onClick={()=>{submitOTP()}}>Submit</button>
+                </form>
+              ) : (
+                null
+              )
+            }
           </div>
           <p>You will have an opportunity to confirm your account changes on the next page.</p>
           <div>

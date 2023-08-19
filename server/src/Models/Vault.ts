@@ -11,7 +11,11 @@ const VaultSchema = new mongoose.Schema({
     type: String,
   },
   hashedMasterPassword:{ //hashed using bcrypt
-    type:String,
+    type: String,
+  },
+  twoFactorAuthSecret:{
+    type: String,
+    default: '',
   }
 });
 
