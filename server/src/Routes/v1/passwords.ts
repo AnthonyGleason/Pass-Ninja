@@ -32,34 +32,31 @@ passwordRouter.post('/', authenticateToken, async (req:customRequest,res:Respons
     siteUrl:string,
     encryptedNotes:string
   } = req.body;
+  
   const vaultID = req.payload.vault._id;
-  let validatedNickName:string;
-  //nickname is used to search through passwords so it is needed, if it was left blank replace it with untitled.
-  nickName==='' ? validatedNickName='Untitled Password' : validatedNickName=nickName;
-  if (vaultID){
-    //create a new password entry
-    const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,validatedNickName,siteUrl,encryptedNotes);
-    //send the new password entry to the client
-    res.status(200).json({'password': passwordDoc});
-  }else{
-    res.status(401);
-  };
+  //if the nickname was left blank by the user set the nickname to untitled password
+  const validatedNickName:string = nickName || 'Untitled Password';
+  //create a new password entry
+  const passwordDoc = await createPasswordEntry(vaultID,userName,encryptedPassword,validatedNickName,siteUrl,encryptedNotes);
+  //send the new password entry to the client
+  res.status(200).json({'password': passwordDoc});
 });
 
 // DELETE /api/v1/vaults/passwords/:passwordID delete a password entry in the vault
 passwordRouter.delete('/:passwordID',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
   //get the passwordID from the request route
   const passwordID:string = req.params.passwordID;
-  const vaultID:string = req.payload.vault._id;
+  const userVaultID:string = req.payload.vault._id;
   const passwordDoc:passwordDoc | null = await getPasswordByID(passwordID);
-  if (passwordDoc){
-    //verify user owns the password
-    if (passwordDoc.vaultID._id.toString()===vaultID){
-      await deletePasswordByID(passwordID);
+  const passwordVaultID:string = passwordDoc?.vaultID._id.toString();
+  if (
+    passwordDoc && //verify a password doc was found
+    passwordVaultID === userVaultID // verify the user making the request owns the password
+  ){
+    await deletePasswordByID(passwordID)
+    .then(()=>{
       res.status(200).json({'message': `Removed a password with id ${passwordID}.`});
-    }else{
-      res.status(401);
-    };
+    });
   }else{
     res.status(404);
   };
@@ -82,23 +79,18 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
     encryptedNotes:string
   } = req.body;
 
-  const vaultID:string = req.payload.vault._id;
-  const passID:string = req.params.passwordID;
+  const userVaultID:string = req.payload.vault._id;
+  const passwordID:string = req.params.passwordID;
   //get the password entry by password id from mongodb
-  const passwordDoc:passwordDoc | null = await getPasswordByID(passID);
-  let userOwnsPassword:boolean = false;
-  /*
-    only procceed if the user is the owner of the password that will be updated.
-    I had to nest if statements here because the passwordDoc could be null due to getPasswordByID() not finding any matching documents
-  */
-  if (passwordDoc){
-    if (passwordDoc.vaultID._id.toString()===vaultID){
-      userOwnsPassword=true;
-    }
-  };
+  const passwordDoc:passwordDoc | null = await getPasswordByID(passwordID);
+  const passwordVaultID: string = passwordDoc?.vaultID?._id.toString() || '';
+  let userOwnsPassword:boolean | null =
+    passwordDoc && //password doc was found
+    passwordVaultID === userVaultID //the password's vault is matches the user vaultID
+  //make a copy of the password doc
   let updatedPasswordDoc = passwordDoc;
   if (userOwnsPassword && updatedPasswordDoc){
-    //input new values into the document
+    //input new values into the password document
     updatedPasswordDoc.userName = userName;
     updatedPasswordDoc.encryptedPassword=encryptedPassword;
     updatedPasswordDoc.nickName=nickName;
@@ -111,7 +103,7 @@ passwordRouter.put('/:passwordID', authenticateToken, async (req:customRequest,r
       return currentDate;
     }();
     //update the password entry in mongodb
-    await updatePasswordByID(passID,updatedPasswordDoc);
+    await updatePasswordByID(passwordID,updatedPasswordDoc);
     //send the updated password to the client
     res.status(200).json({password: updatedPasswordDoc});
   };
@@ -123,12 +115,12 @@ passwordRouter.get('/:passwordID',authenticateToken, async (req:customRequest,re
   const passwordID:string = req.params.passwordID;
   //get password from mongodb based on the password id
   const password:passwordDoc | null = await getPasswordByID(passwordID);
-  let userOwnsPassword = false;
-  if (password){
-    if (password.vaultID._id.toString()===req.payload.vault._id) userOwnsPassword = true;
-  }
-  //only proceed if the user is the owner of the vault containing the password
-  if (userOwnsPassword){
+  const passwordVaultID = password?.vaultID._id.toString();
+  const userVaultID = req.payload.vault._id;
+  if (
+    password && //a password was found
+    passwordVaultID === userVaultID // user is the owner of the vault containing the password
+  ){
     res.status(200).json({password: password});
   }else{
     res.status(401);

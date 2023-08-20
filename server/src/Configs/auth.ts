@@ -10,7 +10,7 @@ export const demoPass:{
   useSpecialChars:boolean,
   useUpperCases:boolean,
   useNumbers:boolean
-}= {
+} = {
   userName: 'user',
   siteUrl: 'https://www.example.com',
   nickName: 'Hello World!',

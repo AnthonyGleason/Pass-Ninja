@@ -10,7 +10,8 @@ export const generatePassword = function(minLength:number,maxLength:number,speci
   const specialCharsSet = '!@#$%^&*()_+{}:"<>?|';
   const upperCaseCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbersSet = '0123456789';
-  let generatedPassword:string[] = []; //initalize the generatedPassword array each index will hold a single character
+  //initalize the generatedPassword array, each index will hold a single character
+  let generatedPassword:string[] = [];
   //gets a random integer between the provided min and max values
   const getRandomInt = function(min:number,max:number){ return Math.floor(Math.random()*(max-min+1))+min }
   // Initialize the character pool with lowercase characters
