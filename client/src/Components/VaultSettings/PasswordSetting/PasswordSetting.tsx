@@ -56,7 +56,7 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
       <p>Enter a new master password (again)</p>
       <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
       <div>
-        <p>You must enter your correct current master password to apply changes.</p>
+        <p>You must enter your correct current master password to apply this change.</p>
         <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={()=>{setCurMasterPassInput(curMasterPassInput)}} />
         <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
         <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>

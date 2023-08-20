@@ -35,7 +35,7 @@ export default function EmailSetting({vaultController}:{vaultController:VaultCon
       <label>Enter a new email address</label>
       <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
       <div>
-        <p>You must enter your correct current master password to apply changes.</p>
+        <p>You must enter your correct current master password to apply this change.</p>
         <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={()=>{setCurMasterPassInput(curMasterPassInput)}} />
         <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
         <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>

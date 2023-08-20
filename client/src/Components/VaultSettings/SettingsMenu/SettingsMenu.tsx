@@ -6,7 +6,6 @@ import { VaultController } from '../../../Classes/VaultController';
 import './SettingsMenu.css';
 
 export default function SettingsMenu({vaultController}:{vaultController:VaultController}){
-  const [curMasterPassInput,setCurMasterPassInput] = useState<string>('');
   const [isUserLoggedOut,setIsUserLoggedOut] = useState<boolean>(false);
   const navigate = useNavigate();
   
@@ -26,9 +25,10 @@ export default function SettingsMenu({vaultController}:{vaultController:VaultCon
       <div className='account-settings'>
         <h3>Account Settings</h3>
         <div className='account-settings-content'>
-          <button onClick={()=>{navigate('/vault/settings/email')}}>Email Address</button>
-          <button onClick={()=>{navigate('/vault/settings/password')}}>Master Password</button>
+          <button onClick={()=>{navigate('/vault/settings/email')}} type='button'>Email Address</button>
+          <button onClick={()=>{navigate('/vault/settings/password')}} type='button'>Master Password</button>
           <button onClick={()=>{navigate('/vault/settings/twoFactor')}} type='button'>Two-Factor Authentication</button>
+          <button onClick={()=>{navigate('/vault')}} type='button'>Return to Vault</button>
         </div>
       </div>
     );

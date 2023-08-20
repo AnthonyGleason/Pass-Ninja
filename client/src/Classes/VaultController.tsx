@@ -3,13 +3,15 @@ import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
 export class VaultController{
   masterPassword:string;
   passwords:any[];
-
+  isTwoFactorEnabled:boolean;
   constructor(
     passwords?:any[],
     masterPassword?:string,
+    isTwoFactorEnabled?:boolean,
   ){
     this.passwords = passwords || [];
     this.masterPassword = masterPassword || '';
+    this.isTwoFactorEnabled = isTwoFactorEnabled || false; //only used in the 2fa vault settings to enable or disable 2fa. (server will additionally verify this before applying changes);
   };
 
   createNewPassword = async(

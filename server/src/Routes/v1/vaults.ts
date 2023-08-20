@@ -168,7 +168,7 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
   };
 });
 
-// POST  /v1/api/vaults/setup2FA
+// POST  /v1/api/vaults/request2FASetup
 vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
   //generate the temporary secret
   const speakeasySecret = speakeasy.generateSecret({'length': 45});
@@ -192,9 +192,41 @@ vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,r
   };
 });
 
+vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
+  const {
+    otpInputKey,
+    masterPasswordInput
+  } = req.body;
+  //get vault
+  const vault:vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
+  if (
+    vault && //vault is found
+    vault.twoFactorAuthSecret && //two factor authentication is enabled
+    await bcrypt.compare(masterPasswordInput,vault.hashedMasterPassword) && //master password was successfully entered by the user
+    speakeasy.totp.verify({ //and finally verify the otp was entered correctly by the user
+      secret: vault.twoFactorAuthSecret,
+      encoding: 'base32',
+      token: otpInputKey,
+      window: 1,
+    })
+  ){
+    //remove 2fa from the users account
+    vault.twoFactorAuthSecret = '';
+    await updateVaultByID(req.payload.vault._id,vault)
+    .then(()=>{
+      res.status(200).json({'message':'Two-Factor Authentication was sucessfully removed from your account.'})
+    })
+  }else{
+    res.status(400);
+  }
+});
+
 // PUT /v1/api/vaults/verify2FACode
-vaultsRouter.put('/verify2FACode', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
-  const otpInputKey = req.body.otpInputKey;
+vaultsRouter.put('/verify2FA', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
+  const {
+    otpInputKey,
+    masterPasswordInput
+  } = req.body;
   let pendingSecretKey: string | undefined = undefined;
 
   // Check if the user is pending 2FA setup
@@ -216,7 +248,8 @@ vaultsRouter.put('/verify2FACode', authenticateToken, async (req: customRequest,
     window: 1,
   });
 
-  if (isVerified) {
+  //if user is verified and correct master password was given then apply the changes
+  if (isVerified && await bcrypt.compare(masterPasswordInput,req.payload.vault.encryptedPassword)) {
     let updatedVault: vaultDoc | null = await getVaultByID(req.payload.vault._id);
     if (updatedVault) {
       //update vault with the twoFactorAuthSecret

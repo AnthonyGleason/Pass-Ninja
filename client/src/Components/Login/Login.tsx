@@ -27,6 +27,7 @@ export default function Login({vaultController}:{vaultController:VaultController
       const token:string = responseData.token;
       return token;
     }else{
+      vaultController.isTwoFactorEnabled = true;
       setIsOtpRequired(true);
       return ''; //return an empty token
     }
