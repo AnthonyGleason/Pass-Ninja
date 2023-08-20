@@ -16,7 +16,7 @@ const VaultSchema = new mongoose.Schema({
   twoFactorAuthSecret:{
     type: String,
     default: '',
-  }
+  },
 });
 
 export const VaultModel = mongoose.model('Vault',VaultSchema);

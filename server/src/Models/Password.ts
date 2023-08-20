@@ -8,10 +8,10 @@ const PasswordSchema = new mongoose.Schema({
   userName:{
     type:String,
   },
-  encryptedPassword:{ //hashed using crypto js library client side
+  encryptedPassword:{
     type:String,
   },
-  encryptedNotes:{  //hashed using crypto js library client side
+  encryptedNotes:{
     type:String,
   },
   nickName:{
@@ -23,10 +23,10 @@ const PasswordSchema = new mongoose.Schema({
   expiresOn:{
     type: Date,
     default: () => {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 90);
-        return currentDate;
-    }
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 90);
+      return currentDate;
+    },
   },
 });
 

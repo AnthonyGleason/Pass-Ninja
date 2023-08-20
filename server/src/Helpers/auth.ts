@@ -31,7 +31,6 @@ export const loginExistingUser = async function(
   return ''; // user was not logged in
 };
 
-////////
 
 export const registerNewUser = async function(
   masterPassword:string,
