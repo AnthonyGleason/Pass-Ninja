@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
 
-import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens, userHasTwoFactorEnabled } from "../../Helpers/auth";
+import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens} from "../../Helpers/auth";
 import { createExamplePassword, generatePassword } from "../../Helpers/vault";
 
 import { authenticateToken } from "../../Middlewares/Auth";
@@ -57,7 +57,7 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   };
 });
 
-// • POST	/v1/api/vaults/login	use the demo user
+// • POST	/v1/api/vaults/demologin	use the demo user
 vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFunction)=>{
   const email:string = `demo@user${generatePassword(12,12,false,true,true)}`;
   const vault= await registerNewUser('demopass','demopass','Demo','User',email);
@@ -221,7 +221,7 @@ vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:R
   }
 });
 
-// PUT /v1/api/vaults/verify2FACode
+// PUT /v1/api/vaults/verify2FA
 vaultsRouter.put('/verify2FA', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
   const {
     otpInputKey,
@@ -249,7 +249,7 @@ vaultsRouter.put('/verify2FA', authenticateToken, async (req: customRequest, res
   });
 
   //if user is verified and correct master password was given then apply the changes
-  if (isVerified && await bcrypt.compare(masterPasswordInput,req.payload.vault.encryptedPassword)) {
+  if (isVerified && await bcrypt.compare(masterPasswordInput,req.payload.vault.hashedMasterPasswordPassword)) {
     let updatedVault: vaultDoc | null = await getVaultByID(req.payload.vault._id);
     if (updatedVault) {
       //update vault with the twoFactorAuthSecret

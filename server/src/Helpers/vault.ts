@@ -1,14 +1,4 @@
-import { 
-  demoPassMaxLength,
-  demoPassMinLength,
-  demoPassNickName,
-  demoPassNotes,
-  demoPassSiteUrl,
-  demoPassUseNumbers,
-  demoPassUseSpecialChars,
-  demoPassUseUpperCases,
-  demoPassUserName
-} from "../Configs/auth";
+import { demoPass } from "../Configs/auth";
 
 import { createPasswordEntry } from "../Controllers/password";
 import { encryptPassword } from "./auth";
@@ -53,23 +43,23 @@ export const createExamplePassword = async function(
   //create a password for the demo password entry
   const tempEncryptedPass:string = encryptPassword(
     generatePassword(
-      demoPassMinLength,
-      demoPassMaxLength,
-      demoPassUseSpecialChars,
-      demoPassUseUpperCases,
-      demoPassUseNumbers,
+      demoPass.minLength,
+      demoPass.maxLength,
+      demoPass.useSpecialChars,
+      demoPass.useUpperCases,
+      demoPass.useNumbers,
     ),
     masterPassword
   );
   //create the demo password's notes encrypted with the user's master password
-  const tempEncryptedNotes:string = encryptPassword(demoPassNotes, masterPassword);
+  const tempEncryptedNotes:string = encryptPassword(demoPass.notes, masterPassword);
 
   if (vaultID) await createPasswordEntry(
       vaultID,
-      demoPassUserName,
+      demoPass.userName,
       tempEncryptedPass,
-      demoPassNickName,
-      demoPassSiteUrl,
+      demoPass.nickName,
+      demoPass.siteUrl,
       tempEncryptedNotes
     );
 };

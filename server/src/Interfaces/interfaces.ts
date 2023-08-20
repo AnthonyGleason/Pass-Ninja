@@ -15,7 +15,7 @@ export interface vaultDoc extends Document{
   firstName: string,
   lastName: string,
   email: string,
-  twoFactorAuthSecret: string
+  twoFactorAuthSecret: string,
 };
 
 export interface passwordDoc extends Document{
