@@ -14,7 +14,7 @@ import { updatePasswordByID } from "../../Controllers/password";
 import { passwordRouter } from "./passwords";
 import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
-import { qrCodeErrorCorrectionLevel, qrCodeErrorCorrectionStrength, speakeasySecretLength } from "../../Configs/auth";
+import { qrCodeErrorCorrectionLevel, speakeasySecretLength } from "../../Configs/auth";
 
 export const vaultsRouter = express.Router();
 

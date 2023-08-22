@@ -1,8 +1,8 @@
 import cryptoJS from 'crypto-js';
 
 //encrypt the password using the masterPassword
-export const encryptPassword = function(passwordInput:string, masterPassword:string): string {
-  return cryptoJS.AES.encrypt(passwordInput, masterPassword).toString();
+export const encryptString = function(stringInput:string, masterPassword:string): string {
+  return cryptoJS.AES.encrypt(stringInput, masterPassword).toString();
 };
 
 //decrypt the password will be used on client

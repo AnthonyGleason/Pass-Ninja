@@ -17,6 +17,7 @@ export const loginExistingUser = async function(
   email:string,
   masterPassword:string,
 ):Promise<string>{
+  console.log(email);
   //get user's vault by email
   const vault:vaultDoc | null = await getVaultByUserEmail(email);
   //verify the user has a vault with a master password present
@@ -61,11 +62,12 @@ export const isEmailAvailable = async function(
 };
 
 export const generateUniqueDemoEmail = async function(counter:number = 0):Promise<string>{
-  //prevent stack overflow
-  if (counter>=15) return ''
-  const generatedDemoEmail:string = `demo@user${generatePassword(12,12,false,true,true)}`
-  if (await isEmailAvailable(generatedDemoEmail)) return await generateUniqueDemoEmail(counter+1);
-  return generatedDemoEmail;
+
+  for (let i=0;i<15;i++){ //15 max repitions to prevent stack overflow
+    const generatedDemoEmail:string = `demo@user${generatePassword(12,12,false,true,true)}`
+    if (await isEmailAvailable(generatedDemoEmail)) return generatedDemoEmail;
+  }
+  return '';
 }
 
 //encrypt the password using the masterPassword

@@ -1,9 +1,11 @@
-import { decryptPassword, encryptPassword } from "../Helpers/Passwords";
+import { decryptPassword, encryptString } from "../Helpers/Passwords";
+import { Password } from "../Interfaces/Interfaces";
 
 export class VaultController{
   masterPassword:string;
   passwords:any[];
   isTwoFactorEnabled:boolean;
+
   constructor(
     passwords?:any[],
     masterPassword?:string,
@@ -11,7 +13,7 @@ export class VaultController{
   ){
     this.passwords = passwords || [];
     this.masterPassword = masterPassword || '';
-    this.isTwoFactorEnabled = isTwoFactorEnabled || false; //only used in the 2fa vault settings to enable or disable 2fa. (server will additionally verify this before applying changes);
+    this.isTwoFactorEnabled = isTwoFactorEnabled || false; // this is verified serverside but is used for conditional rendering purposes clientside
   };
 
   createNewPassword = async(
@@ -31,8 +33,8 @@ export class VaultController{
         nickName: nickNameInput,
         siteUrl:  siteUrlInput,
         userName: userNameInput,
-        encryptedPassword: encryptPassword(passwordInput,this.masterPassword),
-        encryptedNotes: encryptPassword(notesInput,this.masterPassword),
+        encryptedPassword: encryptString(passwordInput,this.masterPassword),
+        encryptedNotes: encryptString(notesInput,this.masterPassword),
       }),
     });
     await response.json();
@@ -57,8 +59,8 @@ export class VaultController{
         nickName: nickNameInput,
         siteUrl:  siteUrlInput,
         userName: userNameInput,
-        encryptedPassword: encryptPassword(passwordInput,this.masterPassword),
-        encryptedNotes: encryptPassword(notesInput,this.masterPassword),
+        encryptedPassword: encryptString(passwordInput,this.masterPassword),
+        encryptedNotes: encryptString(notesInput,this.masterPassword),
       }),
     });
     //retrieve the new password data again from the server
@@ -76,7 +78,7 @@ export class VaultController{
       //decrypt passwords
       const data = await responseData.json();
       //make a copy of the passwords array sent by the server
-      let passwords: any[] = data.passwords;
+      let passwords: Password[] = data.passwords;
       //decrypt the user's passwords and notes
       passwords.forEach((password:any)=>{
         //checking for the encryptedPassword property  and encryptedNotes proprties to prevent malformed utf-8 errors

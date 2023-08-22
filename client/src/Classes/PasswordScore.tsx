@@ -4,13 +4,16 @@ export class PasswordScore{
   strength:string;
   estCrackTime:string;
 
-  constructor(passwordInput:string,charPoolLength:number){
-    const passCombinations = BigInt(Math.pow(charPoolLength, passwordInput.length));
+  constructor(
+    passwordInput:string,
+    charPoolLength:number
+  ){
+    const passCombinations:bigint = BigInt(Math.pow(charPoolLength, passwordInput.length));
     //get calculate entropy in bits
     const entropyInBits:number = Math.log2(Number(passCombinations));
     //set the password entropy to the hundreths place
     this.entropyInBits = parseFloat(entropyInBits.toFixed(2));
-    //populate score propertiesy
+    //populate score properties
     this.strength = this.getStrength();
     this.colorCode = this.getColorCode();
     this.estCrackTime = this.getEstCrackTime();

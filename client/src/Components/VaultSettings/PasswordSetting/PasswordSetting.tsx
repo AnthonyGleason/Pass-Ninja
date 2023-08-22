@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { encryptPassword } from "../../../Helpers/Passwords";
+import { encryptString } from "../../../Helpers/Passwords";
 import { VaultController } from "../../../Classes/VaultController";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
       vaultController.passwords.forEach((password:any)=>{
         let updatedPassword:any = password;
         //encrypt the passwords with the updated master pass input
-        updatedPassword.encryptedPassword = encryptPassword(updatedPassword.decryptedPassword,newMasterPassInput);
+        updatedPassword.encryptedPassword = encryptString(updatedPassword.decryptedPassword,newMasterPassInput);
         //stop the decryptedPassword and decryptedNotes from being sent to the server
         updatedPassword.decryptedPassword = undefined;
         updatedPassword.decryptedNotes = undefined;
