@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Response } from "express";
 import { customRequest, passwordDoc, vaultDoc } from '../../Interfaces/interfaces';
 
-import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens} from "../../Helpers/auth";
+import { invalidatedTokens, generateHashedPassword, loginExistingUser, registerNewUser, twoFactorPendingTokens, generateUniqueDemoEmail} from "../../Helpers/auth";
 import { createExamplePassword, generatePassword } from "../../Helpers/vault";
 
 import { authenticateToken } from "../../Middlewares/Auth";
@@ -14,6 +14,7 @@ import { updatePasswordByID } from "../../Controllers/password";
 import { passwordRouter } from "./passwords";
 import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
+import { qrCodeErrorCorrectionStrength, speakeasySecretLength } from "../../Configs/auth";
 
 export const vaultsRouter = express.Router();
 
@@ -43,7 +44,7 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
   } = req.body;
   //create the vault in mongodb
   const vault = await registerNewUser(masterPassword,masterPasswordConfirm,firstName,lastName,email);
-  //create a new example password in the users vault
+  //create a new example password in the users vault (that was just created)
   if (vault) await createExamplePassword(vault._id,masterPassword);
   //generate a token so users can access their vault immediately
   const token:string = await loginExistingUser(email,masterPassword);
@@ -59,16 +60,19 @@ vaultsRouter.post('/register',async (req:customRequest,res:Response,next:NextFun
 
 // • POST	/v1/api/vaults/demologin	use the demo user
 vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFunction)=>{
-  const email:string = `demo@user${generatePassword(12,12,false,true,true)}`;
-  const vault= await registerNewUser('demopass','demopass','Demo','User',email);
+  //using the generate password function generate a random unique email
+  const email:string = await generateUniqueDemoEmail();
+  const vault = await registerNewUser('demopass','demopass','Demo','User',email);
   //create a new example password in the users vault
   if (vault) await createExamplePassword(vault._id,'demopass');
-  const token:string = await loginExistingUser(email,'demopass');
-  if (token){
-    res.status(200).json({'token': token});
-  }else{
-    res.status(401);
-  }
+  await loginExistingUser(email,'demopass')
+    .then((token:string)=>{
+      res.status(200).json({'token': token});
+    })
+    .catch((err)=>{
+      res.status(500).json({'message': 'an error occured during login'});
+      console.log(err);
+    });
 });
 
 // • POST	/v1/api/vaults/login	sign into already existing account 
@@ -84,40 +88,53 @@ vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunct
     userOtpInput:string
   } = req.body;
 
-  if (!email||!masterPassword){
-    res.status(401);
-  }else{
-    const vaultDoc:vaultDoc | null = await getVaultByUserEmail(email);
-    //user has two factor enabled
-    if (vaultDoc && vaultDoc.twoFactorAuthSecret){
-      if (userOtpInput){
-        const isVerified: boolean = speakeasy.totp.verify({
-          secret: vaultDoc.twoFactorAuthSecret,
-          encoding: 'base32',
-          token: userOtpInput,
-          window: 1,
+  //attempt to retrieve vault data based on user inputted email
+  const vaultDoc:vaultDoc | null = await getVaultByUserEmail(email);
+
+  /*
+   Here we are checking first to see if the user doesnt have two factor enabled.
+   Since two factor can be represented as a boolean value (enabled or disabled) we can assume if this first check
+   (user does not have two factor enabled) fails that they must have two factor enabled. Additionally we check to see if a 
+   user has inputted a OTP if not we let the client know a OTP is required but not provided.
+` */
+
+  //user does not have two factor enabled
+  if (
+    vaultDoc && // a vault document was found
+    !vaultDoc.twoFactorAuthSecret //the user does not have two factor enabled
+  ){
+    const token:string = await loginExistingUser(email,masterPassword);
+    res.status(200).json({
+      'token': token,
+      'otpRequired': false
+    });
+  }
+
+  //user has two factor enabled
+  if (
+    vaultDoc && // a vault document was found
+    vaultDoc.twoFactorAuthSecret && //two factor is enabled for that account
+    userOtpInput //user inputted otp from their authentication app of choice
+  ){
+    const isVerified: boolean = speakeasy.totp.verify({
+      secret: vaultDoc.twoFactorAuthSecret,
+      encoding: 'base32',
+      token: userOtpInput,
+      window: 1,
+    });
+    if (isVerified){
+      await loginExistingUser(email,masterPassword)
+        .then((token:string)=>{
+          res.status(200).json({
+            token: token
+          });
         });
-        const token:string = await loginExistingUser(email,masterPassword);
-        res.status(200).json({
-          token: token
-        })
-      }else{
-        res.status(400).json({
-          'token': '',
-          'otpRequired': true
-        })
-      };
     };
-    //user does not have two factor enabled
-    if (vaultDoc && !vaultDoc.twoFactorAuthSecret){
-      const token:string = await loginExistingUser(email,masterPassword);
-      res.status(200).json({
-        'token': token,
-        'otpRequired': false
-      });
-    }else{
-      res.status(400);
-    };
+  }else{ //two factor is enabled but user has not provided a OTP (check above comments for more information about this conditional)
+    res.status(400).json({
+      'token': '',
+      'otpRequired': true
+    });
   };
 });
 
@@ -136,42 +153,53 @@ vaultsRouter.post('/logout',authenticateToken,(req:customRequest,res:Response,ne
 
 // PUT /v1/api/vaults/settings update the users vault settings
 vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Response,next:NextFunction)=>{
-  //if the input is not provided we can assume the user is not changing that setting
-  const updatedMasterPassword:string = req.body.updatedMasterPassword || '';
-  const updatedMasterPasswordConfirm:string = req.body.updatedMasterPasswordConfirm || '';
-  const currentMasterPassword:string = req.body.currentMasterPassword || '';
-  const updatedEmail:string = req.body.updatedEmail || '';
-  //updated passwords is only provided if the user is updating their master password
-  const updatedPasswords:[passwordDoc] = req.body.updatedPasswords || [];
-  //ensure the user has entered their correct master password before updating any settings
-  if (await bcrypt.compare(currentMasterPassword,req.payload.vault.hashedMasterPassword)){
-    if (updatedEmail) req.payload.vault.email = updatedEmail;
-    //if both passwords are provided and match update the vault and new passwords array with new encrypted passwords
-    if (updatedMasterPassword && updatedMasterPasswordConfirm && updatedMasterPassword===updatedMasterPasswordConfirm){
-      //hash and set new hashed password
-      req.payload.vault.hashedMasterPassword=await generateHashedPassword(updatedMasterPassword);
-      //for each password update the password document by id with the new password data
-      updatedPasswords.forEach(async (password:passwordDoc)=>{
-        await updatePasswordByID(password._id,password);
-      })
-    };
-    //if email was updated, update the document with the new email
-    if (updatedEmail){
-      req.payload.vault.email = updatedEmail;
-    };
-    
-    //apply changes to vault
-    await updateVaultByID(req.payload.vault._id,req.payload.vault);
-    res.status(200).json({'vault': req.payload.vault});
-  }else{
-    res.status(401).json({'message': 'An error has occured when updating your vault data'});
+  const {
+    updatedMasterPassword,
+    updatedMasterPasswordConfirm,
+    currentMasterPassword,
+    updatedEmail,
+    updatedPasswords
+  }:{
+    updatedMasterPassword?:string,
+    updatedMasterPasswordConfirm?:string,
+    currentMasterPassword?:string,
+    updatedEmail?:string,
+    updatedPasswords?:passwordDoc[];
+  } = req.body;
+  const vault = await getVaultByID(req.payload.vault._id);
+
+  //handle user is updating their vault's master password
+  if (
+    currentMasterPassword && //user provided a current password
+    await bcrypt.compare(currentMasterPassword,req.payload.vault.hashedMasterPassword) && //the user has entered the correct master password
+    updatedMasterPassword && //an updated master password was provided
+    updatedMasterPasswordConfirm && //an updated master password confirmation was provided
+    updatedMasterPassword===updatedMasterPasswordConfirm && //the updated master password matches the confirmation
+    updatedPasswords  
+  ){
+    //for each password update the password document by id with the new password data
+    updatedPasswords.forEach(async (password:passwordDoc)=>{
+      await updatePasswordByID(password._id,password);
+    })
+  };
+  
+  //handle user is updating their vault's associated email address
+  if (
+    updatedEmail && // user has provided an updated email address
+    vault // a vault was found for user
+  ){
+    let updatedVault = vault;
+    updatedVault.email = updatedEmail;
+    await updateVaultByID(req.payload.vault._id,updatedVault);
   };
 });
+
+/////////////////////////////////
 
 // POST  /v1/api/vaults/request2FASetup
 vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
   //generate the temporary secret
-  const speakeasySecret = speakeasy.generateSecret({'length': 45});
+  const speakeasySecret = speakeasy.generateSecret({'length': speakeasySecretLength});
   if (speakeasySecret && speakeasySecret.otpauth_url){
     //store that secret in a temporary auth array with an object containing the userID and secret key
     twoFactorPendingTokens.push({
@@ -179,7 +207,7 @@ vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,r
       'secret': speakeasySecret
     });
     //create qr code
-    QRCode.toDataURL(speakeasySecret.otpauth_url, {errorCorrectionLevel: 'M'}, function (err, url) {
+    QRCode.toDataURL(speakeasySecret.otpauth_url, {errorCorrectionLevel: qrCodeErrorCorrectionStrength}, function (err, url) {
       if (url){
         //send the qr code url to the client
         res.status(200).json({'qrCodeUrl': url});

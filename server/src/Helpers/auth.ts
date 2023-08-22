@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { vaultDoc } from '../Interfaces/interfaces';
 import cryptoJS from 'crypto-js';
 import { loginTokenExpireTime } from "../Configs/auth";
+import { generatePassword } from "./vault";
 
 export const generateHashedPassword = async function(password:string):Promise<string>{ 
   //generate hashed password
@@ -18,13 +19,11 @@ export const loginExistingUser = async function(
 ):Promise<string>{
   //get user's vault by email
   const vault:vaultDoc | null = await getVaultByUserEmail(email);
-
   //verify the user has a vault with a master password present
   if (
     vault===null || //vault is not found
     !vault.hashedMasterPassword //verify a hashed master password is present
   ) throw new Error(`Error retrieving vault data for user with email ${email}`);
-
   //compare the hashed password to the provided password using bcrypt, if it matches the hash return a token with the vault as the payload
   if (await bcrypt.compare(masterPassword,vault.hashedMasterPassword)) return issueToken(vault);
 
@@ -39,7 +38,6 @@ export const registerNewUser = async function(
   lastName:string,
   email:string,
   ):Promise<vaultDoc | void>{
-  
   if (
     masterPassword===masterPasswordConfirm && //master password and the password confirmation inputs match
     firstName && // a first name was provided
@@ -51,16 +49,24 @@ export const registerNewUser = async function(
     const hashedMasterPassword = await bcrypt.hash(masterPassword,salt);
     //create a new vault in mongodb for the user
     return await createVault(firstName,lastName,email,hashedMasterPassword) as vaultDoc;
-  }
+  };
 };
 
 export const isEmailAvailable = async function(
   email:string,
 ):Promise<boolean>{
   const vault:vaultDoc | null = await getVaultByUserEmail(email);
-  if (vault) return true; //vault is found, a vault exists with that email address
-  return false; //otherwise a vault is not found and that email address is available
+  if (vault) return false //vault is found, a vault exists with that email address
+  return true; //otherwise a vault is not found and that email address is available
 };
+
+export const generateUniqueDemoEmail = async function(counter:number = 0):Promise<string>{
+  //prevent stack overflow
+  if (counter>=15) return ''
+  const generatedDemoEmail:string = `demo@user${generatePassword(12,12,false,true,true)}`
+  if (await isEmailAvailable(generatedDemoEmail)) return await generateUniqueDemoEmail(counter+1);
+  return generatedDemoEmail;
+}
 
 //encrypt the password using the masterPassword
 export const encryptPassword = function(password: string, masterPassword: string): string {

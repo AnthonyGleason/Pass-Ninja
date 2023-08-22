@@ -124,5 +124,5 @@ passwordRouter.get('/:passwordID',authenticateToken, async (req:customRequest,re
     res.status(200).json({password: password});
   }else{
     res.status(401);
-  }
+  };
 });

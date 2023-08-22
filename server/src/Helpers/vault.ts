@@ -29,7 +29,7 @@ export const generatePassword = function(minLength:number,maxLength:number,speci
     //get a charcter from the character pool based on the random index generated and push that to the password array
     generatedPassword.push(charPool.charAt(randomIndex));
   };
-  return generatedPassword.join();
+  return generatedPassword.join('');
 };
 
 export const createExamplePassword = async function(

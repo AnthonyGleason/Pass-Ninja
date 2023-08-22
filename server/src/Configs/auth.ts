@@ -21,3 +21,6 @@ export const demoPass:{
   useUpperCases: true,
   useNumbers: true
 }
+
+export const speakeasySecretLength:number = 45;
+export const qrCodeErrorCorrectionStrength = 'M'; //possible values; 'L' || 'M' || 'H'. Sets the error correcting strength incase qr code is damage
