@@ -12,7 +12,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
 
 
   const handleVerifyTwoFactor = async function(){
-    await fetch('http://localhost:5000/v1/api/vaults/verify2FA',{
+    await fetch('http://localhost:5000/v1/api/vaults/verifyOTP',{
       method: 'PUT',
       headers:{
         'Content-Type': 'application/json',

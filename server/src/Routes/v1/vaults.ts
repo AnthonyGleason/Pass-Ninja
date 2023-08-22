@@ -14,7 +14,7 @@ import { updatePasswordByID } from "../../Controllers/password";
 import { passwordRouter } from "./passwords";
 import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
-import { qrCodeErrorCorrectionStrength, speakeasySecretLength } from "../../Configs/auth";
+import { qrCodeErrorCorrectionLevel, qrCodeErrorCorrectionStrength, speakeasySecretLength } from "../../Configs/auth";
 
 export const vaultsRouter = express.Router();
 
@@ -194,27 +194,25 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
   };
 });
 
-/////////////////////////////////
-
 // POST  /v1/api/vaults/request2FASetup
 vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
-  //generate the temporary secret
-  const speakeasySecret = speakeasy.generateSecret({'length': speakeasySecretLength});
-  if (speakeasySecret && speakeasySecret.otpauth_url){
-    //store that secret in a temporary auth array with an object containing the userID and secret key
+  //generate the two-factor secret
+  const speakeasySecret:speakeasy.GeneratedSecret = speakeasy.generateSecret({'length': speakeasySecretLength});
+  if (speakeasySecret.otpauth_url){
+    //store the secret and user's vault id in the servers pending two factor tokens array
     twoFactorPendingTokens.push({
-      'vaultID': req.payload.vault._id,
+      'vaultID': req.payload.vault._id, //token is taken from vault id based on provided the jwt session token
       'secret': speakeasySecret
     });
     //create qr code
-    QRCode.toDataURL(speakeasySecret.otpauth_url, {errorCorrectionLevel: qrCodeErrorCorrectionStrength}, function (err, url) {
-      if (url){
+    QRCode.toDataURL(
+      speakeasySecret.otpauth_url,
+      {errorCorrectionLevel: qrCodeErrorCorrectionLevel},
+      function (err, url) {
         //send the qr code url to the client
         res.status(200).json({'qrCodeUrl': url});
-      }else{
-        res.status(500);
       }
-    });
+    );
   }else{
     res.status(400);
   };
@@ -224,12 +222,16 @@ vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:R
   const {
     otpInputKey,
     masterPasswordInput
+  }:{
+    otpInputKey:string,
+    masterPasswordInput:string
   } = req.body;
-  //get vault
+
   const vault:vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
+
   if (
     vault && //vault is found
-    vault.twoFactorAuthSecret && //two factor authentication is enabled
+    vault.twoFactorAuthSecret && // user has two factor authentication enabled
     await bcrypt.compare(masterPasswordInput,vault.hashedMasterPassword) && //master password was successfully entered by the user
     speakeasy.totp.verify({ //and finally verify the otp was entered correctly by the user
       secret: vault.twoFactorAuthSecret,
@@ -238,65 +240,56 @@ vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:R
       window: 1,
     })
   ){
+    let updatedVault:vaultDoc = vault;
     //remove 2fa from the users account
-    vault.twoFactorAuthSecret = '';
-    await updateVaultByID(req.payload.vault._id,vault)
-    .then(()=>{
-      res.status(200).json({'message':'Two-Factor Authentication was sucessfully removed from your account.'})
-    })
+    updatedVault.twoFactorAuthSecret = '';
+    await updateVaultByID(req.payload.vault._id,updatedVault)
+      .then(()=>{
+        res.status(200).json({'message':'Two-Factor Authentication was sucessfully removed from your account.'})
+      });
   }else{
     res.status(400);
-  }
+  };
 });
 
-// PUT /v1/api/vaults/verify2FA
-vaultsRouter.put('/verify2FA', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
+// PUT /v1/api/vaults/verifyOTP users can verify their pending two factor qr code
+vaultsRouter.put('/verifyOTP', authenticateToken, async (req: customRequest, res: Response, next: NextFunction) => {
   const {
     otpInputKey,
     masterPasswordInput
   } = req.body;
-  let pendingSecretKey: string | undefined = undefined;
+  const vaultID:string = req.payload.vault._id;
+  let vault: vaultDoc | null = await getVaultByID(vaultID);
 
-  // Check if the user is pending 2FA setup
-  for (let i = 0; i < twoFactorPendingTokens.length; i++) {
-    if (twoFactorPendingTokens[i].vaultID === req.payload.vault._id) {
-      pendingSecretKey = twoFactorPendingTokens[i].secret.base32; //provide secret in base32 encoding for speakeasy totp verification
-      break; // Stop loop once found
-    }
-  }
+  // Find the pending secret key for 2FA setup
+  const pendingToken = twoFactorPendingTokens.find((token) => {token.vaultID === vaultID}); //find the pending two factor token for the requesting user id
+  const pendingSecretKey:string = pendingToken.secret.base32;
 
-  if (!pendingSecretKey) {
-    res.status(401).json({ 'verified': false });
-    return;
-  }
-  const isVerified: boolean = speakeasy.totp.verify({
+  //verify otp provided by user
+  const isOTPVerified: boolean = speakeasy.totp.verify({
     secret: pendingSecretKey,
     encoding: 'base32',
     token: otpInputKey,
     window: 1,
   });
 
-  //if user is verified and correct master password was given then apply the changes
-  if (isVerified && await bcrypt.compare(masterPasswordInput,req.payload.vault.hashedMasterPasswordPassword)) {
-    let updatedVault: vaultDoc | null = await getVaultByID(req.payload.vault._id);
-    if (updatedVault) {
-      //update vault with the twoFactorAuthSecret
-      updatedVault.twoFactorAuthSecret = pendingSecretKey;
-      updateVaultByID(req.payload.vault._id, updatedVault);
-      res.status(200).json({ 'verified': true });
-      //remove the entry from the pending array
-      for (let i = 0; i < twoFactorPendingTokens.length; i++) {
-        if (twoFactorPendingTokens[i].vaultID === req.payload.vault._id) {
-          twoFactorPendingTokens.splice(i,1);
-          break; // Stop loop once found
-        }
-      }
-    } else {
-      res.status(404).json({ 'message': 'User not found!' });
-    }
+  //determine if vault should be updated or not
+  if (
+    vault && // a vault document was found for the vault id in payload
+    isOTPVerified && // user entered correct OTP
+    await bcrypt.compare(masterPasswordInput,vault.hashedMasterPassword) // the user's inputted password matches the hashed password
+  ){
+    //update vault with the twoFactorAuthSecret
+    vault.twoFactorAuthSecret = pendingSecretKey;
+    updateVaultByID(vaultID, vault);
+  
+    //perform cleanup, remove the pending token from the pending two factor tokens array
+    const index = twoFactorPendingTokens.findIndex(token => token.vaultID === vaultID);
+    twoFactorPendingTokens.splice(index, 1);
+    res.status(200).json({ 'verified': true });
   } else {
     res.status(401).json({ 'verified': false });
-  }
+  };
 });
 
 // • GET	/v1/api/vaults/		get the most recent version of the users vault data using token payload
