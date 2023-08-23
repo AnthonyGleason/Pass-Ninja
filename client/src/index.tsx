@@ -32,7 +32,7 @@ root.render(
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
           <Route element={<DemoLogin vaultController={vaultController} />} path='/vault/login/demo' />
         {/* register */}
-        <Route element={<Register />} path='/vault/register' />
+        <Route element={<Register vaultController={vaultController} />} path='/vault/register' />
         {/* authenticated routes */}
         <Route element={<Vault vaultController={vaultController} />} path='/vault'/>
           {/* settings routes */}

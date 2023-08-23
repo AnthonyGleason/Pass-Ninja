@@ -11,6 +11,21 @@ export const verifyToken = async function(token:string){
   const data = await response.json();
   return data.isValid;
 };
+export const handleDemoLogin= async function(vaultController:VaultController,navigate:Function){
+  const response = await fetch('http://localhost:5000/v1/api/vaults/demologin',{
+    method: 'GET',
+  });
+  const responseData = await response.json();
+  const token:string = responseData.token;
+  if (token){
+    //ensure master password is not set so user can not update the demo account
+    vaultController.masterPassword = 'demopass';
+    //set token in local storage
+    localStorage.setItem('jwt',token);
+    //redirect the user to the demo vault
+    navigate('/vault');
+  };
+};
 
 //handle the loading of protected routes
 export const handleProtectedInitialPageLoad = async(

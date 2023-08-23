@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import './Register.css';
+import { VaultController } from '../../Classes/VaultController';
+import { handleDemoLogin } from '../../Helpers/Auth';
 
-export default function Register(){
+export default function Register({vaultController}:{vaultController:VaultController}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
   const [lastNameInput,setLastNameInput] = useState<string>('');
   const [emailInput,setEmailInput] = useState<string>('');
@@ -64,7 +66,7 @@ export default function Register(){
           <div>
             <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
             <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
-            <button type='button' onClick={()=>{navigate('/vault/login/demo')}}>Try the Demo</button>
+            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate)}}>Try the Demo</button>
           </div>    
         </div>
         
