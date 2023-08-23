@@ -75,67 +75,64 @@ vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFu
     });
 });
 
-// • POST	/v1/api/vaults/login	sign into already existing account 
-vaultsRouter.post('/login', async (req:customRequest,res:Response,next:NextFunction)=>{
-  //destructure the request body
-  const {
-    email,
-    masterPassword,
-    userOtpInput
-  }:{
-    email:string,
-    masterPassword:string,
-    userOtpInput:string
-  } = req.body;
+vaultsRouter.post('/login', async (req: customRequest, res: Response, next: NextFunction) => {
+  try {
+    const {
+      email,
+      masterPassword,
+      userOtpInput
+    }: {
+      email: string,
+      masterPassword: string,
+      userOtpInput: string
+    } = req.body;
 
-  //attempt to retrieve vault data based on user inputted email
-  const vaultDoc:vaultDoc | null = await getVaultByUserEmail(email);
+    const vaultDoc: vaultDoc | null = await getVaultByUserEmail(email);
 
-  /*
-   Here we are checking first to see if the user doesnt have two factor enabled.
-   Since two factor can be represented as a boolean value (enabled or disabled) we can assume if this first check
-   (user does not have two factor enabled) fails that they must have two factor enabled. Additionally we check to see if a 
-   user has inputted a OTP if not we let the client know a OTP is required but not provided.
-` */
+    if (vaultDoc) {
+      if (!vaultDoc.twoFactorAuthSecret) {
+        // User doesn't have two factor enabled
+        const token: string = await loginExistingUser(email, masterPassword);
+        res.status(200).json({
+          'token': token,
+          'otpRequired': false
+        });
+      } else if (vaultDoc.twoFactorAuthSecret && userOtpInput) {
+        // User has two factor enabled and provided OTP
+        const isVerified: boolean = speakeasy.totp.verify({
+          secret: vaultDoc.twoFactorAuthSecret,
+          encoding: 'base32',
+          token: userOtpInput,
+          window: 1,
+        });
 
-  //user does not have two factor enabled
-  if (
-    vaultDoc && // a vault document was found
-    !vaultDoc.twoFactorAuthSecret //the user does not have two factor enabled
-  ){
-    const token:string = await loginExistingUser(email,masterPassword);
-    res.status(200).json({
-      'token': token,
-      'otpRequired': false
-    });
-  }
-
-  //user has two factor enabled
-  if (
-    vaultDoc && // a vault document was found
-    vaultDoc.twoFactorAuthSecret && //two factor is enabled for that account
-    userOtpInput //user inputted otp from their authentication app of choice
-  ){
-    const isVerified: boolean = speakeasy.totp.verify({
-      secret: vaultDoc.twoFactorAuthSecret,
-      encoding: 'base32',
-      token: userOtpInput,
-      window: 1,
-    });
-    if (isVerified){
-      await loginExistingUser(email,masterPassword)
-        .then((token:string)=>{
+        if (isVerified) {
+          const token: string = await loginExistingUser(email, masterPassword);
           res.status(200).json({
             token: token
           });
+        } else {
+          res.status(401).json({
+            'message': 'Invalid OTP'
+          });
+        }
+      } else {
+        // Two factor is enabled, but OTP not provided
+        res.status(400).json({
+          'message': 'OTP is required',
+          'otpRequired': true
         });
-    };
-  }else{ //two factor is enabled but user has not provided a OTP (check above comments for more information about this conditional)
-    res.status(400).json({
-      'token': '',
-      'otpRequired': true
-    });
-  };
+      }
+    } else {
+      // No vault document found for the provided email
+      res.status(404).json({
+        'message': 'User not found'
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
 });
 
 // • POST	/v1/api/vaults/logout	log out of account invalidating the users token

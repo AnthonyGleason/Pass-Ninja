@@ -27,7 +27,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         {/* public routes */}
-        <Route element={<Home />} path='/' />
+        <Route element={<Home vaultController={vaultController} />} path='/' />
         {/* login */}
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
           <Route element={<DemoLogin vaultController={vaultController} />} path='/vault/login/demo' />
