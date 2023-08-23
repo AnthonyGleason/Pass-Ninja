@@ -17,7 +17,6 @@ export const loginExistingUser = async function(
   email:string,
   masterPassword:string,
 ):Promise<string>{
-  console.log(email);
   //get user's vault by email
   const vault:vaultDoc | null = await getVaultByUserEmail(email);
   //verify the user has a vault with a master password present
@@ -61,9 +60,9 @@ export const isEmailAvailable = async function(
   return true; //otherwise a vault is not found and that email address is available
 };
 
+//generates an email with a unique random string, this is so we make demo accounts with real live enviornments for the user
 export const generateUniqueDemoEmail = async function(counter:number = 0):Promise<string>{
-
-  for (let i=0;i<15;i++){ //15 max repitions to prevent stack overflow
+  for (let i=0;i<15;i++){ //15 max repetitions to prevent stack overflows
     const generatedDemoEmail:string = `demo@user${generatePassword(12,12,false,true,true)}`
     if (await isEmailAvailable(generatedDemoEmail)) return generatedDemoEmail;
   }

@@ -76,19 +76,20 @@ vaultsRouter.get('/demologin', async (req:customRequest,res:Response,next:NextFu
 });
 
 vaultsRouter.post('/login', async (req: customRequest, res: Response, next: NextFunction) => {
-  try {
-    const {
-      email,
-      masterPassword,
-      userOtpInput
-    }: {
-      email: string,
-      masterPassword: string,
-      userOtpInput: string
-    } = req.body;
+  const {
+    email,
+    masterPassword,
+    userOtpInput
+  }: {
+    email: string,
+    masterPassword: string,
+    userOtpInput: string
+  } = req.body;
 
+  try {
     const vaultDoc: vaultDoc | null = await getVaultByUserEmail(email);
 
+    //a vault doc was found for the provided email
     if (vaultDoc) {
       if (!vaultDoc.twoFactorAuthSecret) {
         // User doesn't have two factor enabled
