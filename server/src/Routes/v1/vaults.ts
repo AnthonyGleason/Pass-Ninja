@@ -194,26 +194,32 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
 
 // POST  /v1/api/vaults/request2FASetup
 vaultsRouter.post('/request2FASetup',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
-  //generate the two-factor secret
-  const speakeasySecret:speakeasy.GeneratedSecret = speakeasy.generateSecret({'length': speakeasySecretLength});
-  if (speakeasySecret.otpauth_url){
-    //store the secret and user's vault id in the servers pending two factor tokens array
-    twoFactorPendingTokens.push({
-      'vaultID': req.payload.vault._id, //token is taken from vault id based on provided the jwt session token
-      'secret': speakeasySecret
-    });
-    //create qr code
-    QRCode.toDataURL(
-      speakeasySecret.otpauth_url,
-      {errorCorrectionLevel: qrCodeErrorCorrectionLevel},
-      function (err, url) {
-        //send the qr code url to the client
-        res.status(200).json({'qrCodeUrl': url});
-      }
-    );
+  // vault is already pending 2fa
+  const pendingToken = twoFactorPendingTokens.find((token) => token.vaultID === req.payload.vault._id);
+  if (!pendingToken){
+    //generate the two-factor secret
+    const speakeasySecret:speakeasy.GeneratedSecret = speakeasy.generateSecret({'length': speakeasySecretLength});
+    if (speakeasySecret.otpauth_url){
+      //store the secret and user's vault id in the servers pending two factor tokens array
+      twoFactorPendingTokens.push({
+        'vaultID': req.payload.vault._id, //token is taken from vault id based on provided the jwt session token
+        'secret': speakeasySecret
+      });
+      //create qr code
+      QRCode.toDataURL(
+        speakeasySecret.otpauth_url,
+        {errorCorrectionLevel: qrCodeErrorCorrectionLevel},
+        function (err, url) {
+          //send the qr code url to the client
+          res.status(200).json({'qrCodeUrl': url});
+        }
+      );
+    }else{
+      res.status(400);
+    };
   }else{
-    res.status(400);
-  };
+    res.status(409);
+  }
 });
 
 vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:Response,next:NextFunction)=>{
@@ -224,9 +230,7 @@ vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:R
     otpInputKey:string,
     masterPasswordInput:string
   } = req.body;
-
   const vault:vaultDoc | null = await getVaultByUserEmail(req.payload.vault.email);
-
   if (
     vault && //vault is found
     vault.twoFactorAuthSecret && // user has two factor authentication enabled
@@ -246,7 +250,7 @@ vaultsRouter.delete('/remove2FA',authenticateToken,async(req:customRequest,res:R
         res.status(200).json({'message':'Two-Factor Authentication was sucessfully removed from your account.'})
       });
   }else{
-    res.status(400);
+    res.status(400).json({'message': 'An error occured when attempting to remove 2FA from your account.'});
   };
 });
 
@@ -256,37 +260,51 @@ vaultsRouter.put('/verifyOTP', authenticateToken, async (req: customRequest, res
     otpInputKey,
     masterPasswordInput
   } = req.body;
-  const vaultID:string = req.payload.vault._id;
+  const vaultID: string = req.payload.vault._id;
   let vault: vaultDoc | null = await getVaultByID(vaultID);
-
   // Find the pending secret key for 2FA setup
-  const pendingToken = twoFactorPendingTokens.find((token) => {token.vaultID === vaultID}); //find the pending two factor token for the requesting user id
-  const pendingSecretKey:string = pendingToken.secret.base32;
-
-  //verify otp provided by user
-  const isOTPVerified: boolean = speakeasy.totp.verify({
-    secret: pendingSecretKey,
-    encoding: 'base32',
-    token: otpInputKey,
-    window: 1,
-  });
-
-  //determine if vault should be updated or not
-  if (
-    vault && // a vault document was found for the vault id in payload
-    isOTPVerified && // user entered correct OTP
-    await bcrypt.compare(masterPasswordInput,vault.hashedMasterPassword) // the user's inputted password matches the hashed password
-  ){
-    //update vault with the twoFactorAuthSecret
-    vault.twoFactorAuthSecret = pendingSecretKey;
-    updateVaultByID(vaultID, vault);
+  const pendingToken = twoFactorPendingTokens.find((token) => token.vaultID === vaultID);
   
-    //perform cleanup, remove the pending token from the pending two factor tokens array
-    const index = twoFactorPendingTokens.findIndex(token => token.vaultID === vaultID);
-    twoFactorPendingTokens.splice(index, 1);
-    res.status(200).json({ 'verified': true });
+  if (
+    pendingToken && //a pending token was found in the two factor pending tokens array
+    pendingToken.secret &&  //the token found has a secret property
+    vault &&  // a vault was found
+    !vault.twoFactorAuthSecret //the user does not have two factor enabled
+  ) {
+    const pendingSecretKey = pendingToken.secret.base32;
+
+    // Verify OTP provided by user
+    const isOTPVerified: boolean = speakeasy.totp.verify({
+      secret: pendingSecretKey,
+      encoding: 'base32',
+      token: otpInputKey,
+      window: 1,
+    });
+    
+    // Determine if vault should be updated or not
+    if (
+      vault && // A vault document was found for the vault id in payload
+      isOTPVerified && // User entered correct OTP
+      await bcrypt.compare(masterPasswordInput, vault.hashedMasterPassword) // User's inputted password matches the hashed password
+    ) {
+      // Update vault with the twoFactorAuthSecret
+      vault.twoFactorAuthSecret = pendingSecretKey;
+      updateVaultByID(vaultID, vault);
+
+      // Perform cleanup, remove the pending token from the pending two factor tokens array
+      for (let i = 0; i < twoFactorPendingTokens.length; i++) {
+        if (twoFactorPendingTokens[i].vaultID === req.payload.vault._id) {
+          twoFactorPendingTokens.splice(i,1);
+          break; // Stop loop once found
+        };
+      };
+      res.status(200).json({ 'verified': true });
+    } else {
+      res.status(401).json({ 'verified': false });
+    };
   } else {
-    res.status(401).json({ 'verified': false });
+    //pending token is not found
+    res.status(404).json({ 'verified': false });
   };
 });
 

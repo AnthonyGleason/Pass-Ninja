@@ -17,7 +17,6 @@ export default function VaultNav({
   const [vaultHealthPercent,setVaultHealthPercent] = useState<number>(0);
 
   const getVaultHealthStatus = function():string{
-    console.log(vaultController.passwords)
     if (vaultHealthPercent>=80){
       return 'Excellent'
     }else if(vaultHealthPercent>=60){

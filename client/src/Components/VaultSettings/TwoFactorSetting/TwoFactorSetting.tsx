@@ -7,7 +7,11 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
   const [masterPasswordInput, setMasterPasswordInput] = useState<string>('');
   
   useEffect(()=>{
-    populateTwoFactorSetupCode()
+    /*
+      only requests a two factor setup code if two factor is disabled. the server additionally checks and verifies this
+      so users cant just overwrite other users 2FA settings
+    */
+    if (!vaultController.isTwoFactorEnabled) populateTwoFactorSetupCode(); 
   },[]);
 
 
@@ -20,7 +24,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
       },
       body: JSON.stringify({
         otpInputKey: otpInput,
-        masterPassword: masterPasswordInput
+        masterPasswordInput: masterPasswordInput
       }),
     }).then((data)=>{
       console.log(data);
@@ -36,7 +40,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
       },
       body: JSON.stringify({
         otpInputKey: otpInput,
-        masterPassword: masterPasswordInput
+        masterPasswordInput: masterPasswordInput
       }),
     }).then((data)=>{
       console.log(data);
