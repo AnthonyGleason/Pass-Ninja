@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.b6ebca66.css",
-    "main.js": "/static/js/main.f4f15222.js",
-    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
-    "static/media/public-domain-shinobi-large.png": "/static/media/public-domain-shinobi-large.90f8b2a82e5911c6cbcf.png",
-    "static/media/settings-outline.svg": "/static/media/settings-outline.a4a3ead5de7c1b22b6288c6fa68bdc69.svg",
-    "index.html": "/index.html",
-    "static/media/search.svg": "/static/media/search.3d6fb890f89970acb9f53be25d6ef977.svg",
-    "static/media/x-bold.svg": "/static/media/x-bold.773fcbeb5595ad686102ef7e71d6537d.svg",
-    "main.b6ebca66.css.map": "/static/css/main.b6ebca66.css.map",
-    "main.f4f15222.js.map": "/static/js/main.f4f15222.js.map",
-    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+    "main.css": "/PassNinja/static/css/main.b6ebca66.css",
+    "main.js": "/PassNinja/static/js/main.c8f36079.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/PassNinja/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/public-domain-shinobi-large.png": "/PassNinja/static/media/public-domain-shinobi-large.90f8b2a82e5911c6cbcf.png",
+    "static/media/settings-outline.svg": "/PassNinja/static/media/settings-outline.a4a3ead5de7c1b22b6288c6fa68bdc69.svg",
+    "index.html": "/PassNinja/index.html",
+    "static/media/search.svg": "/PassNinja/static/media/search.3d6fb890f89970acb9f53be25d6ef977.svg",
+    "static/media/x-bold.svg": "/PassNinja/static/media/x-bold.773fcbeb5595ad686102ef7e71d6537d.svg",
+    "main.b6ebca66.css.map": "/PassNinja/static/css/main.b6ebca66.css.map",
+    "main.c8f36079.js.map": "/PassNinja/static/js/main.c8f36079.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/PassNinja/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b6ebca66.css",
-    "static/js/main.f4f15222.js"
+    "static/js/main.c8f36079.js"
   ]
 }
