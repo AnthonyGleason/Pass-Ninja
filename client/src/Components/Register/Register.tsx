@@ -4,6 +4,7 @@ import PasswordGenerator from '../PasswordGenerator/PasswordGenerator';
 import './Register.css';
 import { VaultController } from '../../Classes/VaultController';
 import { handleDemoLogin } from '../../Helpers/Auth';
+import DemoLogin from '../DemoLogin/DemoLogin';
 
 export default function Register({vaultController}:{vaultController:VaultController}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
@@ -11,6 +12,7 @@ export default function Register({vaultController}:{vaultController:VaultControl
   const [emailInput,setEmailInput] = useState<string>('');
   const [masterPasswordInput,setMasterPasswordInput] = useState<string>('');
   const [masterPasswordConfirmInput, setMasterPasswordConfirmInput] = useState<string>('');
+  const [isLoading,setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   
   const register = async function ():Promise<string>{
@@ -38,40 +40,46 @@ export default function Register({vaultController}:{vaultController:VaultControl
     navigate('/vault');
   };
 
-  return(
-    <div className='register'>
-      <form className='register-form'>
-        <h3>Register</h3>
-        <div className='register-form-content'>
-          <div className='reg-input'>
-            <label>First Name:</label>
-            <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+  if (!isLoading){
+    return(
+      <div className='register'>
+        <form className='register-form'>
+          <h3>Register</h3>
+          <div className='register-form-content'>
+            <div className='reg-input'>
+              <label>First Name:</label>
+              <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+            </div>
+            <div className='reg-input'>
+              <label>Last Name:</label>
+              <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
+            </div>
+            <div className='reg-input'>
+              <label>Email:</label>
+              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+            </div>
+            <div className='reg-input'>
+              <label>Master Password:</label>
+              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+            </div>
+            <div className='reg-input'>
+              <label>Master Password (again):</label>
+              <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
+            </div>
+            <div>
+              <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+              <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
+              <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
+            </div>    
           </div>
-          <div className='reg-input'>
-            <label>Last Name:</label>
-            <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
-          </div>
-          <div className='reg-input'>
-            <label>Email:</label>
-            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-          </div>
-          <div className='reg-input'>
-            <label>Master Password:</label>
-            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-          </div>
-          <div className='reg-input'>
-            <label>Master Password (again):</label>
-            <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
-          </div>
-          <div>
-            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-            <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
-            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate)}}>Try the Demo</button>
-          </div>    
-        </div>
-        
-      </form>
-      <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
-    </div>
-  )
+          
+        </form>
+        <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
+      </div>
+    )
+  }else{
+    return(
+      <DemoLogin />
+    )
+  }
 }

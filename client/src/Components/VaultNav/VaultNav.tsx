@@ -17,6 +17,7 @@ export default function VaultNav({
   const [vaultHealthPercent,setVaultHealthPercent] = useState<number>(0);
 
   const getVaultHealthStatus = function():string{
+    console.log(vaultController.passwords)
     if (vaultHealthPercent>=80){
       return 'Excellent'
     }else if(vaultHealthPercent>=60){
@@ -25,8 +26,10 @@ export default function VaultNav({
       return 'Moderate';
     }else if(vaultHealthPercent>=20){
       return 'Poor'
-    }else{
+    }else if(vaultHealthPercent>=0 && vaultController.passwords.length!==0){ //there passwords in the vault but all are expired
       return 'Very Poor';
+    }else{ //the vault is empty
+      return 'N/A';
     }
   }
   const getVaultHealthColor = function():string{

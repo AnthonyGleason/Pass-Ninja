@@ -11,7 +11,12 @@ export const verifyToken = async function(token:string){
   const data = await response.json();
   return data.isValid;
 };
-export const handleDemoLogin= async function(vaultController:VaultController,navigate:Function){
+export const handleDemoLogin= async function(
+  vaultController:VaultController,
+  navigate:Function,
+  setIsLoading?:Function  
+){
+  if (setIsLoading) setIsLoading(true);
   const response = await fetch('http://localhost:5000/v1/api/vaults/demologin',{
     method: 'GET',
   });

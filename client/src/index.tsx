@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//using hash router instead of BrowserRouter because we are deploying on gh-pages which only supports HashRouter
+import {HashRouter as Router, Routes, Route} from 'react-router-dom';
 //components
 import SettingsMenu from './Components/VaultSettings/SettingsMenu/SettingsMenu';
 import Home from './Components/Home/Home';
@@ -24,13 +25,13 @@ const root = ReactDOM.createRoot(
 const vaultController = new VaultController();
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <Routes>
         {/* public routes */}
         <Route element={<Home vaultController={vaultController} />} path='/' />
         {/* login */}
         <Route element={<Login vaultController={vaultController} />} path='/vault/login' />
-          <Route element={<DemoLogin vaultController={vaultController} />} path='/vault/login/demo' />
+          <Route element={<DemoLogin />} path='/vault/login/demo' />
         {/* register */}
         <Route element={<Register vaultController={vaultController} />} path='/vault/register' />
         {/* authenticated routes */}
@@ -41,7 +42,7 @@ root.render(
             <Route element={<PasswordSetting vaultController={vaultController} />} path='/vault/settings/password' />
             <Route element={<TwoFactorSetting vaultController={vaultController} />} path='/vault/settings/twoFactor' />
       </Routes>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>
 );
 

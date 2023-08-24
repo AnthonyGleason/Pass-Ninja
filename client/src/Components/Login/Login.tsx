@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { VaultController } from '../../Classes/VaultController';
 import './Login.css';
 import { handleDemoLogin } from '../../Helpers/Auth';
+import DemoLogin from '../DemoLogin/DemoLogin';
 
 export default function Login({vaultController}:{vaultController:VaultController}){
   const [emailInput,setEmailInput] = useState<string>('');
   const [masterPasswordInput,setMasterPasswordInput] = useState<string>('');
   const [isOtpRequired,setIsOtpRequired] = useState<boolean>(false);
   const [otpInput, setOtpInput] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const login = async function():Promise<string>{
@@ -47,36 +49,42 @@ export default function Login({vaultController}:{vaultController:VaultController
     }
   };
 
-  return(
-    <div className='register'>
-      <form>
-        <h3>Login</h3>
-        <div className='register-form-content'>
-          <div className='reg-input'>
-            <label>Email:</label>
-            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+  if (!isLoading){
+    return(
+      <div className='register'>
+        <form>
+          <h3>Login</h3>
+          <div className='register-form-content'>
+            <div className='reg-input'>
+              <label>Email:</label>
+              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+            </div>
+            <div className='reg-input'>
+              <label>Password:</label>
+              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+            </div>
+            <div>
+              <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+              <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+              <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
+            </div>
           </div>
-          <div className='reg-input'>
-            <label>Password:</label>
-            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-          </div>
-          <div>
-            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-            <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate)}}>Try the Demo</button>
-          </div>
-        </div>
-      </form>
-      {
-        isOtpRequired ? (
-          <form>
-            <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-            <button type='button' onClick={()=>{handleSubmit()}}>Submit OTP</button>
-          </form> 
-        ):(
-          null
-        )
-      }
-    </div>
-  )
+        </form>
+        {
+          isOtpRequired ? (
+            <form>
+              <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
+              <button type='button' onClick={()=>{handleSubmit()}}>Submit OTP</button>
+            </form> 
+          ):(
+            null
+          )
+        }
+      </div>
+    )
+  }else{
+    return(
+      <DemoLogin />
+    )
+  }
 };

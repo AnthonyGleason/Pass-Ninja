@@ -14,4 +14,5 @@
   color: white;
   width: 90%;
   gap: 5px;
+  z-index:5;
 }
