@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { encryptString } from "../../../Helpers/Passwords";
 import { VaultController } from "../../../Classes/VaultController";
 import { useNavigate } from "react-router-dom";
+import { Password } from "../../../Interfaces/Interfaces";
 
 export default function PasswordSetting({vaultController}:{vaultController:VaultController}){
   const [newMasterPassInput,setNewMasterPassInput] = useState<string>('');
@@ -11,14 +12,18 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
   const handleApplyChanges = async function(){
     let updatedPasswords:any[] = [];
     //handle master password update
-    if (newMasterPassInput){
+    if (
+      newMasterPassInput && // a new master password was provided
+      newMasterPassConfInput && // the user has entered a master password confirmation
+      newMasterPassInput === newMasterPassConfInput // the user has verified their new master password
+    ){
       vaultController.passwords.forEach((password:any)=>{
-        let updatedPassword:any = password;
+        let updatedPassword:Password = password;
         //encrypt the passwords with the updated master pass input
         updatedPassword.encryptedPassword = encryptString(updatedPassword.decryptedPassword,newMasterPassInput);
-        //stop the decryptedPassword and decryptedNotes from being sent to the server
-        updatedPassword.decryptedPassword = undefined;
-        updatedPassword.decryptedNotes = undefined;
+        //remove the decryptedPassword and decryptedNotes
+        updatedPassword.decryptedPassword = '';
+        updatedPassword.decryptedNotes = '';
         //add the password to the updated passwords array
         updatedPasswords.push(updatedPassword);
       });
@@ -39,10 +44,11 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
           updatedPasswords: updatedPasswords,
         }),
       });
-      await response.json().then(()=>{
-        //redirect user to login with new details
-        navigate('/vault/login');
-      });
+      await response.json()
+        .then(()=>{
+          //redirect user to login with new details
+          navigate('/vault/login');
+        });
     }catch(e){
       console.log(`There was an error ${e} when updating your account settings.`)
     };

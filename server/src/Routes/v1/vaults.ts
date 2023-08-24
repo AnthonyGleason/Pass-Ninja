@@ -177,8 +177,16 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
   ){
     //for each password update the password document by id with the new password data
     updatedPasswords.forEach(async (password:passwordDoc)=>{
-      await updatePasswordByID(password._id,password);
-    })
+      //users must own the vault associated with the password in order to update that password
+      if (req.payload.vault._id===password.vaultID._id) await updatePasswordByID(password._id,password);
+    });
+
+    //update the vault master password
+    let tempVaultDoc:vaultDoc | null = await getVaultByID(req.payload.vault._id);
+    if (tempVaultDoc){
+      tempVaultDoc.hashedMasterPassword = await generateHashedPassword(updatedMasterPassword);
+      await updateVaultByID(req.payload.vault._id,tempVaultDoc);
+    }
   };
   
   //handle user is updating their vault's associated email address
@@ -190,6 +198,7 @@ vaultsRouter.put('/settings',authenticateToken, async(req:customRequest,res:Resp
     updatedVault.email = updatedEmail;
     await updateVaultByID(req.payload.vault._id,updatedVault);
   };
+  res.status(200).json({'message':'Your settings have been applied.'});
 });
 
 // POST  /v1/api/vaults/request2FASetup
@@ -280,7 +289,7 @@ vaultsRouter.put('/verifyOTP', authenticateToken, async (req: customRequest, res
       token: otpInputKey,
       window: 1,
     });
-    
+
     // Determine if vault should be updated or not
     if (
       vault && // A vault document was found for the vault id in payload
