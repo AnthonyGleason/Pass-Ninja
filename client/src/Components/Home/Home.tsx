@@ -12,16 +12,22 @@ export default function Home({vaultController}:{vaultController:VaultController}
 
   if (!isLoading){
     return (
-      <div className="home">
+      <main className="home">
         <h2>Welcome to PassNinja</h2>
-        <img src={largeNinjaImg} alt='cartoon ninja holding sword' />
+        <img src={largeNinjaImg} alt='Cartoon ninja holding a sword' />
         <h3>Master the Art of Password Security For Free Today!</h3>
-        <div className='login-button-container'>
-          <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
-          <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
-          <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-        </div>
-      </div>
+        <ul className='login-button-wrapper'>
+          <li>
+            <button type='button' onClick={() => { navigate('/vault/register') }}>Register</button>
+          </li>
+          <li>
+            <button type='button' onClick={()=>{ handleDemoLogin(vaultController,navigate,setIsLoading) }}>Try the Demo</button>
+          </li>
+          <li>
+            <button type='button' onClick={() => { navigate('/vault/login') }}>Login</button>
+          </li>
+        </ul>
+      </main>
     );
   }else{
     return(

@@ -51,35 +51,33 @@ export default function Login({vaultController}:{vaultController:VaultController
 
   if (!isLoading){
     return(
-      <div className='register'>
+      <div className='login'>
+        <h3>Login</h3>
         <form>
-          <h3>Login</h3>
-          <div className='register-form-content'>
-            <div className='reg-input'>
-              <label>Email:</label>
-              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-            </div>
-            <div className='reg-input'>
-              <label>Password:</label>
-              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-            </div>
-            <div>
-              <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-              <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-              <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
-            </div>
+          <div className='login-input'>
+            <label>Email:</label>
+            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+          </div>
+          <div className='login-input'>
+            <label>Password:</label>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          </div>
+          {
+            isOtpRequired ? (
+              <div className='login-input'>
+                <label>One Time Password:</label>
+                <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
+              </div> 
+            ):(
+              null
+            )
+          }
+          <div className='login-button-wrapper'>
+            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+            <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
           </div>
         </form>
-        {
-          isOtpRequired ? (
-            <form>
-              <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-              <button type='button' onClick={()=>{handleSubmit()}}>Submit OTP</button>
-            </form> 
-          ):(
-            null
-          )
-        }
       </div>
     )
   }else{

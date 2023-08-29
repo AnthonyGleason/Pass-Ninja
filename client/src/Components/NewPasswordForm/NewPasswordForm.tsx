@@ -28,32 +28,32 @@ export default function NewPasswordForm({
     return(
       <form className='new-password-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
         <h3 onClick={()=>{setIsMenuExpanded(false)}}>Create New Password</h3>
-        <div className='new-password-form-content'>
-          <div className='input-container'>
+        <ul className='input-container'>
+          <li className='new-pass-input'>
             <label>Nickname:</label>
             <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
-          </div>
-          <div className='input-container'>
+          </li>
+          <li className='new-pass-input'>
             <label>Web Address:</label>
             <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
-          </div>
-          <div className='input-container'>
+          </li>
+          <li className='new-pass-input'>
             <label>Username:</label>
             <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
-          </div>
-          <div className='input-container'>
+          </li>
+          <li className='new-pass-input'>
             <label>Password:</label>
             <input value={passwordInput} onChange={(e)=>{setPasswordInput(e.target.value)}} />
-          </div>
-          <div className='input-container'>
+          </li>
+          <li className='new-pass-input'>
             <label>Notes:</label>
             <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
-          </div>
-          <div>
+          </li>
+          <li>
             <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
-          </div>
+          </li>
           <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
-        </div>
+        </ul>
       </form>
     )
   }else{

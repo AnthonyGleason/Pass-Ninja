@@ -11,6 +11,7 @@ export default function PasswordGenerator({
   setPasswordInput:Function,
   isExpandedByDefault:boolean
 }){
+
   const [minLengthInput, setMinLengthInput] = useState<number>(15);
   const [maxLengthInput, setMaxLengthInput] = useState<number>(20);
   const [lowerCasesInput, setLowerCasesInput] = useState<boolean>(true);
@@ -18,16 +19,23 @@ export default function PasswordGenerator({
   const [numbersInput, setNumbersInput] = useState<boolean>(true);
   const [specialCharsInput, setSpecialCharsInput] = useState<boolean>(true);
   const [genPasswordInput, setGenPasswordInput] = useState<string>('');
+
+  //determines if the password generator will be open by default on intial page load. this is initialize through the isExpandedByDefault prop
   const [isPassGeneratorOpen, setIsPassGeneratorOpen] = useState<boolean>(isExpandedByDefault);
+
+  //The active tooltip term is used to determine what the currently active tooltip is which only allows one active tooltip popup at a time.
   const [activeTooltipTerm, setActiveTooltipTerm] = useState<string>('');
+
+  //Determines the color of the password bar used to dynamically change the color of the password strength bar depending on the strength of the password.
   const [passwordBarColor,setPasswordBarColor] = useState<string>('Grey');
 
-  //define character sets
+  //define character sets, some websites have specific password requirements so these character sets allow the user to customize their password generation.
   const lowerCaseCharsSet = 'abcdefghijklmnopqrstuvwxyz';
   const specialCharsSet = '!@#$%^&*()_+{}:"<>?|';
   const upperCaseCharsSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbersSet = '0123456789';
 
+  //checks to see which character sets the user has enabled for new password generation. 
   const updateCharPool = function():string{
     let newCharPool = '';
     // Add character sets to the pool based on user constraints
@@ -42,7 +50,11 @@ export default function PasswordGenerator({
     };
     return newCharPool;
   };
+
+  //initialize char pool for password generation
   let charPool = updateCharPool();
+
+  //initialize the password score
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(new PasswordScore(genPasswordInput,charPool.length));
   
   //if any of the password generator's input states are adjusted a new password will be generated within the updated constraints
@@ -53,7 +65,7 @@ export default function PasswordGenerator({
     setGenPasswordInput(generatedPassword);
   },[minLengthInput,maxLengthInput,specialCharsInput,lowerCasesInput,upperCasesInput,numbersInput]);
 
-  //score the password when a the password input is modified (user will see realtime password scores)
+  //score the password when a the password input is modified (user will see realtime password scores as they type)
   useEffect(()=>{
     const passwordScore:PasswordScore = new PasswordScore(genPasswordInput,charPool.length);
     setPasswordScore(passwordScore);

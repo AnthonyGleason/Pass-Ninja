@@ -111,37 +111,35 @@ export default function Password({
     return(
       <form className='password'>
         <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
-          <span>{password.nickName}</span>
-          &nbsp;
-          <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
+          {password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </h5>
-        <div className='password-content'>
-          <div className='pass-field'>
+        <ul className='password-fields'>
+          <li className='pass-field'>
             <label>Nickname:</label>
             <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
-          </div>
-          <div className='pass-field'>
+          </li>
+          <li className='pass-field'>
             <label>Web Address:</label>
             <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
-          </div >
-          <div className='pass-field'>
+          </li >
+          <li className='pass-field'>
             <label>Username:</label>
             <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
-          </div>
-          <div className='pass-field'>
+          </li>
+          <li className='pass-field'>
             <label>Password:</label>
             <input value={editPassInput} onChange={(e)=>{setEditPassInput(e.target.value)}} />
-          </div>
-          <div className='pass-field'>
+          </li>
+          <li className='pass-field'>
             <label>Notes:</label>
             <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
-          </div>
-          <div>
+          </li>
+          <li className='pass-control-buttons'>
             <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
             <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>
-          </div>
-          <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />
-        </div>
+          </li>
+        </ul>
+        <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />
       </form>
     );
   };
