@@ -46,43 +46,49 @@ export default function Login({vaultController}:{vaultController:VaultController
       localStorage.setItem('jwt',token);
       //redirect the user to their vault
       navigate('/vault');
-    }
+    };
+  };
+
+  const getOtpInputElement = function(){
+    return isOtpRequired ? (
+      <li className='login-input'>
+        <label>One Time Password:</label>
+        <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
+      </li> 
+    ):(
+      null
+    );
   };
 
   if (!isLoading){
     return(
-      <div className='login'>
+      <section className='login'>
         <h3>Login</h3>
         <form>
-          <div className='login-input'>
-            <label>Email:</label>
-            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-          </div>
-          <div className='login-input'>
-            <label>Password:</label>
-            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-          </div>
-          {
-            isOtpRequired ? (
-              <div className='login-input'>
-                <label>One Time Password:</label>
-                <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-              </div> 
-            ):(
-              null
-            )
-          }
-          <div className='login-button-wrapper'>
+          <ul>
+            <li className='login-input'>
+              <label>Email:</label>
+              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+            </li>
+            <li className='login-input'>
+              <label>Password:</label>
+              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+            </li>
+            {
+              getOtpInputElement()
+            }   
+          </ul>
+          <div className='login-button-container'>
             <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
             <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
             <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
           </div>
         </form>
-      </div>
+      </section>
     )
   }else{
     return(
       <DemoLogin />
-    )
-  }
+    );
+  };
 };

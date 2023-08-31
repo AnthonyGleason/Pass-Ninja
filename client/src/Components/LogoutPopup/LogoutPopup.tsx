@@ -9,9 +9,9 @@ export default function LogoutPopup(){
     navigate('/vault/login');
   }
   return(
-    <div className='logged-out'>
+    <section className='logged-out'>
       <p>For security reasons you have been automatically logged out. Please sign in again to access your vault.</p>
       <button onClick={()=>{handleConfirmPopup()}} type='button'>Take me there</button>
-    </div>
+    </section>
   )
 }

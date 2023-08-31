@@ -16,13 +16,13 @@ export default function DemoLogin(){
   };
 
   return(
-    <div className='demo-login'>
+    <section className='demo-login'>
       <p>
         Creating your secure demo environment...<br />
         This page will automatically refresh when complete.<br />
         <br />
         Tip: {getRandomFact()}
       </p>
-    </div>
+    </section>
   )
 };

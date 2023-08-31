@@ -24,11 +24,11 @@ export default function NewPasswordForm({
     setPasswords(await vaultController.populatePasswords());
   };
 
-  if (isMenuExpanded){ //if the user has expanded the New Password menu then display the form to create a new password
+  if (isMenuExpanded){ //if the user has expanded the New Password form then display the form to create a new password
     return(
-      <form className='new-password-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
+      <form className='new-pass-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
         <h3 onClick={()=>{setIsMenuExpanded(false)}}>Create New Password</h3>
-        <ul className='input-container'>
+        <ul className='new-pass-input-wrapper'>
           <li className='new-pass-input'>
             <label>Nickname:</label>
             <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -49,15 +49,15 @@ export default function NewPasswordForm({
             <label>Notes:</label>
             <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
           </li>
-          <li>
-            <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
-          </li>
-          <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
         </ul>
+        <div className='new-pass-buttons-wrapper'>
+          <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
+        </div>
+        <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
       </form>
     )
   }else{
-    //return the closed new password menu
+    //return the closed new password form
     return( 
     <form className='new-password-form'>
       <h3 className='new-pass-heading' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</h3>

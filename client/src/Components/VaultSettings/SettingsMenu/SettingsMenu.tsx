@@ -22,15 +22,23 @@ export default function SettingsMenu({vaultController}:{vaultController:VaultCon
   }else{
     return(
       // menu which lets the user update their account settings
-      <div className='account-settings'>
+      <section className='account-settings'>
         <h3>Account Settings</h3>
-        <div className='account-settings-content'>
-          <button onClick={()=>{navigate('/vault/settings/email')}} type='button'>Email Address</button>
-          <button onClick={()=>{navigate('/vault/settings/password')}} type='button'>Master Password</button>
-          <button onClick={()=>{navigate('/vault/settings/twoFactor')}} type='button'>Two-Factor Authentication</button>
-          <button onClick={()=>{navigate('/vault')}} type='button'>Return to Vault</button>
-        </div>
-      </div>
+        <ul className='account-settings-options-wrapper'>
+          <li className='settings-option'>
+            <button onClick={()=>{navigate('/vault/settings/email')}} type='button'>Email Address</button>
+          </li>
+          <li className='settings-option'>
+            <button onClick={()=>{navigate('/vault/settings/password')}} type='button'>Master Password</button>
+          </li>
+          <li className='settings-option'>
+            <button onClick={()=>{navigate('/vault/settings/twoFactor')}} type='button'>Two-Factor Authentication</button>
+          </li>
+          <li className='settings-option'>  
+            <button onClick={()=>{navigate('/vault')}} type='button'>Return to Vault</button>
+          </li>
+        </ul>
+      </section>
     );
   };
 };

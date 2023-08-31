@@ -138,18 +138,20 @@ export default function PasswordGenerator({
 
   if (isPassGeneratorOpen){
     return(
-      <div className='pass-gen-menu'>
-        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</h3>
-        <div className='pass-gen'>
-          <div className='pass-gen-output'>
-            <h4>Generated Password:</h4>
-            <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
-            <div className='gen-password-button-container'>
+      <form className='pass-gen-menu'>
+        <button className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</button>
+        <section className='pass-gen-content'>
+          <article className='pass-gen-output'>
+            <div>
+              <label>Generated Password:</label>
+              <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
+            </div>
+            <div className='pass-button-wrapper'>
               <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
               <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
             </div>
-          </div>
-          <div className='pass-gen-settings'>
+          </article>
+          <article className='pass-gen-settings-wrapper'>
             <h4>Generation Settings:</h4>
             <div className='pass-gen-setting'>
               <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' />
@@ -177,30 +179,35 @@ export default function PasswordGenerator({
               <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
               <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
             </div>
-            <div className='pass-gen-char-pool-info'>
+          </article>
+          <article className='pass-gen-char-pool-info'>
+            <p>
               There are <b>{charPool.length}</b> characters currently in the&nbsp;
               <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
-            </div>
-            <p>(Hint: Press on any underlined text to learn more!)</p>
-          </div>
-          <div className='pass-gen-info'>
+              <br/>
+              (Hint: Press on any underlined text to learn more!)
+            </p>
+          </article>
+          <article className='pass-gen-info'>
             <h4>How Are Passwords Rated?</h4>
             <PasswordScoreTable />
-            <input style={{accentColor: passwordBarColor }} className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
             <div className='pass-gen-score'>
-              The currently generated password is <b>{passwordScore.strength}</b>.
-              This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>.
+              <input style={{accentColor: passwordBarColor }} className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
+              <p>
+                The currently generated password is <b>{passwordScore.strength}</b>.
+                This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
+                <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>.
+              </p>
             </div>
-          </div>
-        </div>
-      </div>
+          </article>
+        </section>
+      </form>
     );
   }else{
     return(
-      <div className='pass-gen-menu'>
-        <h3 className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</h3>
-      </div>
+      <section className='pass-gen-menu'>
+        <button className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</button>
+      </section>
     );
   };
 };

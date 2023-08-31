@@ -23,11 +23,11 @@ export default function Tooltip({
     return(
       <>
         <u onClick={()=>{setActiveTooltipTerm('')}} className='tooltip-term'>{term}</u>
-        {/* the tooltip class has a reasonable z-index so it appears above other elements as an alert */}
-        <div className='tooltip' onClick={()=>{setActiveTooltipTerm(false)}}>
+        {/* the tooltip class has a reasonable z-index so it appears above other elements as an alert. */}
+        <article className='tooltip' onClick={()=>{setActiveTooltipTerm(false)}}>
           <img src={xImg} alt='exit button' />
-          <div>{desc}</div>
-        </div>
+          <p>{desc}</p>
+        </article>
       </>
     );
   };

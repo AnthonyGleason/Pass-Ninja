@@ -59,36 +59,45 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
     .then((data)=>{
       setTwoFactorQrCode(data.qrCodeUrl);
     });
-  }
+  };
 
   if (vaultController.isTwoFactorEnabled){
     return(
-      <div>
-        <form>
-          <h3>Two-Factor Authentication</h3>
-          <p>Disable Two-Factor Authentication</p>
-          <p>Note: Two-factor authentication will not be removed from your account until you verify your access to your authenticator and enter your current master password.</p>
-          <input min={6} max={6} placeholder='Enter One Time Passcode From Authenticator' type='number'value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-          <input type='text' placeholder="Enter your current master password." value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-          <button type='button' onClick={()=>{handleRemoveTwoFactor()}}>Submit</button>
-        </form>
-      </div>
-    )
+      <form className="two-factor-setting">
+        <h3>Disable Two-Factor Authentication</h3>
+        <ol className="two-factor-steps-container">
+          <li className="two-factor-step">
+            Two-factor authentication will not be removed from your account until you verify your access to your authenticator with a one time password and enter your current master password below.<br />
+          </li>
+          <li className="two-factor-step">
+            <input min={6} max={6} placeholder='Enter One Time Passcode From Authenticator' type='number'value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} required/>
+            <input type='text' placeholder="Enter your current master password." value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
+          </li>
+        </ol>
+        <button type='button' onClick={()=>{handleRemoveTwoFactor()}}>Submit</button>
+      </form>
+    );
   }else{
     return(
-      <div>
-        <form>
-          <h3>Two-Factor Authentication</h3>
-          <p>Enable Two-Factor Authentication</p>
-          <p>To begin please scan the qr code below in the authenticator of your choice!</p>
-          <img src={twoFactorQrCode} alt='two factor authentication qr code' />
-          <p>Once you have successfully connected your authentication app enter your 6 digit one time passcode below.</p>
-          <p>Note: Two-factor authentication will not be applied to your account until you verify your access to your authenticator and enter your current master password.</p>
-          <input min={6} max={6} placeholder='Enter One Time Passcode From Authenticator.' type='number'value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-          <input type='text' placeholder="Enter your current master password." value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-          <button type='button' onClick={()=>{handleVerifyTwoFactor()}}>Submit</button>
-        </form>
-      </div>
-    )
-  }
-}
+      <form className="two-factor-setting">
+        <h3>Enable Two-Factor Authentication</h3>
+        <ol className="two-factor-steps-container">
+          <li className="two-factor-step">
+            To begin please scan the qr code below in the authentication platform of your choice!<br />
+            Two popular authentication options are authy and google authenticator.
+            <img src={twoFactorQrCode} alt='two factor authentication qr code' />
+          </li>
+          <li className="two-factor-step">
+            Once you have successfully scanned the qr code enter your 6 digit one time passcode below.<br />
+            Note: Two-factor authentication will not be applied to your account until you verify your access to your authenticator with a one time passcode and enter your current master password below.
+          </li>
+          <li className="two-factor-step">
+            <input min={6} max={6} placeholder='Enter "One Time Passcode" from authenticator.' type='number'value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} required/>
+            <input type='text' placeholder="Enter your current master password." value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
+          </li>
+        </ol>
+        <button type='button' onClick={()=>{handleVerifyTwoFactor()}}>Submit</button>
+      </form>
+    );
+  };
+};

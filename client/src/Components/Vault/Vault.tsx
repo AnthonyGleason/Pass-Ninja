@@ -32,17 +32,19 @@ export default function VaultComponent({vaultController}:{vaultController:VaultC
     return(<LogoutPopup />)
   }else{
     return(
-      <div className='vault'>
+      <main className='vault'>
         <VaultNav setPassSnip={setPassSnip} vaultController={vaultController}/>
-        <div className='vault-container'>
-          <div className='passwords-container'>
-            {
-              passSnip.map((password)=>{return(<Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />)})
-            }
-          </div>
-          <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
-        </div>
-      </div>
+        <ul className='passwords-container'>
+          {
+            passSnip.map((password)=>{return(
+              <li className='pass-item-wrapper'>
+                <Password key={uuidGen()} vaultController={vaultController} password={password} setPasswords={setPasswords} />
+              </li>
+            )})
+          }
+        </ul>
+        <NewPasswordForm vaultController={vaultController} setPasswords={setPasswords} />
+      </main>
     )
   };
 };

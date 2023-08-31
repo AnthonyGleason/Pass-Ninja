@@ -11,11 +11,39 @@ export default function VaultNav({
   vaultController: VaultController,
   setPassSnip:Function,
 }){
+  const navigate = useNavigate();
+  
   const [searchInput,setSearchInput] = useState<string>('');
   const [vaultHealthColor,setVaultHealthColor] = useState<string>('Blue');
   const [vaultHealthStatus,setVaultHealthStatus] = useState<string>('');
   const [vaultHealthPercent,setVaultHealthPercent] = useState<number>(0);
 
+  //when the passwords array is updated (user performs crud operations on their vault the percent is regenerated)
+  useEffect(()=>{
+    setVaultHealthPercent(getVaultHealthPercent());
+  },[vaultController.passwords]);
+
+  //when the vault health percent is changed the color and vault status are obtained
+  useEffect(()=>{
+    setVaultHealthColor(getVaultHealthColor());
+    setVaultHealthStatus(getVaultHealthStatus());
+  },[vaultHealthPercent]);
+  
+  /*
+    whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
+    new password is included in the search by performing a search on the updated passwords list.
+
+    additionally this useEffect will perform searches automatically as the user types. (accomplished by adding the searchInput as a useEffect dependency)
+  */
+  useEffect(()=>{
+    const filterPasswords = function(){
+      return vaultController.passwords.filter((password:any) => {
+        return password.nickName.toLowerCase().includes(searchInput);
+      });
+    };
+    if (vaultController.passwords) setPassSnip(filterPasswords());
+  },[vaultController.passwords,searchInput]);
+  
   const getVaultHealthStatus = function():string{
     if (vaultHealthPercent>=80){
       return 'Excellent'
@@ -30,7 +58,8 @@ export default function VaultNav({
     }else{ //the vault is empty
       return 'N/A';
     }
-  }
+  };
+
   const getVaultHealthColor = function():string{
     if (vaultHealthPercent>=80){
       return 'Blue'
@@ -68,53 +97,29 @@ export default function VaultNav({
     return vaultHealthPercent;
   };
 
-  //when the passwords array is updated (user performs crud operations on their vault the percent is regenerated)
-  useEffect(()=>{
-    setVaultHealthPercent(getVaultHealthPercent());
-  },[vaultController.passwords]);
-
-  //when the vault health percent is changed the color and vault status are obtained
-  useEffect(()=>{
-    setVaultHealthColor(getVaultHealthColor());
-    setVaultHealthStatus(getVaultHealthStatus());
-  },[vaultHealthPercent]);
-  
-  const navigate = useNavigate();
-  /*
-    whenever the passwords list is updated (for example the user creates a new password) this useEffect makes sure that the
-    new password is included in the search by performing a search on the updated passwords list.
-
-    additionally this useEffect will perform searches automatically as the user types. (accomplished by adding the searchInput as a useEffect dependency)
-  */
-  useEffect(()=>{
-    const filterPasswords = function(){
-      return vaultController.passwords.filter((password:any) => {
-        return password.nickName.toLowerCase().includes(searchInput);
-      });
-    };
-    if (vaultController.passwords) setPassSnip(filterPasswords());
-  },[vaultController.passwords,searchInput]);
-  
   const handleLogOut = async function(){
     await vaultController.logOutUser()
       .then(()=>{
         navigate('/');
       });
-  }
+  };
+
   return(
-    <div className='vault-nav'>
-      <p onClick={()=>{navigate('/')}}>Home</p>
-      <p onClick={()=>{navigate('/vault')}}>My Vault</p>
-      <p className='search-vault-bar'>
+    <nav className='vault-nav'>
+      <button onClick={()=>{navigate('/')}}>Home</button>
+      <button onClick={()=>{navigate('/vault')}}>My Vault</button>
+      <form className='search-vault-bar'>
         <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
-      </p>
+      </form>
       <p className='vault-health' style={{color: vaultHealthColor}}>
         Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
       </p>
-      <p>{new Date().toDateString()}</p>
-      <p><img src={settingsGear} alt='settings menu' onClick={()=>{navigate('/vault/settings')}} /></p>
-      <p onClick={()=>{handleLogOut()}}>Logout</p>
-    </div>
-  )
-}
+      <time>{new Date().toDateString()}</time>
+      <button onClick={()=>{navigate('/vault/settings')}}>
+        <img src={settingsGear} alt='settings menu' />
+      </button>
+      <button onClick={()=>{handleLogOut()}}>Logout</button>
+    </nav>
+  );
+};

@@ -70,50 +70,56 @@ export default function Password({
 
   if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
-      <h5 onClick={()=>{setIsPasswordExpanded(true)}}>
-        <span>{password.nickName}</span>
-        &nbsp;
-        <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
-      </h5>
-    )
-  }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
-    return(
-      <form className='password'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
-          <span>{password.nickName}</span>
+      <form className='pass-item'>
+        <h5 onClick={()=>{setIsPasswordExpanded(true)}}>
+          {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </h5>
-        <div className='password-content'>
-          <p className='pass-field-alt'>
-            <h4>Web Address:</h4>
+      </form>
+    );
+  }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
+    return(
+      <form className='pass-item'>
+        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
+          {password.nickName}
+          &nbsp;
+          <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
+        </h5>
+        <ul className='pass-field-wrapper'>
+          <li className='pass-field'>
+            <label>Web Address:</label>
             <a href={`${password.siteUrl}`}>{password.siteUrl}</a>
-          </p>
-          <p className='pass-field-alt'>
-            <h4>Username:</h4>
+          </li>
+          <li className='pass-field'>
+            <label>Username:</label>
             <span>{password.userName}</span>
-          </p>
+          </li>
           {/* Note: .decryptedPassword property is created when passwords are decrypted during login */}
-          <p className='pass-field-alt'>
-            <h4>Password:</h4>
+          <li className='pass-field'>
+            <label>Password:</label>
             <span>{password.decryptedPassword}</span>
-          </p>
-          <p>
-            <h4>Notes:</h4>
+          </li>
+          <li className='pass-field'>
+            <label>Notes:</label>
             <span>{password.decryptedNotes}</span>
-          </p>
+          </li>
+        </ul>
+        <div className='pass-button-wrapper'>
           <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
           <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
         </div>
       </form>
-    )
+    );
   }else{
     return(
-      <form className='password'>
+      <form className='pass-item'>
         <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
-          {password.nickName}&nbsp;<span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
+          {password.nickName}
+          &nbsp;
+          <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </h5>
-        <ul className='password-fields'>
+        <ul className='pass-field-wrapper'>
           <li className='pass-field'>
             <label>Nickname:</label>
             <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -134,11 +140,11 @@ export default function Password({
             <label>Notes:</label>
             <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
           </li>
-          <li className='pass-control-buttons'>
-            <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
-            <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>
-          </li>
         </ul>
+        <div className='pass-button-wrapper'>
+          <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
+          <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>
+        </div>
         <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />
       </form>
     );
