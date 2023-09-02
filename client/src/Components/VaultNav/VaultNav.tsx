@@ -106,8 +106,8 @@ export default function VaultNav({
 
   return(
     <nav className='vault-nav'>
-      <button onClick={()=>{navigate('/')}}>Home</button>
-      <button onClick={()=>{navigate('/vault')}}>My Vault</button>
+      <button type='button' onClick={()=>{navigate('/')}}>Home</button>
+      <button type='button' onClick={()=>{navigate('/vault')}}>My Vault</button>
       <form className='search-vault-bar'>
         <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
@@ -116,10 +116,10 @@ export default function VaultNav({
         Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
       </p>
       <time>{new Date().toDateString()}</time>
-      <button onClick={()=>{navigate('/vault/settings')}}>
+      <button type='button' onClick={()=>{navigate('/vault/settings')}}>
         <img src={settingsGear} alt='settings menu' />
       </button>
-      <button onClick={()=>{handleLogOut()}}>Logout</button>
+      <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
     </nav>
   );
 };

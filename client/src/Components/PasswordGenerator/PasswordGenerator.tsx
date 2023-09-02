@@ -139,75 +139,77 @@ export default function PasswordGenerator({
   if (isPassGeneratorOpen){
     return(
       <form className='pass-gen-menu'>
-        <button className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</button>
-        <section className='pass-gen-content'>
-          <article className='pass-gen-output'>
-            <div>
-              <label>Generated Password:</label>
-              <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
-            </div>
-            <div className='pass-button-wrapper'>
+        <button className='drop-down-menu' type='button' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</button>
+        <section className='pass-gen-output'>
+          <div>
+            <label>Generated Password:</label>
+            <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
+          </div>
+          <ul className='pass-button-container'>
+            <li>
               <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
+            </li>
+            <li>
               <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
-            </div>
-          </article>
-          <article className='pass-gen-settings-wrapper'>
-            <h4>Generation Settings:</h4>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' />
-              <input type='number' min='1' max='70' value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
-              <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
-            </div>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum number of characters a newly generated password could have.' />
-              <input type='number' min='1' max='70' value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
-              <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
-            </div>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate LowerCases' desc='Checking this box allows the password generator to generate lowercase characters in new passwords.' />
-              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('lowerCases',0)}} checked={lowerCasesInput} />
-            </div>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
-              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
-            </div>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate Special Characters' desc='Checking this box allows the password generator to generate special characters in new passwords.' />
-              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
-            </div>
-            <div className='pass-gen-setting'>
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
-              <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
-            </div>
-          </article>
-          <article className='pass-gen-char-pool-info'>
-            <p>
-              There are <b>{charPool.length}</b> characters currently in the&nbsp;
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
-              <br/>
-              (Hint: Press on any underlined text to learn more!)
-            </p>
-          </article>
-          <article className='pass-gen-info'>
-            <h4>How Are Passwords Rated?</h4>
-            <PasswordScoreTable />
-            <div className='pass-gen-score'>
-              <input style={{accentColor: passwordBarColor }} className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
-              <p>
-                The currently generated password is <b>{passwordScore.strength}</b>.
-                This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' /> of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
-                <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." /> of <b>{passwordScore.estCrackTime}</b>.
-              </p>
-            </div>
-          </article>
+            </li>
+          </ul>
+        </section>
+        <section className='pass-gen-settings-wrapper'>
+          <h4>Generation Settings:</h4>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Min Length' desc='Changing this input modifies the minimum number of characters a newly generated password could have.' />
+            <input type='number' min='1' max='70' value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
+            <input type="range" min="1" max="70" value={minLengthInput} onChange={(e)=>{handlePasswordParamChange('minLength',parseInt(e.target.value)) }} />
+          </div>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Max Length' desc='Changing this input modifies the maximum number of characters a newly generated password could have.' />
+            <input type='number' min='1' max='70' value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
+            <input type="range" min="1" max="70" value={maxLengthInput} onChange={(e)=>{handlePasswordParamChange('maxLength',parseInt(e.target.value)) }} />
+          </div>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate LowerCases' desc='Checking this box allows the password generator to generate lowercase characters in new passwords.' />
+            <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('lowerCases',0)}} checked={lowerCasesInput} />
+          </div>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate UpperCases' desc='Checking this box allows the password generator to generate uppercase characters in new passwords.' />
+            <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('upperCases',0)}} checked={upperCasesInput} />
+          </div>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate Special Characters' desc='Checking this box allows the password generator to generate special characters in new passwords.' />
+            <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('specialChars',0)}} checked={specialCharsInput} />
+          </div>
+          <div className='pass-gen-setting'>
+            <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='Generate Numbers' desc='Checking this box allows the password generator to generate numbers in new passwords.' />
+            <input className='checkbox' type='checkbox' onChange={()=>{handlePasswordParamChange('numbers',0)}} checked={numbersInput} />
+          </div>
+        </section>
+        <section className='pass-gen-info'>
+          <h4>How Are Passwords Rated?</h4>
+          <PasswordScoreTable />
+          <input style={{accentColor: passwordBarColor }} className='password-entropy-input' type="range" min='0' max='150' value={passwordScore.entropyInBits} readOnly />
+          <ul className='pass-gen-ratings'>
+            <li className='pass-gen-rating'>
+              The currently generated password is <b>{passwordScore.strength}</b>.
+            </li>
+            <li className='pass-gen-rating'>
+              This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' />&nbsp;
+              of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
+              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." />&nbsp;
+              of <b>{passwordScore.estCrackTime}</b>.
+            </li> 
+            <li className='pass-gen-rating'>
+              There are <b>{charPool.length}</b> characters currently in the <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
+            </li>
+          </ul>
+          <h5>(Hint: Press on any underlined text to learn more!)</h5>
         </section>
       </form>
     );
   }else{
     return(
-      <section className='pass-gen-menu'>
-        <button className='drop-down-menu' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</button>
-      </section>
+      <form className='pass-gen-menu'>
+        <button className='drop-down-menu' type='button' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</button>
+      </form>
     );
   };
 };

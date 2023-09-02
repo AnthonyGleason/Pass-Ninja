@@ -45,33 +45,37 @@ export default function Register({vaultController}:{vaultController:VaultControl
       <section className='register'>
         <h3>Register</h3>
         <form className='register-form'>
-          <ul className='reg-input-wrapper'>
-            <li className='reg-input'>
-              <label>First Name:</label>
-              <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+          <div className='reg-input'>
+            <label>First Name:</label>
+            <input type='text' value={firstNameInput} onChange={(e)=>{setFirstNameInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Last Name:</label>
+            <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Email:</label>
+            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Master Password:</label>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          </div>
+          <div className='reg-input'>
+            <label>Master Password (again):</label>
+            <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
+          </div>
+          <ul className='register-button-container'>
+            <li>
+              <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
             </li>
-            <li className='reg-input'>
-              <label>Last Name:</label>
-              <input type='text' value={lastNameInput} onChange={(e)=>{setLastNameInput(e.target.value)}} />
+            <li>
+              <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
             </li>
-            <li className='reg-input'>
-              <label>Email:</label>
-              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-            </li>
-            <li className='reg-input'>
-              <label>Master Password:</label>
-              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-            </li>
-            <li className='reg-input'>
-              <label>Master Password (again):</label>
-              <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
+            <li>
+              <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
             </li>
           </ul>
-          <div className='register-button-container'>
-            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-            <button type='button' onClick={()=>{navigate('/vault/login')}}>Login</button>
-            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
-          </div>
         </form>
         <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
       </section>

@@ -57,24 +57,26 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
   return(
     <form className="password-update-form">
       <h4>Warning: Changing your master password can cause password corruption in very rare cases. Please ensure you have backed up your vault before proceeding.</h4>
-      <ul className="setting-input-wrapper">
+      <div>
+        <label>Enter a new master password:</label>
+        <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
+      </div>
+      <div>
+        <label>Enter a new master password (again):</label>
+        <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
+      </div>
+      <div>
+        <label>Enter your current master password:</label>
+        <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
+      </div>
+      <ul className="password-setting-button-container">
         <li>
-          <label>Enter a new master password:</label>
-          <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
+          <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
         </li>
         <li>
-          <label>Enter a new master password (again):</label>
-          <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
-        </li>
-        <li>
-          <label>Enter your current master password:</label>
-          <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
+          <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
         </li>
       </ul>
-      <div>
-        <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
-        <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
-      </div>
     </form>
   );
 };

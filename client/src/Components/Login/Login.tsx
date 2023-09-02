@@ -51,10 +51,10 @@ export default function Login({vaultController}:{vaultController:VaultController
 
   const getOtpInputElement = function(){
     return isOtpRequired ? (
-      <li className='login-input'>
+      <div className='login-input'>
         <label>One Time Password:</label>
         <input value={otpInput} onChange={(e)=>{setOtpInput(e.target.value)}} />
-      </li> 
+      </div> 
     ):(
       null
     );
@@ -65,24 +65,28 @@ export default function Login({vaultController}:{vaultController:VaultController
       <section className='login'>
         <h3>Login</h3>
         <form>
-          <ul>
-            <li className='login-input'>
-              <label>Email:</label>
-              <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
-            </li>
-            <li className='login-input'>
-              <label>Password:</label>
-              <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
-            </li>
-            {
-              getOtpInputElement()
-            }   
-          </ul>
-          <div className='login-button-container'>
-            <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
-            <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
-            <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
+          <div className='login-input'>
+            <label>Email:</label>
+            <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
           </div>
+          <div className='login-input'>
+            <label>Password:</label>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
+          </div>
+          {
+            getOtpInputElement()
+          }
+          <ul className='login-button-container'>
+            <li>
+              <button type='button' onClick={()=>{handleSubmit()}}>Submit</button>
+            </li>
+            <li>
+              <button type='button' onClick={()=>{navigate('/vault/register')}}>Register</button>
+            </li>
+            <li>
+              <button type='button' onClick={()=>{handleDemoLogin(vaultController,navigate,setIsLoading)}}>Try the Demo</button>
+            </li>
+          </ul>
         </form>
       </section>
     )
