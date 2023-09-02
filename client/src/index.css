@@ -13,15 +13,15 @@ body {
 }
 /* ensure the page always takes up the whole viewport */
 #root{
-  min-height: 100vh;
-  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #2d2d30;
   color: #ebe1e1;
-  overflow-y:scroll;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+ul{
+  list-style-type: none;
 }

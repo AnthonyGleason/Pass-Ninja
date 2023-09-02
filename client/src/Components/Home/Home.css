@@ -1,0 +1,25 @@
+.home-greeting{
+  min-height: 100vh;
+  font-size: 20px;
+}
+.home-info{
+  background-color: rgb(66, 63, 63);
+  min-height: 150vh;
+  font-size: 20px;
+}
+.pass-gen-demo{
+  background-color: rgb(174, 184, 150);
+  min-height: 150vh;
+  color: black;
+  font-size: 20px;
+}
+.home-call-to-action{
+  background-color: rgb(228, 228, 199);
+  min-height: 100vh;
+  color: black;
+  font-size: 20px;
+}
+.home img{
+  width: 90%;
+  max-width: 300px;
+}

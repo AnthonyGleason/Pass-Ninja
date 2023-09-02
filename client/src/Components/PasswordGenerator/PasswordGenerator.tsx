@@ -150,7 +150,9 @@ export default function PasswordGenerator({
               <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
             </li>
             <li>
-              <button type='button' onClick={()=>{setPasswordInput(genPasswordInput)}}>Use Password</button>
+              <button type='button' onClick={() => { setPasswordInput(genPasswordInput) }}>
+                Use Password
+              </button>
             </li>
           </ul>
         </section>
@@ -192,10 +194,9 @@ export default function PasswordGenerator({
               The currently generated password is <b>{passwordScore.strength}</b>.
             </li>
             <li className='pass-gen-rating'>
-              This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' />&nbsp;
-              of <b>{passwordScore.entropyInBits}</b> bits and an&nbsp;
-              <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." />&nbsp;
-              of <b>{passwordScore.estCrackTime}</b>.
+              This password has a <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='calculated entropy' desc='Passwords are calculated using the algorithm, log2(length of the possible characters pool ^ length of the password) = entropy in bits.' />
+              &nbsp;of <b>{passwordScore.entropyInBits}</b> bits and an <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='approximate crack time' desc="Attacker's skill and computing power can influence the password cracking speed causing faster or slower password cracking times." />
+              &nbsp;of <b>{passwordScore.estCrackTime}</b>.
             </li> 
             <li className='pass-gen-rating'>
               There are <b>{charPool.length}</b> characters currently in the <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term='character pool' desc={`The character pool is the collection of possible characters the password generator can pick from when generating new passwords. The password generator in which this tooltip has been opened has a character pool of ${charPool.length} that consists of the characters: ${charPool}`} />.
