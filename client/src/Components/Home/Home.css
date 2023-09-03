@@ -5,6 +5,13 @@
   padding: 1em;
   text-align: center;
 }
+.home-greeting ul,
+.home-call-to-action ul{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 .home-greeting{
   min-height: 100vh;
   font-size: 20px;
@@ -14,12 +21,6 @@
   flex-direction: column;
   gap: 25px;
   text-align: center;
-}
-.home-greeting ul{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 .home-greeting ul button,
 .home-call-to-action button,
@@ -71,6 +72,9 @@
   min-height: 20vh;
   color: black;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .home img{
   width: 90%;
