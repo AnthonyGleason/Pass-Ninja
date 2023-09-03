@@ -1,21 +1,74 @@
+.home-greeting,
+.home-info,
+.pass-gen-demo,
+.home-call-to-action{
+  padding: 1em;
+  text-align: center;
+}
 .home-greeting{
   min-height: 100vh;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 25px;
+  text-align: center;
+}
+.home-greeting ul{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.home-greeting ul button,
+.home-call-to-action button,
+.pass-gen-demo button{
+  background-color: transparent;
+  color: white;
+  border: 0px solid transparent;
+  background-color: rgb(24, 23, 23);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 1em 1.5em;
+  border-radius: 7px;
+}
+.home-greeting button:hover{
+  background-color: rgb(106, 100, 100);
+}
+.home-greeting .down-arrow{
+  background-color: transparent;
+  border: 0px solid transparent;
+  cursor: pointer;
+}
+.home-greeting .down-arrow:hover{
+  border-radius: 10px;
+}
+.home-greeting .down-arrow img{
+  color: white;
+  min-width: 40px;
 }
 .home-info{
   background-color: rgb(66, 63, 63);
   min-height: 150vh;
-  font-size: 20px;
+  font-size: 22px;
+  display: flex;
+  text-align: center;
+}
+.home-info p{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .pass-gen-demo{
   background-color: rgb(174, 184, 150);
-  min-height: 150vh;
   color: black;
   font-size: 20px;
 }
 .home-call-to-action{
-  background-color: rgb(228, 228, 199);
-  min-height: 100vh;
+  background-color: rgb(174, 184, 150);
+  min-height: 20vh;
   color: black;
   font-size: 20px;
 }

@@ -6,9 +6,9 @@ import Tooltip from '../Tooltip/Tooltip';
 
 export default function PasswordGenerator({
   setPasswordInput,
-  isExpandedByDefault
+  isExpandedByDefault,
 }:{
-  setPasswordInput:Function,
+  setPasswordInput?:Function,
   isExpandedByDefault:boolean
 }){
 
@@ -139,10 +139,20 @@ export default function PasswordGenerator({
   if (isPassGeneratorOpen){
     return(
       <form className='pass-gen-menu'>
-        <button className='drop-down-menu' type='button' onClick={()=>{setIsPassGeneratorOpen(false)}}>Secure Password Generator</button>
-        <section className='pass-gen-output'>
-          <div>
-            <label>Generated Password:</label>
+        {
+          setPasswordInput 
+          ?
+            <button className='drop-down-menu' type='button' onClick={()=>{setIsPassGeneratorOpen(false)}}>
+              Secure Password Generator
+            </button>
+          :
+            null
+        }
+        <section className='pass-gen'>
+          <div className='pass-gen-output'>
+            <label>
+              <h4>Generated Password:</h4>
+            </label>
             <input className='gen-password-input' value={genPasswordInput} onChange={(e)=>{setGenPasswordInput(e.target.value)}} />
           </div>
           <ul className='pass-button-container'>
@@ -150,9 +160,15 @@ export default function PasswordGenerator({
               <button type='button' onClick={()=>{setGenPasswordInput(generatePassword())}}>Regenerate Password</button>
             </li>
             <li>
-              <button type='button' onClick={() => { setPasswordInput(genPasswordInput) }}>
-                Use Password
-              </button>
+              {
+                setPasswordInput 
+                ?
+                  <button type='button' onClick={() => { setPasswordInput(genPasswordInput) }}>
+                    Use Password
+                  </button>
+                :
+                  null
+              }
             </li>
           </ul>
         </section>
