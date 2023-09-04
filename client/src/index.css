@@ -25,3 +25,8 @@ code {
 ul{
   list-style-type: none;
 }
+.no-wrap{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}

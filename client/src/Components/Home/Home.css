@@ -14,12 +14,12 @@
 }
 .home-greeting{
   min-height: 100vh;
-  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
+  font-size: 18px;
   text-align: center;
 }
 .home-greeting ul button,
@@ -51,16 +51,18 @@
 }
 .home-info{
   background-color: rgb(66, 63, 63);
-  min-height: 150vh;
+  min-height: 120vh;
   font-size: 22px;
   display: flex;
   text-align: center;
+  justify-content: center;
 }
 .home-info p{
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
   flex-grow: 1;
+  max-width: 500px;
 }
 .pass-gen-demo{
   background-color: rgb(174, 184, 150);
