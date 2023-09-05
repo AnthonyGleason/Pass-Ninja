@@ -81,11 +81,11 @@ export default function Password({
   }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <form className='pass-item'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button onClick={()=>{setIsPasswordExpanded(false)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
-        </h5>
+        </button>
         <div className='pass-field'>
           <label>Web Address:</label>
           <a href={`${password.siteUrl}`}>{password.siteUrl}</a>
@@ -115,11 +115,11 @@ export default function Password({
   }else{
     return(
       <form className='pass-item'>
-        <h5 onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button onClick={()=>{setIsPasswordExpanded(false)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
-        </h5>
+        </button>
         <div className='pass-display-field'>
           <label>Nickname:</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />

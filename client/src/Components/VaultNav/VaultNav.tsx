@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import settingsGear from '../../Assets/settings-outline.svg';
 import searchIcon from '../../Assets/search.svg';
 import { VaultController } from '../../Classes/VaultController';
+import './VaultNav.css';
 
 export default function VaultNav({
   vaultController,
@@ -106,8 +107,22 @@ export default function VaultNav({
 
   return(
     <nav className='vault-nav'>
-      <button type='button' onClick={()=>{navigate('/')}}>Home</button>
-      <button type='button' onClick={()=>{navigate('/vault')}}>My Vault</button>
+      <ul>
+        <li>
+          <button type='button' onClick={()=>{navigate('/')}}>Home</button>
+        </li>
+        <li>
+          <button type='button' onClick={()=>{navigate('/vault')}}>My Vault</button>
+        </li>
+        <li>
+          <button type='button' onClick={()=>{navigate('/vault/settings')}}>
+            <img src={settingsGear} alt='settings menu' />
+          </button>
+        </li>
+        <li>
+         <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
+        </li>
+      </ul>
       <form className='search-vault-bar'>
         <img src={searchIcon} alt='magnifying glass' />
         <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
@@ -116,10 +131,6 @@ export default function VaultNav({
         Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
       </p>
       <time>{new Date().toDateString()}</time>
-      <button type='button' onClick={()=>{navigate('/vault/settings')}}>
-        <img src={settingsGear} alt='settings menu' />
-      </button>
-      <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
     </nav>
   );
 };
