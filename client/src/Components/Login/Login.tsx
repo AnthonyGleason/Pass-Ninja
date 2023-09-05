@@ -64,7 +64,7 @@ export default function Login({vaultController}:{vaultController:VaultController
     return(
       <section className='login'>
         <h3>Login</h3>
-        <form>
+        <form className='login-form'>
           <div className='login-input'>
             <label>Email:</label>
             <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />

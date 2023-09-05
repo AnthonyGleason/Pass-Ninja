@@ -77,7 +77,6 @@ export default function Register({vaultController}:{vaultController:VaultControl
             </li>
           </ul>
         </form>
-        <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setMasterPasswordInput} />
       </section>
     );
   }else{ //display demo login loading display

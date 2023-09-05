@@ -1,0 +1,64 @@
+.register,
+.login{
+  padding: 1em;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+.register h3,
+.login h3{
+  font-size: 22px;
+  padding: 1em;
+}
+.register-form,
+.login-form{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 22px;
+  width: 100%;
+  max-width: 600px;
+}
+.register-form ul,
+.login-form ul{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.register-form ul li button,
+.login-form ul li button{
+  background-color: transparent;
+  color: white;
+  border: 0px solid transparent;
+  background-color: rgb(24, 23, 23);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 1em 1.5em;
+  border-radius: 7px;
+}
+/*
+.reg-input,
+.login-input{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+.reg-input input,
+.login-input input{
+  min-height: 40px;
+  font-size: 22px;
+  max-width: 250px;
+  width: 80%;
+}
+.reg-input label,
+.login-input label{
+  word-wrap: normal;
+  max-width: 100px;
+  flex-grow: 1;
+  text-align: center;
+} */

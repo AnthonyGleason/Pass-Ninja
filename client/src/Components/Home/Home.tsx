@@ -43,11 +43,11 @@ export default function Home({vaultController}:{vaultController:VaultController}
         </section>
         <section id='info' className='home-info'>
           <p>
-            <span data-aos='fade-right'>Ready to enhance your digital security?</span>
+            <span className='info-block-one' data-aos='fade-right'>Ready to enhance your digital security?</span>
             <br />
-            <span data-aos='fade-right'>Tired of complicated password managers?</span>
+            <span className='info-block-two' data-aos='fade-left'>Tired of complicated password managers?</span>
             <br />
-            <span data-aos='fade-right'>PassNinja features the latest two-factor authentication technology and cutting edge password generation technology designed to keep you in complete control every step of the way.</span>
+            <span className='info-block-three' data-aos='fade-right'>Pass Ninja features the latest two-factor authentication technology and cutting edge password generation technology designed to keep you in complete control every step of the way.</span>
           </p>
         </section>
         <section className='pass-gen-demo'>

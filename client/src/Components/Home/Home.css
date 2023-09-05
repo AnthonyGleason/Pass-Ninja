@@ -64,6 +64,15 @@
   flex-grow: 1;
   max-width: 500px;
 }
+@media screen and (width>520px) {
+  .info-block-one,
+  .info-block-three{
+    padding-right: 20%;
+  }
+  .info-block-two{
+    padding-left: 20%
+  }
+}
 .pass-gen-demo{
   background-color: rgb(174, 184, 150);
   color: black;
