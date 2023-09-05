@@ -32,20 +32,21 @@ export default function EmailSetting({vaultController}:{vaultController:VaultCon
   };
   return(
     <form className="email-update-form">
+      <h3>Update Vault Email:</h3>
       <div className="email-input-field">
-        <label>Enter a new email address:</label>
+        <label>New Email Address:</label>
         <input type='email' value={emailAddressInput} onChange={(e)=>{setEmailAddressInput(e.target.value)}} />
       </div>
       <div className="email-input-field">
-        <label>Enter your current master password:</label>
-        <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
+        <label>Current Master Password:</label>
+        <input type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
       </div>
       <ul className="email-setting-button-container">
         <li>
           <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
         </li>
         <li>
-          <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+          <button type='button' onClick={()=>{navigate('/vault/settings')}}>Cancel</button>
         </li>
       </ul>
     </form>

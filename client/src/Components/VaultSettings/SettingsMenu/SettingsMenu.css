@@ -1,0 +1,69 @@
+.account-settings,
+.email-update-form,
+.password-update-form,
+.two-factor-form{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  padding: 1em;
+  font-size: 22px;
+  text-align: center;
+}
+.account-settings ul,
+.email-update-form ul,
+.password-update-form ul,
+.two-factor-form ul{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.account-settings ul button,
+.email-update-form ul button,
+.password-update-form ul button,
+.two-factor-form ul button{
+  background-color: transparent;
+  color: white;
+  border: 0px solid transparent;
+  background-color: rgb(24, 23, 23);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 1em 1.5em;
+  border-radius: 7px;
+}
+.email-input-field,
+.password-input-field,
+.two-factor-input-field{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  max-width: 600px;
+  align-items: center;
+  gap: 10px;
+}
+.two-factor-form ol{
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  gap: 20px;
+}
+.two-factor-form ol li{
+  max-width: 600px;
+}
+.two-factor-form ol li img{
+  padding: 1em;
+}
+.email-input-field label,
+.password-input-field label,
+.two-factor-form label{
+  text-align: center;
+}
+.email-input-field input,
+.password-input-field input,
+.two-factor-form input{
+  height: 30px;
+}

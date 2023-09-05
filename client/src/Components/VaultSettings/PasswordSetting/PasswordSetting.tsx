@@ -56,25 +56,26 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
 
   return(
     <form className="password-update-form">
-      <h4>Warning: Changing your master password can cause password corruption in very rare cases. Please ensure you have backed up your vault before proceeding.</h4>
-      <div>
-        <label>Enter a new master password:</label>
+      <h3>Update Master Password:</h3>
+      <h4 className="warning">Warning: Changing your master password can cause password corruption in very rare cases. Please ensure you have backed up your vault before proceeding.</h4>
+      <div className="password-input-field">
+        <label>New Master Password:</label>
         <input type='password' value={newMasterPassInput} onChange={(e)=>{setNewMasterPassInput(e.target.value)}} />
       </div>
-      <div>
-        <label>Enter a new master password (again):</label>
+      <div className="password-input-field">
+        <label>New Master Password (again):</label>
         <input type='password' value={newMasterPassConfInput} onChange={(e)=>{setNewMasterPassConfInput(e.target.value)}} />
       </div>
-      <div>
-        <label>Enter your current master password:</label>
-        <input placeholder='Current Master Password' type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
+      <div className="password-input-field">
+        <label>Current Master Password:</label>
+        <input type='password' value={curMasterPassInput} onChange={(e)=>{setCurMasterPassInput(e.target.value)}} />
       </div>
       <ul className="password-setting-button-container">
         <li>
           <button type='button' onClick={()=>{handleApplyChanges()}}>Apply Settings</button>
         </li>
         <li>
-          <button type='button' onClick={()=>{navigate('/vault')}}>Go Back</button>
+          <button type='button' onClick={()=>{navigate('/vault/settings')}}>Cancel</button>
         </li>
       </ul>
     </form>

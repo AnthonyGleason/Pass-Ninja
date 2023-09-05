@@ -58,11 +58,11 @@ export default function Register({vaultController}:{vaultController:VaultControl
             <input type='email' value={emailInput} onChange={(e)=>{setEmailInput(e.target.value)}} />
           </div>
           <div className='reg-input'>
-            <label>Master Password:</label>
+            <label>Password:</label>
             <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} />
           </div>
           <div className='reg-input'>
-            <label>Master Password (again):</label>
+            <label>Password (again):</label>
             <input type='password' value={masterPasswordConfirmInput} onChange={(e)=>{setMasterPasswordConfirmInput(e.target.value)}} />
           </div>
           <ul className='register-button-container'>

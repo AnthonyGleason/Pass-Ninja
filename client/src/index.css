@@ -30,3 +30,6 @@ ul{
   flex-wrap: nowrap;
   flex-direction: row;
 }
+.warning{
+  color: rgb(250, 138, 138);
+}
