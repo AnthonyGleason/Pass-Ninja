@@ -1,9 +1,9 @@
 .tooltip{
   z-index: 5;
-  position:fixed;
-  bottom: 0;
+  position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   background-color: rgba(0,0,0,0.95);
   color: white;
   border-radius: 8px;
@@ -12,10 +12,13 @@
   align-self: center;
   align-items: center;
   padding: 1em;
-  margin: 1em;
-  gap: 1em;
+  gap: 5px;
+  width: 90%;
+}
+.tooltip p{
+  overflow-wrap: anywhere;
 }
 .tooltip img{
-  max-width: 60px;
+  max-width: 30px;
   align-self: flex-start;
 }

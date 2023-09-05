@@ -7,20 +7,19 @@
   gap: 10px;
   flex-direction: column;
   align-items: center;
+  font-size: 22px;
 }
 .register h3,
 .login h3{
-  font-size: 22px;
   padding: 1em;
 }
 .register-form,
 .login-form{
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  font-size: 22px;
+  gap: 15px;
   width: 100%;
-  max-width: 600px;
+  align-items: center;
 }
 .register-form ul,
 .login-form ul{
@@ -35,30 +34,28 @@
   color: white;
   border: 0px solid transparent;
   background-color: rgb(24, 23, 23);
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   padding: 1em 1.5em;
   border-radius: 7px;
 }
-/*
 .reg-input,
 .login-input{
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  max-width: 600px;
   align-items: center;
   gap: 10px;
 }
-.reg-input input,
-.login-input input{
-  min-height: 40px;
-  font-size: 22px;
-  max-width: 250px;
-  width: 80%;
-}
 .reg-input label,
 .login-input label{
-  word-wrap: normal;
-  max-width: 100px;
-  flex-grow: 1;
+  width: 100%;
   text-align: center;
-} */
+}
+.reg-input input,
+.login-input input{
+  width: 100%;
+  height: 30px;
+}
