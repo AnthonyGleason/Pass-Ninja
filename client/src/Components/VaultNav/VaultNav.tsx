@@ -122,15 +122,21 @@ export default function VaultNav({
         <li>
          <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
         </li>
+        <li>
+          <form className='search-vault-bar'>
+            <img src={searchIcon} alt='magnifying glass' />
+            <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
+          </form>
+        </li>
+        <li>
+          <p className='vault-health' style={{color: vaultHealthColor}}>
+            Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
+          </p>
+        </li>
+        <li>
+          <time>{new Date().toDateString()}</time>
+        </li>
       </ul>
-      <form className='search-vault-bar'>
-        <img src={searchIcon} alt='magnifying glass' />
-        <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
-      </form>
-      <p className='vault-health' style={{color: vaultHealthColor}}>
-        Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
-      </p>
-      <time>{new Date().toDateString()}</time>
     </nav>
   );
 };

@@ -13,11 +13,7 @@
   align-content: center;
   gap: 10px;
 }
-.vault-nav button,
-.search-vault-bar,
-.vault-health,
-.vault-nav time{
-  background-color: transparent;
+.vault-nav li{
   color: white;
   border: 0px solid transparent;
   background-color: rgb(24, 23, 23);
@@ -26,6 +22,17 @@
   padding: 1em 1.5em;
   border-radius: 7px;
   min-height: 50px;
+}
+.vault-nav li *{
+  background-color: transparent;
+  border: 0px solid transparent;
+  color: white;
+  font-size: 19px;
+}
+.vault-nav li form input{
+  background-color: white;
+  color: black;
+  padding-left: 0.5em;
 }
 .search-vault-bar{
   display: flex;
