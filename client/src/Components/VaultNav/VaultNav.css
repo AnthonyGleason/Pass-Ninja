@@ -22,12 +22,17 @@
   padding: 1em 1.5em;
   border-radius: 7px;
   min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 .vault-nav li *{
   background-color: transparent;
   border: 0px solid transparent;
   color: white;
   font-size: 19px;
+  display: flex;
 }
 .vault-nav li form input{
   background-color: white;

@@ -138,7 +138,7 @@ export default function PasswordGenerator({
 
   if (isPassGeneratorOpen){
     return(
-      <form className='pass-gen-menu'>
+      <div className='pass-gen-menu'>
         {
           setPasswordInput 
           ?
@@ -224,13 +224,13 @@ export default function PasswordGenerator({
           </ul>
           <h5>(Hint: Press on any underlined text to learn more!)</h5>
         </section>
-      </form>
+      </div>
     );
   }else{
     return(
-      <form className='pass-gen-menu'>
+      <div className='pass-gen-menu'>
         <button className='drop-down-menu' type='button' onClick={()=>{setIsPassGeneratorOpen(true)}}>Secure Password Generator</button>
-      </form>
+      </div>
     );
   };
 };
