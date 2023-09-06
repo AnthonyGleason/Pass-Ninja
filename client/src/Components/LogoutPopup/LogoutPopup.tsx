@@ -5,13 +5,17 @@ import './LogoutPopup.css';
 export default function LogoutPopup(){
   const navigate = useNavigate();
 
-  const handleConfirmPopup = function(){
-    navigate('/vault/login');
-  }
   return(
     <section className='logged-out'>
       <p>For security reasons you have been automatically logged out. Please sign in again to access your vault.</p>
-      <button onClick={()=>{handleConfirmPopup()}} type='button'>Take me there</button>
+      <ul>
+        <li>
+          <button onClick={()=>{navigate('/vault/login')}} type='button'>Login</button>
+        </li>
+        <li>
+          <button onClick={()=>{navigate('/')}} type='button'>Home</button>
+        </li>
+      </ul>
     </section>
   )
 }

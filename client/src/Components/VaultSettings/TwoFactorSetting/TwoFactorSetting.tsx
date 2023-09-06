@@ -98,7 +98,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
         <ol className="two-factor-steps-container">
           <li className="two-factor-step">
             To begin please scan the qr code below in the authentication platform of your choice!<br />
-            <img src={twoFactorQrCode} alt='two factor authentication qr code' />
+            <img className='qrcode' src={twoFactorQrCode} alt='two factor authentication qr code' />
           </li>
           <li className="two-factor-step">
             Once you have successfully scanned the qr code enter your six digit <Tooltip activeTooltipTerm={activeTooltipTerm} setActiveTooltipTerm={setActiveTooltipTerm} term="One Time Passcode" desc="A One Time Passcode (OTP) is a six digit passcode provided by an authentication platform such as Authy or Google Authenticator. An OTP will typically expire in 1 minute from the time of issue." /> and current password below.<br />

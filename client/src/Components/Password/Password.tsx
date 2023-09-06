@@ -81,7 +81,7 @@ export default function Password({
   }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <form className='pass-item'>
-        <button onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button type='button' onClick={()=>{setIsPasswordExpanded(false)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>

@@ -11,6 +11,8 @@
   padding: 1em;
   font-size: 22px;
   text-align: center;
+  max-width: 600px;
+  align-self: center;
 }
 .account-settings ul,
 .email-update-form ul,
@@ -54,7 +56,7 @@
 .two-factor-form ol li{
   max-width: 600px;
 }
-.two-factor-form ol li img{
+.two-factor-form .qrcode{
   padding: 1em;
 }
 .email-input-field label,
