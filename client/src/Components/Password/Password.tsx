@@ -71,7 +71,7 @@ export default function Password({
   if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
       <form className='pass-item'>
-        <button type='button' onClick={()=>{setIsPasswordExpanded(true)}}>
+        <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(true)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
@@ -81,7 +81,7 @@ export default function Password({
   }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <form className='pass-item'>
-        <button type='button' onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(false)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
@@ -115,32 +115,32 @@ export default function Password({
   }else{
     return(
       <form className='pass-item'>
-        <button onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button className='pass-expand-toggle-button' onClick={()=>{setIsPasswordExpanded(false)}}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </button>
-        <div className='pass-display-field'>
+        <div className='pass-field'>
           <label>Nickname:</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
         </div>
-        <div className='pass-display-field'>
+        <div className='pass-field'>
           <label>Web Address:</label>
           <input value={siteUrlInput} onChange={(e)=>{setSiteUrlInput(e.target.value)}} />
         </div>
-        <div className='pass-display-field'>
+        <div className='pass-field'>
           <label>Username:</label>
           <input value={userNameInput} onChange={(e)=>{setUserNameInput(e.target.value)}} />
         </div>
-        <div className='pass-display-field'>
+        <div className='pass-field'>
           <label>Password:</label>
           <input value={editPassInput} onChange={(e)=>{setEditPassInput(e.target.value)}} />
         </div>
-        <div className='pass-display-field'>
+        <div className='pass-field'>
           <label>Notes:</label>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
-        <ul className='pass-button-wrapper'>
+        <ul className='pass-buttons-container'>
           <li>
             <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
           </li>

@@ -115,14 +115,6 @@ export default function VaultNav({
           <button type='button' onClick={()=>{navigate('/vault')}}>My Vault</button>
         </li>
         <li>
-          <button type='button' onClick={()=>{navigate('/vault/settings')}}>
-            <img src={settingsGear} alt='settings menu' />
-          </button>
-        </li>
-        <li>
-         <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
-        </li>
-        <li>
           <form className='search-vault-bar'>
             <img src={searchIcon} alt='magnifying glass' />
             <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
@@ -135,6 +127,14 @@ export default function VaultNav({
         </li>
         <li>
           <time>{new Date().toDateString()}</time>
+        </li>
+        <li>
+          <button type='button' onClick={()=>{navigate('/vault/settings')}}>
+            <img src={settingsGear} alt='settings menu' />
+          </button>
+        </li>
+        <li>
+         <button type='button' onClick={()=>{handleLogOut()}}>Logout</button>
         </li>
       </ul>
     </nav>
