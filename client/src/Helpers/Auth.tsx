@@ -1,7 +1,8 @@
 import { VaultController } from "../Classes/VaultController";
+import { getFetchURL } from "../Configs/clientSettings";
 
 export const verifyToken = async function(token:string){
-  const response = await fetch('http://localhost:5000/v1/api/vaults/verify',{
+  const response = await fetch(`${getFetchURL()}/v1/api/vaults/verify`,{
     method: 'GET',
     headers:{
       'Content-Type': 'application/json',
@@ -17,7 +18,7 @@ export const handleDemoLogin= async function(
   setIsLoading?:Function  
 ){
   if (setIsLoading) setIsLoading(true);
-  const response = await fetch('http://localhost:5000/v1/api/vaults/demologin',{
+  const response = await fetch(`${getFetchURL()}/v1/api/vaults/demologin`,{
     method: 'GET',
   });
   const responseData = await response.json();

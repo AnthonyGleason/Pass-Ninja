@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { VaultController } from "../../../Classes/VaultController";
+import { getFetchURL } from "../../../Configs/clientSettings";
 
 export default function EmailSetting({vaultController}:{vaultController:VaultController}){
   const [emailAddressInput,setEmailAddressInput] = useState<string>('');
@@ -8,7 +9,7 @@ export default function EmailSetting({vaultController}:{vaultController:VaultCon
   const navigate = useNavigate();
   const handleApplyChanges = async function(){
     try{
-      const response = await fetch('http://localhost:5000/v1/api/vaults/settings',{
+      const response = await fetch(`${getFetchURL()}/v1/api/vaults/settings`,{
         method: 'PUT',
         headers:{
           'Content-Type': 'application/json',

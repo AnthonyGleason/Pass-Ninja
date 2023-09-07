@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react";
 import { VaultController } from "../../../Classes/VaultController";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "../../Tooltip/Tooltip";
+import { getFetchURL } from "../../../Configs/clientSettings";
 
 export default function TwoFactorSetting({vaultController}:{vaultController:VaultController}){
   const [twoFactorQrCode,setTwoFactorQrCode] = useState<string>('');
@@ -19,7 +20,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
 
 
   const handleVerifyTwoFactor = async function(){
-    await fetch('http://localhost:5000/v1/api/vaults/verifyOTP',{
+    await fetch(`${getFetchURL()}/v1/api/vaults/verifyOTP`,{
       method: 'PUT',
       headers:{
         'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
   };
 
   const handleRemoveTwoFactor = async function(){
-    await fetch('http://localhost:5000/v1/api/vaults/remove2FA',{
+    await fetch(`${getFetchURL()}/v1/api/vaults/remove2FA`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
   };
 
   const populateTwoFactorSetupCode = async function(){
-    const response = await fetch('http://localhost:5000/v1/api/vaults/request2FASetup',{
+    const response = await fetch(`${getFetchURL()}/v1/api/vaults/request2FASetup`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',

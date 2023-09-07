@@ -3,6 +3,7 @@ import { encryptString } from "../../../Helpers/Passwords";
 import { VaultController } from "../../../Classes/VaultController";
 import { useNavigate } from "react-router-dom";
 import { Password } from "../../../Interfaces/Interfaces";
+import { getFetchURL } from "../../../Configs/clientSettings";
 
 export default function PasswordSetting({vaultController}:{vaultController:VaultController}){
   const [newMasterPassInput,setNewMasterPassInput] = useState<string>('');
@@ -30,7 +31,7 @@ export default function PasswordSetting({vaultController}:{vaultController:Vault
     };
     //send updated fields to server along with encrypted passwords
     try{
-      const response = await fetch('http://localhost:5000/v1/api/vaults/settings',{
+      const response = await fetch(`${getFetchURL()}/v1/api/vaults/settings`,{
         method: 'PUT',
         headers:{
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { VaultController } from '../../Classes/VaultController';
 import './Login.css';
 import { handleDemoLogin } from '../../Helpers/Auth';
 import DemoLogin from '../DemoLogin/DemoLogin';
+import { getFetchURL } from '../../Configs/clientSettings';
 
 export default function Login({vaultController}:{vaultController:VaultController}){
   const [emailInput,setEmailInput] = useState<string>('');
@@ -14,7 +15,7 @@ export default function Login({vaultController}:{vaultController:VaultController
   const navigate = useNavigate();
 
   const login = async function():Promise<string>{
-    const response = await fetch('http://localhost:5000/v1/api/vaults/login',{
+    const response = await fetch(`${getFetchURL()}/v1/api/vaults/login`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json'

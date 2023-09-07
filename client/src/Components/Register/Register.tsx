@@ -5,6 +5,7 @@ import './Register.css';
 import { VaultController } from '../../Classes/VaultController';
 import { handleDemoLogin } from '../../Helpers/Auth';
 import DemoLogin from '../DemoLogin/DemoLogin';
+import { getFetchURL } from '../../Configs/clientSettings';
 
 export default function Register({vaultController}:{vaultController:VaultController}){
   const [firstNameInput,setFirstNameInput] = useState<string>('');
@@ -16,7 +17,7 @@ export default function Register({vaultController}:{vaultController:VaultControl
   const navigate = useNavigate();
   
   const register = async function ():Promise<string>{
-    const response = await fetch('http://localhost:5000/v1/api/vaults/register',{
+    const response = await fetch(`${getFetchURL()}/v1/api/vaults/register`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json'

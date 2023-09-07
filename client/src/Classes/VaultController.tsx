@@ -1,3 +1,4 @@
+import { getFetchURL } from "../Configs/clientSettings";
 import { decryptPassword, encryptString } from "../Helpers/Passwords";
 import { Password } from "../Interfaces/Interfaces";
 
@@ -68,7 +69,7 @@ export class VaultController{
   };
 
   populatePasswords = async()=>{
-    await fetch(`http://localhost:5000/v1/api/vaults/passwords/`,{
+    await fetch(`${getFetchURL()}/v1/api/vaults/passwords/`,{
       method: 'GET',
       headers:{
         'Authorization': `Bearer ${localStorage.getItem('jwt')}`
@@ -92,7 +93,7 @@ export class VaultController{
   };
 
   deletePassword = async(passwordID:string)=>{
-    await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
+    await fetch(`${getFetchURL()}/v1/api/vaults/passwords/${passwordID}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',
@@ -102,7 +103,7 @@ export class VaultController{
   };
 
   logOutUser = async()=>{
-    await fetch(`http://localhost:5000/v1/api/vaults/logout`,{
+    await fetch(`${getFetchURL()}/v1/api/vaults/logout`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',
