@@ -15,7 +15,7 @@ body {
 #root{
   display: flex;
   flex-direction: column;
-  background-color: #2d2d30;
+  background-color: rgb(69, 64, 64);
   color: #ebe1e1;
 }
 code {

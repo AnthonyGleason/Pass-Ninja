@@ -19,7 +19,22 @@ export default function NewPasswordForm({
 
   const handleCreateNewPassword = async function(){
     //create the new password
-    await vaultController.createNewPassword(passwordInput,nickNameInput,siteUrlInput,userNameInput,notesInput);
+    await vaultController
+      .createNewPassword(
+        passwordInput,
+        nickNameInput,
+        siteUrlInput,
+        userNameInput,
+        notesInput
+      )
+      .then(()=>{
+        //set pass inputs back to default so the user doesn't have to delete the input fields manually
+        setPasswordInput('');
+        setNickNameInput('');
+        setSiteUrlInput('https://www.');
+        setUserNameInput('');
+        setNotesInput('');
+      });
     //refresh client's password data
     setPasswords(await vaultController.populatePasswords());
   };
@@ -27,7 +42,15 @@ export default function NewPasswordForm({
   if (isMenuExpanded){ //if the user has expanded the New Password form then display the form to create a new password
     return(
       <form className='new-pass-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <button type='button' onClick={()=>{setIsMenuExpanded(false)}}>Create New Password</button>
+        <button 
+          type='button'
+          className='new-pass-expand-toggle' 
+          onClick={()=>{
+            setIsMenuExpanded(false);
+          }}
+        >
+          Create New Password
+        </button>
         <div className='new-pass-input-field'>
           <label>Nickname:</label>
           <input value={nickNameInput} onChange={(e)=>{setNickNameInput(e.target.value)}} />
@@ -48,7 +71,7 @@ export default function NewPasswordForm({
           <label>Notes:</label>
           <input value={notesInput} onChange={(e)=>{setNotesInput(e.target.value)}} />
         </div>
-        <ul className='new-pass-buttons-wrapper'>
+        <ul className='new-pass-buttons-container'>
           <li>
             <button type='button' onClick={()=>{handleCreateNewPassword()}}>Submit</button>
           </li>
@@ -62,8 +85,8 @@ export default function NewPasswordForm({
   }else{
     //return the closed new password form
     return( 
-    <form className='new-password-form'>
-      <button className='new-pass-heading' type='button' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</button>
+    <form className='new-pass-form'>
+      <button className='new-pass-expand-toggle' type='button' onClick={()=>{setIsMenuExpanded(true)}}>Create New Password</button>
     </form>
     );
   };

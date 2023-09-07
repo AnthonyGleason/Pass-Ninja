@@ -23,6 +23,7 @@ export default function Password({
   const [passwordHealthColor,setPasswordHealthColor] = useState('Blue');
   const [expireDays, setExpireDays] = useState<number>(0);
 
+  //handle initial page load
   useEffect(()=>{
     const expireDays:number = getExpireDays();
     setExpireDays(expireDays);
@@ -45,7 +46,15 @@ export default function Password({
 
   const handleApplyPassChange = async function(){
     //call update password method on vault
-    await vaultController.updatePassword(password._id,editPassInput,nickNameInput,siteUrlInput,userNameInput,notesInput)
+    await vaultController
+      .updatePassword(
+        password._id,
+        editPassInput,
+        nickNameInput,
+        siteUrlInput,
+        userNameInput,
+        notesInput
+      )
       .then(()=>{
         setPasswords(vaultController.passwords);
       }
@@ -68,7 +77,7 @@ export default function Password({
     }
   };
 
-  if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
+  if (!isPasswordExpanded && !isUserEditing){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
       <form className='pass-item'>
         <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(true)}}>
@@ -78,10 +87,17 @@ export default function Password({
         </button>
       </form>
     );
-  }else if (!isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
+  }else if (isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <form className='pass-item'>
-        <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button 
+          className='pass-expand-toggle-button' 
+          type='button' 
+          onClick={()=>{
+            setIsPasswordExpanded(false);
+            setIsUserEditing(false);
+          }}
+        >
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
@@ -112,10 +128,17 @@ export default function Password({
         </ul>
       </form>
     );
-  }else{
+  }else{ //we can assume the user is editing their password and the password is expanded
     return(
       <form className='pass-item'>
-        <button className='pass-expand-toggle-button' onClick={()=>{setIsPasswordExpanded(false)}}>
+        <button 
+          className='pass-expand-toggle-button' 
+          type='button' 
+          onClick={()=>{
+            setIsPasswordExpanded(false);
+            setIsUserEditing(false);
+          }}
+        >
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>

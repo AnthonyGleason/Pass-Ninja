@@ -20,7 +20,6 @@
   gap: 20px;
   font-size: 18px;
   text-align: center;
-  background-color: rgb(69, 64, 64);
 }
 .home-greeting img{
   width: 60%;
@@ -58,6 +57,7 @@
   display: flex;
   text-align: center;
   justify-content: center;
+  background-color: #2d2d30;
 }
 .home-info p{
   display: flex;
