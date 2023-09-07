@@ -142,7 +142,7 @@ export default function Password({
         </div>
         <ul className='pass-buttons-container'>
           <li>
-            <button type='button' onClick={()=>{handleApplyPassChange()}}>Apply Changes</button>
+            <button type='button' onClick={()=>{handleApplyPassChange()}}>Save</button>
           </li>
           <li>
             <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>

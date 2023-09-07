@@ -27,8 +27,7 @@
   max-width: 300px;
 }
 .home-greeting ul button,
-.home-call-to-action button,
-.pass-gen-demo button{
+.home-call-to-action button{
   background-color: transparent;
   color: white;
   border: 0px solid transparent;
