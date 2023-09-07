@@ -35,6 +35,11 @@
   font-size: 19px;
   display: flex;
 }
+.vault-nav li button{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .vault-nav li form input{
   background-color: white;
   color: black;
@@ -47,5 +52,5 @@
 }
 .search-vault-bar img,
 .vault-nav ul img{
-  width: 20px;
+  width: 25px;
 }

@@ -80,12 +80,12 @@ export default function VaultNav({
       if (password.expiresOn){
         // Get the time difference in milliseconds
         // basically expiration time - current time. converts the date string to a date then finds the difference in milliseconds
-        const timeDifference = new Date(password.expiresOn).getTime() - new Date().getTime(); 
-        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+        const timeDifference:number = new Date(password.expiresOn).getTime() - new Date().getTime(); 
+        const daysDifference:number = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
         return daysDifference;
       }else{
         return 0;
-      }
+      };
     };
 
     let calculatedTotalPercent = 0;
@@ -112,21 +112,18 @@ export default function VaultNav({
           <button type='button' onClick={()=>{navigate('/')}}>Home</button>
         </li>
         <li>
-          <button type='button' onClick={()=>{navigate('/vault')}}>My Vault</button>
-        </li>
-        <li>
           <form className='search-vault-bar'>
             <img src={searchIcon} alt='magnifying glass' />
             <input placeholder='' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} />
           </form>
         </li>
         <li>
+          <time>{new Date().toDateString()}</time>
+        </li>
+        <li>
           <p className='vault-health' style={{color: vaultHealthColor}}>
             Vault Health: {vaultHealthStatus} {vaultHealthPercent}%
           </p>
-        </li>
-        <li>
-          <time>{new Date().toDateString()}</time>
         </li>
         <li>
           <button type='button' onClick={()=>{navigate('/vault/settings')}}>

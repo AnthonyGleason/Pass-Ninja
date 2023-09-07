@@ -42,13 +42,7 @@ export default function NewPasswordForm({
   if (isMenuExpanded){ //if the user has expanded the New Password form then display the form to create a new password
     return(
       <form className='new-pass-form' method='POST' action='http://localhost:5000/api/v1/vaults/passwords'>
-        <button 
-          type='button'
-          className='new-pass-expand-toggle' 
-          onClick={()=>{
-            setIsMenuExpanded(false);
-          }}
-        >
+        <button type='button' className='new-pass-expand-toggle' onClick={()=>{setIsMenuExpanded(false)}}>
           Create New Password
         </button>
         <div className='new-pass-input-field'>
@@ -79,7 +73,7 @@ export default function NewPasswordForm({
             <button type='button' onClick={()=>{setIsMenuExpanded(false)}}>Cancel</button>
           </li>
         </ul>
-        <PasswordGenerator isExpandedByDefault={true} setPasswordInput={setPasswordInput} />
+        <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setPasswordInput} />
       </form>
     )
   }else{

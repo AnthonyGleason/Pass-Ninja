@@ -77,7 +77,7 @@ export default function Password({
     }
   };
 
-  if (!isPasswordExpanded && !isUserEditing){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
+  if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
       <form className='pass-item'>
         <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(true)}}>
@@ -168,7 +168,7 @@ export default function Password({
             <button type='button' onClick={()=>{handleApplyPassChange()}}>Save</button>
           </li>
           <li>
-            <button type='button' onClick={()=>{setIsUserEditing(false)}}>Cancel</button>
+            <button type='button' onClick={()=>{ setIsPasswordExpanded(false) }}>Cancel</button>
           </li>
         </ul>
         <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />
