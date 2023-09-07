@@ -24,7 +24,7 @@ export class VaultController{
     userNameInput: string,
     notesInput:string
   )=>{
-    const response = await fetch('http://localhost:5000/v1/api/vaults/passwords',{
+    const response = await fetch(`${getFetchURL()}/v1/api/vaults/passwords`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export class VaultController{
     notesInput:string
   ) =>{
     //update the password
-    await fetch(`http://localhost:5000/v1/api/vaults/passwords/${passwordID}`,{
+    await fetch(`${getFetchURL()}/v1/api/vaults/passwords/${passwordID}`,{
       method: 'PUT',
       headers:{
         'Content-Type': 'application/json',

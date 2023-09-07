@@ -34,6 +34,7 @@
   color: white;
   font-size: 19px;
   display: flex;
+  cursor: pointer;
 }
 .vault-nav li button{
   width: 100%;

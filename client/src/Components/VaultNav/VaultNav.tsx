@@ -39,7 +39,7 @@ export default function VaultNav({
   useEffect(()=>{
     const filterPasswords = function(){
       return vaultController.passwords.filter((password:any) => {
-        return password.nickName.toLowerCase().includes(searchInput);
+        return password.nickName.toLowerCase().includes(searchInput.toLowerCase());
       });
     };
     if (vaultController.passwords) setPassSnip(filterPasswords());
