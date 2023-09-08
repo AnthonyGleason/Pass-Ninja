@@ -1,6 +1,10 @@
 # Pass-Ninja
 
-Description placeholder
+Pass Ninja is a feature-rich, user-friendly password manager designed from scratch. It focuses on enhanced security by employing two-factor authentication and bcrypt for vault protection. In addition, each individual password is further secured with AES encryption, utilizing keys derived from the user's master password.
+
+What sets Pass Ninja apart is its simplicity and accessibility, making it an excellent choice for individuals who may find traditional password managers overly complex. It enables users to effortlessly connect their vaults to their preferred two-factor authentication platform by scanning a QR Code generated within their vault settings and verifying their access to their authenticator. Additionally, Pass Ninja serves as an educational tool, promoting good password security practices. Users can easily access helpful explanations of terms and features by clicking on any underlined text throughout the website.
+
+Pass Ninja also notifies users of recommended password updates and generates a vault health bar to assess their overall vault security.
 
 <h3>Live Demo: <a href='https://anthonygleason.github.io/Pass-Ninja/'>Press Here</a></h3>
 <h2>Tech Stack:</h2>
