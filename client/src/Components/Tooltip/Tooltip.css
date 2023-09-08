@@ -15,6 +15,7 @@
   gap: 5px;
   width: 90%;
   max-width: 500px;
+  cursor: pointer;
 }
 .tooltip p{
   overflow-wrap: anywhere;

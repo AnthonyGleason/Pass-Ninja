@@ -77,17 +77,23 @@ export default function Password({
     }
   };
 
-  if (!isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
+  if (!isUserEditing && !isPasswordExpanded){ //check to see if the user is viewing more details on a password. if it isnt display just the password nickname
     return(
       <form className='pass-item'>
-        <button className='pass-expand-toggle-button' type='button' onClick={()=>{setIsPasswordExpanded(true)}}>
+        <button 
+          className='pass-expand-toggle-button'
+          type='button'
+          onClick={()=>{
+            setIsPasswordExpanded(true);
+            setIsUserEditing(false);
+          }}>
           {password.nickName}
           &nbsp;
           <span style={{color: passwordHealthColor}}>Password Update: {expireDays} Days</span>
         </button>
       </form>
     );
-  }else if (isUserEditing){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
+  }else if (!isUserEditing && isPasswordExpanded){ //check to see if the user is currently editing this password entry. shows the update password form or the expanded password entry to the user.
     return(
       <form className='pass-item'>
         <button 
@@ -120,7 +126,15 @@ export default function Password({
         </div>
         <ul className='pass-buttons-container'>
           <li>
-            <button type='button' onClick={()=>{setIsUserEditing(true)}}>Edit</button>
+            <button 
+              type='button' 
+              onClick={()=>{
+                setIsUserEditing(true);
+                setIsPasswordExpanded(true);
+              }}
+            >
+              Edit
+            </button>
           </li>
           <li>
             <button type='button' onClick={()=>{handleDeletePassword()}}>Delete</button>
@@ -168,7 +182,15 @@ export default function Password({
             <button type='button' onClick={()=>{handleApplyPassChange()}}>Save</button>
           </li>
           <li>
-            <button type='button' onClick={()=>{ setIsPasswordExpanded(false) }}>Cancel</button>
+            <button 
+              type='button' 
+              onClick={()=>{
+                setIsPasswordExpanded(true);
+                setIsUserEditing(false);
+              }}
+            >
+              Cancel
+            </button>
           </li>
         </ul>
         <PasswordGenerator isExpandedByDefault={false} setPasswordInput={setEditPassInput} />

@@ -33,3 +33,7 @@ ul{
 .warning{
   color: rgb(250, 138, 138);
 }
+u,
+input{
+  cursor: pointer;
+}
