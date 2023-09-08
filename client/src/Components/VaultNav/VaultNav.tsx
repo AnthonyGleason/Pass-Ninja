@@ -21,7 +21,8 @@ export default function VaultNav({
 
   //when the passwords array is updated (user performs crud operations on their vault the percent is regenerated)
   useEffect(()=>{
-    setVaultHealthPercent(getVaultHealthPercent());
+    const vaultHealth:number = getVaultHealthPercent();
+    setVaultHealthPercent(vaultHealth);
   },[vaultController.passwords]);
 
   //when the vault health percent is changed the color and vault status are obtained
@@ -75,7 +76,7 @@ export default function VaultNav({
     }
   };
 
-  const getVaultHealthPercent = function(){
+  const getVaultHealthPercent = function():number{
     const getExpireDays = (password:any): number => {
       if (password.expiresOn){
         // Get the time difference in milliseconds
@@ -87,15 +88,14 @@ export default function VaultNav({
         return 0;
       };
     };
-
     let calculatedTotalPercent = 0;
     vaultController.passwords.forEach((password)=>{
       const percentage = (getExpireDays(password)/ 90) * 100; //calculate percentage health for a single password with 90 total days in a renewal cycle
       calculatedTotalPercent+=Math.round(percentage); // Round to the nearest whole number
     });
     const passwordsLength:number = vaultController.passwords.length || 1; //if the passwords.length is 0 we will see NaN because of the division by 0 errors in the next step
-    const vaultHealthPercent = calculatedTotalPercent / (passwordsLength*100) * 100;
-    return vaultHealthPercent;
+    const vaultHealthPercent:number = calculatedTotalPercent / (passwordsLength*100) * 100;
+    return parseFloat(vaultHealthPercent.toFixed(1));
   };
 
   const handleLogOut = async function(){
