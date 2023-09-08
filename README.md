@@ -13,8 +13,7 @@ Pass Ninja also notifies users of recommended password updates and generates a v
     <img alt="React" height=40rem width=40rem src="https://api.iconify.design/logos/react.svg?download=1" />
     <img alt="TypeScript" height=40rem width=40rem src="https://api.iconify.design/logos/typescript-icon.svg?download=1" />
   </span>
-  <br/>
-  React.js, Typescript
+  <p>React.js, Typescript</p>
 <h3>Back-end:</h3>
   <span>
     <img alt="nodejs" height=40rem width=40rem src="https://api.iconify.design/vscode-icons/file-type-node.svg?download=1" />
@@ -22,10 +21,7 @@ Pass Ninja also notifies users of recommended password updates and generates a v
     <img alt="TypeScript" height=40rem width=40rem src="https://api.iconify.design/logos/typescript-icon.svg?download=1" />
     <img alt='heroku' height=40rem width=40rem src="https://api.iconify.design/skill-icons/heroku.svg?download=1" />
   </span>
-  <br/>
-  Node.js, Express, Typescript, Heroku
-<br/><br/>
-
+  <p>Node.js, Express, Typescript, Heroku</p>
 <h2>Local Installation Instructions:</h2>
 <ol>
   <li>Clone this repository.</li>
@@ -34,6 +30,9 @@ Pass Ninja also notifies users of recommended password updates and generates a v
   <li>The client will run at <code>localhost</code> port 3000 and connect to the server at <code>localhost</code> port 5000 by default. If you would like to use my server hosted on Heroku, you can modify your client by navigating to the file located at <code>client/src/clientSettings.tsx</code> and changing the line <code>const USE_LOCALHOST = true;</code> to <code>const USE_LOCALHOST = false;</code>.
   </li>
 </ol>
-<p></p>
-
 <h2>Screenshots:</h2>
+
+![Screenshot 2023-09-08 at 3 16 23 PM (2)](https://github.com/anthonygleason/Pass-Ninja/assets/87878255/6c64cb6b-8c03-478f-aa2a-7e44e0a56aca)
+![Screenshot 2023-09-08 at 3 13 34 PM (2)](https://github.com/anthonygleason/Pass-Ninja/assets/87878255/53de499f-e864-4103-a89c-b2892acfec3e)
+![Screenshot 2023-09-08 at 3 18 08 PM (2)](https://github.com/anthonygleason/Pass-Ninja/assets/87878255/569a0340-0bda-40b7-aaf4-52bedcd62257)
+![Screenshot 2023-09-08 at 3 17 59 PM (2)](https://github.com/anthonygleason/Pass-Ninja/assets/87878255/4d9b0fe5-0740-49f4-b243-02bf2329ba99)
