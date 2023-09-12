@@ -30,9 +30,11 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
         otpInputKey: otpInput,
         masterPasswordInput: masterPasswordInput
       }),
-    }).then((data)=>{
-      console.log(data);
-    })
+    }).then((res)=>{
+      if (res.ok){
+        navigate('/vault/settings');
+      };
+    });
   };
 
   const handleRemoveTwoFactor = async function(){
@@ -46,9 +48,11 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
         otpInputKey: otpInput,
         masterPasswordInput: masterPasswordInput
       }),
-    }).then((data)=>{
-      console.log(data);
-    })
+    }).then((res)=>{
+      if (res.ok){
+        navigate('/vault/settings')
+      };
+    });
   };
 
   const populateTwoFactorSetupCode = async function(){
@@ -79,7 +83,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
           </li>
           <li className="two-factor-step two-factor-input-field">
             <label>Current Master Password:</label>
-            <input type='text' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
           </li>
         </ol>
         <ul>
@@ -110,7 +114,7 @@ export default function TwoFactorSetting({vaultController}:{vaultController:Vaul
           </li>
           <li className="two-factor-step two-factor-input-field">
             <label>Current Master Password:</label>
-            <input type='text' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
+            <input type='password' value={masterPasswordInput} onChange={(e)=>{setMasterPasswordInput(e.target.value)}} required/>
           </li>
         </ol>
         <ul>

@@ -119,7 +119,7 @@ vaultsRouter.post('/login', async (req: customRequest, res: Response, next: Next
         }
       } else {
         // Two factor is enabled, but OTP not provided
-        res.status(400).json({
+        res.status(401).json({
           'message': 'OTP is required',
           'otpRequired': true
         });
