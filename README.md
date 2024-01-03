@@ -13,15 +13,16 @@ Pass Ninja also notifies users of recommended password updates and generates a v
     <img alt="React" height=40rem width=40rem src="https://api.iconify.design/logos/react.svg?download=1" />
     <img alt="TypeScript" height=40rem width=40rem src="https://api.iconify.design/logos/typescript-icon.svg?download=1" />
   </span>
-  <p>React.js, Typescript</p>
+  <p>React, Typescript</p>
 <h3>Back-end:</h3>
   <span>
     <img alt="nodejs" height=40rem width=40rem src="https://api.iconify.design/vscode-icons/file-type-node.svg?download=1" />
     <img alt='express' height=40rem width=40rem src="https://api.iconify.design/skill-icons/expressjs-dark.svg?download=1" />
     <img alt="TypeScript" height=40rem width=40rem src="https://api.iconify.design/logos/typescript-icon.svg?download=1" />
     <img alt='heroku' height=40rem width=40rem src="https://api.iconify.design/skill-icons/heroku.svg?download=1" />
+    <img alt='Mongodb' height=40rem width=40rem src="https://api.iconify.design/vscode-icons/folder-type-mongodb-opened.svg?download=1" />
   </span>
-  <p>Node.js, Express, Typescript, Heroku</p>
+  <p>Node.js, Express, Typescript, Heroku, MongoDB</p>
 <h2>Local Installation Instructions:</h2>
 <ol>
   <li>Clone this repository.</li>
