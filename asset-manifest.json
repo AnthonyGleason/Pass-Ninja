@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Pass-Ninja/static/css/main.ad971775.css",
-    "main.js": "/Pass-Ninja/static/js/main.ffe2e033.js",
+    "main.js": "/Pass-Ninja/static/js/main.a45d735f.js",
     "static/js/787.c4e7f8f9.chunk.js": "/Pass-Ninja/static/js/787.c4e7f8f9.chunk.js",
     "static/media/public-domain-shinobi-large.png": "/Pass-Ninja/static/media/public-domain-shinobi-large.90f8b2a82e5911c6cbcf.png",
     "static/media/settings-outline.svg": "/Pass-Ninja/static/media/settings-outline.a4a3ead5de7c1b22b6288c6fa68bdc69.svg",
@@ -10,11 +10,11 @@
     "static/media/down-arrow-fill.svg": "/Pass-Ninja/static/media/down-arrow-fill.5523c5cab870fb4e5fcbdba9e950ddfb.svg",
     "static/media/x-bold.svg": "/Pass-Ninja/static/media/x-bold.773fcbeb5595ad686102ef7e71d6537d.svg",
     "main.ad971775.css.map": "/Pass-Ninja/static/css/main.ad971775.css.map",
-    "main.ffe2e033.js.map": "/Pass-Ninja/static/js/main.ffe2e033.js.map",
+    "main.a45d735f.js.map": "/Pass-Ninja/static/js/main.a45d735f.js.map",
     "787.c4e7f8f9.chunk.js.map": "/Pass-Ninja/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ad971775.css",
-    "static/js/main.ffe2e033.js"
+    "static/js/main.a45d735f.js"
   ]
 }
