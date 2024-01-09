@@ -19,7 +19,9 @@ app.listen(PORT,()=>{
 });
 
 //setup cors
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}));
 
 //setup mongoose, connecting to the database url in .env
 const mongoose = require('mongoose');
